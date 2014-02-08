@@ -36,6 +36,7 @@
 
 @property NSNumber  *old_Slider;
 @property NSNumber  *old_Stepper;
+@property (weak, nonatomic) IBOutlet UIButton *buttonClicked;
 
 //@property int sock;
 
@@ -380,6 +381,14 @@
         ABSViewControllerFlight *destView=[segue destinationViewController];
         destView.ConnectionParameters=self.ConnectionParameters;
     }
+}
+- (IBAction)clickedButton:(id)sender {
+    
+    NSLog(@"%@", self.ConnectionParameters.IPAddress);
+    NSLog(@"%@", self.ConnectionParameters.RemotePort);
+    NSLog(@"%@", self.ConnectionParameters.LocalPort);
+    NSLog(@"%d", self.ConnectionParameters.sock_client);
+    NSLog(@"%d", self.ConnectionParameters.sock_server);
 }
 
 @end

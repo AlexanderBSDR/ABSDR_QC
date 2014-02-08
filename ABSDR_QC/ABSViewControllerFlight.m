@@ -42,6 +42,11 @@
 }
 - (IBAction)sliderAltitudeChanged:(id)sender {
     [self.ConnectionParameters sendClient:"Alexa" length:6];
+    NSLog(@"%@", self.ConnectionParameters.IPAddress);
+    NSLog(@"%@", self.ConnectionParameters.RemotePort);
+    NSLog(@"%@", self.ConnectionParameters.LocalPort);
+    NSLog(@"%d", self.ConnectionParameters.sock_client);
+    NSLog(@"%d", self.ConnectionParameters.sock_server);
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

@@ -222,6 +222,16 @@
                                     <segue destination="MQg-rv-wk4" kind="push" identifier="showFlightBoard" id="l8P-vS-PpG"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="aa5-FB-Lbv">
+                                <rect key="frame" x="30" y="276" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickedButton:" destination="xmV-Cv-qnq" eventType="touchUpInside" id="wv3-Hw-HLw"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -229,6 +239,7 @@
                     <navigationItem key="navigationItem" id="OZY-GN-IXy"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="buttonClicked" destination="aa5-FB-Lbv" id="oMc-lE-Tie"/>
                         <outlet property="engineAllLabel" destination="duY-Pc-7ad" id="dD4-oD-Jgx"/>
                         <outlet property="engineAllSlider" destination="YNa-MX-5HX" id="sf4-AZ-XTs"/>
                         <outlet property="engineAllStepper" destination="tNU-O7-sln" id="tq3-6e-agU"/>

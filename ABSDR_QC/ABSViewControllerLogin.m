@@ -7,6 +7,7 @@
 //
 
 #import "ABSViewControllerLogin.h"
+#import "ABSViewControllerControlBoard.h"
 
 @interface ABSViewControllerLogin ()
 @property (weak, nonatomic) IBOutlet UIButton *ConnectButton;
