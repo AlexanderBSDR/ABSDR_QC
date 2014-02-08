@@ -7,6 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreMotion/CoreMotion.h>
+
+double currentMaxAccelX;
+double currentMaxAccelY;
+double currentMaxAccelZ;
+double currentMaxRotX;
+double currentMaxRotY;
+double currentMaxRotZ;
 
 @interface ABSViewControllerGyro : UIViewController
 

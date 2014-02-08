@@ -8,6 +8,7 @@
 
 #import "ABSViewControllerGyro.h"
 
+
 @interface ABSViewControllerGyro ()
 @property (weak, nonatomic) IBOutlet UILabel *accX;
 @property (weak, nonatomic) IBOutlet UILabel *accY;
@@ -21,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *maxRotX;
 @property (weak, nonatomic) IBOutlet UILabel *maxRotY;
 @property (weak, nonatomic) IBOutlet UILabel *maxRotZ;
+
+@property (strong, nonatomic) CMMotionManager *motionManager;
 
 @end
 
@@ -39,6 +42,15 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    currentMaxAccelX = 0;
+    currentMaxAccelY = 0;
+    currentMaxAccelZ = 0;
+    
+    currentMaxRotX = 0;
+    currentMaxRotY = 0;
+    currentMaxRotZ = 0;
+    
+    self.motionManager = [[CMMotionManager alloc]init];
 }
 
 - (void)didReceiveMemoryWarning
