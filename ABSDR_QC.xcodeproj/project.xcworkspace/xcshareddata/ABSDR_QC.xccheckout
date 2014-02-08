@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>65F871D2-FC15-4B2F-BF60-3A1D85ADE78F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ABSDR_QC</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>6634F123-C738-42A4-83B9-FD11A5C54C33</key>
+		<string>ssh://github.com/AlexanderBSDR/ABSDR_QC.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ABSDR_QC.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>6634F123-C738-42A4-83B9-FD11A5C54C33</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/AlexanderBSDR/ABSDR_QC.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>6634F123-C738-42A4-83B9-FD11A5C54C33</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>6634F123-C738-42A4-83B9-FD11A5C54C33</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ABSDR_QC</string>
+		</dict>
+	</array>
+</dict>
+</plist>
