@@ -10,11 +10,15 @@
 
 @interface ABSConnectionParameters : NSObject
 
-
-
 @property NSString *IPAddress;
 @property NSNumber *RemotePort;
 @property NSNumber *LocalPort;
 @property NSNumber *PackagesSent;
+@property int sock_client;
+@property int sock_server;
+
+- (void) startServer;
+- (bool) sendClient:(char *) msg length: (unsigned int) len;
+- (bool) sendServerSocket:(NSString *) ip port:(int) p;
 
 @end

@@ -30,7 +30,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.ConnectionParameters=[[ABSConnectionParameters alloc] init];
 	// Do any additional setup after loading the view.
     self.IPAddressBox.text=@"192.168.1.101";
     self.RemotePortBox.text=@"50000";
@@ -46,35 +45,18 @@
 
 }
 
-- (BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
-{
-    self.ConnectionParameters.IPAddress=self.IPAddressBox.text;
-    
-    NSNumber *temp_localPort=[NSNumber numberWithInt:[self.LocalPortBox.text intValue]];
-    self.ConnectionParameters.LocalPort=temp_localPort;
-    NSNumber *temp_remotePort=[NSNumber numberWithInt:[self.RemotePortBox.text intValue]];
-    self.ConnectionParameters.RemotePort=temp_remotePort;
-    
-    
- //   if(self.ConnectionParameters.LocalPort.intValue==50000)
-//    {
- //       return NO;
-  //  }
-  //  else return YES;
-    return YES;
-}
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
     if([segue.identifier isEqualToString:@"showControlBoard"])
     {
-        NSLog(@"HERE!");
+ //       NSLog(@"HERE!");
         
-        ABSViewControllerLogin *destView=[segue destinationViewController];
+        ABSViewControllerControlBoard *destView=[segue destinationViewController];
         destView.ConnectionParameters = [[ABSConnectionParameters alloc] init];
         
-        destView.ConnectionParameters.IPAddress=self.ConnectionParameters.IPAddress;
-        destView.ConnectionParameters.LocalPort=self.ConnectionParameters.LocalPort;
-        destView.ConnectionParameters.RemotePort=self.ConnectionParameters.RemotePort;
+        destView.ConnectionParameters.IPAddress=self.IPAddressBox.text;
+        destView.ConnectionParameters.LocalPort=[NSNumber numberWithInt:[self.LocalPortBox.text intValue]];
+        destView.ConnectionParameters.RemotePort=[NSNumber numberWithInt:[self.RemotePortBox.text intValue]];
         
     }
 }

@@ -8,14 +8,9 @@
 
 #import "ABSViewControllerControlBoard.h"
 #import "ABSViewControllerLogin.h"
+#import "ABSViewControllerFlight.h"
 
 #import "ABSControlParameters.h"
-
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <errno.h>
-extern int errno;
 
 @interface ABSViewControllerControlBoard ()
 @property (weak, nonatomic) IBOutlet UILabel *labelSent;
@@ -42,7 +37,7 @@ extern int errno;
 @property NSNumber  *old_Slider;
 @property NSNumber  *old_Stepper;
 
-@property int sock;
+//@property int sock;
 
 @property ABSControlParameters *objParameters;
 
@@ -87,9 +82,9 @@ extern int errno;
     self.engineAllSlider.maximumValue=self.objParameters.maxValue.doubleValue;
 
   
-    [NSThread detachNewThreadSelector:@selector(startServer) toTarget:self withObject:Nil];
+    [NSThread detachNewThreadSelector:@selector(startServer) toTarget:self.ConnectionParameters withObject:Nil];
     
-    [self sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
+    [self.ConnectionParameters sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
     
 }
 
@@ -185,12 +180,16 @@ extern int errno;
     NSNumber *e2d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedTwo.intValue+delta)];
     NSNumber *e3d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedThree.intValue+delta)];
     NSNumber *e4d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedFour.intValue+delta)];
+    NSNumber *ezero=@0;
     
     NSString *temp1=@"Engine #1: ";
     //self.objParameters.EngineSpeedOne=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedOne.intValue+delta)];
     if(e1d.intValue>self.objParameters.maxValue.intValue)
     {
         self.objParameters.EngineSpeedOne=self.objParameters.maxValue;
+    } else if(e1d.intValue<0)
+    {
+        self.objParameters.EngineSpeedOne=ezero;
     }
     else
     {
@@ -206,6 +205,9 @@ extern int errno;
     if(e2d.intValue>self.objParameters.maxValue.intValue)
     {
         self.objParameters.EngineSpeedTwo=self.objParameters.maxValue;
+    } else if(e2d.intValue<0)
+    {
+        self.objParameters.EngineSpeedTwo=ezero;
     }
     else
     {
@@ -221,6 +223,9 @@ extern int errno;
     if(e3d.intValue>self.objParameters.maxValue.intValue)
     {
         self.objParameters.EngineSpeedThree=self.objParameters.maxValue;
+    } else if(e3d.intValue<0)
+    {
+        self.objParameters.EngineSpeedThree=ezero;
     }
     else
     {
@@ -236,6 +241,9 @@ extern int errno;
     if(e4d.intValue>self.objParameters.maxValue.intValue)
     {
         self.objParameters.EngineSpeedFour=self.objParameters.maxValue;
+    } else if(e4d.intValue<0)
+    {
+        self.objParameters.EngineSpeedFour=ezero;
     }
     else
     {
@@ -261,6 +269,7 @@ extern int errno;
     NSNumber *e2d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedTwo.intValue+delta)];
     NSNumber *e3d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedThree.intValue+delta)];
     NSNumber *e4d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedFour.intValue+delta)];
+    NSNumber *ezero=@0;
 //    NSLog(@"Delta: %d", delta);
 //    NSLog(@"E1D: %d",self.objParameters.EngineSpeedOne.intValue+delta);
     
@@ -268,6 +277,9 @@ extern int errno;
     if(e1d.intValue>self.objParameters.maxValue.intValue)
     {
         self.objParameters.EngineSpeedOne=self.objParameters.maxValue;
+    } else if(e1d.intValue<0)
+    {
+        self.objParameters.EngineSpeedOne=ezero;
     }
     else
     {
@@ -282,6 +294,10 @@ extern int errno;
     if(e2d.intValue>self.objParameters.maxValue.intValue)
     {
         self.objParameters.EngineSpeedTwo=self.objParameters.maxValue;
+    } else if(e2d.intValue<0)
+    {
+        self.objParameters.EngineSpeedTwo=ezero;
+        
     }
     else
     {
@@ -296,6 +312,10 @@ extern int errno;
     if(e3d.intValue>self.objParameters.maxValue.intValue)
     {
         self.objParameters.EngineSpeedThree=self.objParameters.maxValue;
+    }  else if(e3d.intValue<0)
+    {
+        self.objParameters.EngineSpeedThree=ezero;
+        
     }
     else
     {
@@ -310,6 +330,10 @@ extern int errno;
     if(e4d.intValue>self.objParameters.maxValue.intValue)
     {
         self.objParameters.EngineSpeedFour=self.objParameters.maxValue;
+    } else if(e4d.intValue<0)
+    {
+        self.objParameters.EngineSpeedFour=ezero;
+        
     }
     else
     {
@@ -328,109 +352,6 @@ extern int errno;
     [self updateEngineParameters];
 }
 
-- (void) startServer
-{
-    NSLog(@"UDP server is starting...");
-    
-    int sock=socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
-    
-    struct sockaddr_in sa;
-    char buffer[1024];
-    size_t fromlen, recsize;
-    
-    memset(&sa, 0 ,sizeof(sa));
-    
-    sa.sin_family=AF_INET;
-    sa.sin_addr.s_addr=INADDR_ANY;
-    sa.sin_port=htons(50000);
-    
-    if(-1==bind(sock, (struct sockaddr *)&sa, sizeof(struct sockaddr)))
-    {
-        NSLog(@"Error in binding a socket");
-        close(sock);
-    }
-    
-    for (;;)
-    {
-        recsize=recvfrom(sock, (void *)buffer, 1024, 0, (struct sockaddr *)&sa, (socklen_t *)&fromlen);
-        buffer[recsize]='\0';
-        inet_ntoa(sa.sin_addr);
-//        NSString *bufferGot = [[NSString alloc] stringWithCString:buffer encoding:NSASCIIStringEncoding];
-        NSLog(@"<- Rx[%zu] from (%s): %s",recsize,inet_ntoa(sa.sin_addr),buffer);
-    }
-    
-}
-
-- (bool) sendServerSocket:(NSString *) ip port:(int) p
-{
-    struct sockaddr_in destination;
-//    int broadcast=1;
-    if(ip==nil)
-    {
-        printf("Ip address is null\n");
-        return false;
-    }
-    
-    if((self.sock=socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP))<0)
-    {
-        printf("Failed to create a socket: %d", errno);
-        return false;
-    }
-    
-    memset(&destination, 0, sizeof(destination));
-    
-    destination.sin_family=AF_INET;
-    destination.sin_addr.s_addr=inet_addr([ip UTF8String]);
-    destination.sin_port=htons(p);
-    
- /*   setsockopt(self.sock, IPPROTO_IP, IP_MULTICAST_IF, &destination, sizeof(destination));
-    if(setsockopt(self.sock, SOL_SOCKET, SO_BROADCAST, &broadcast, sizeof(broadcast))==-1)
-    {
-        perror("setsockopt (SO_BROADCAST");
-        exit(1);
-    }*/
-    int err=0;
-    err=connect(self.sock, (const struct sockaddr *) &destination, sizeof(destination));
-    if(err<0)
-    {
-        NSLog(@"Error at connect: %d", errno);
-    }
-    
-/*    int flags;
-    
-    flags = fcntl(self.sock, F_GETFL);
-    err = fcntl(self.sock, F_SETFL, flags | O_NONBLOCK);
-    if (err < 0) {
-        NSLog(@"Error at flags: %d", errno);
-    }
-*/
-    return YES;
-}
-
-- (bool) sendServer:(char *) msg length: (unsigned int) len ipAddress:(NSString *) ip port:(int) p
-{
-    struct sockaddr_in destination;
-
-    memset(&destination, 0, sizeof(destination));
-    destination.sin_family=AF_INET;
-    destination.sin_addr.s_addr=inet_addr([ip UTF8String]);
-    destination.sin_port=htons(p);
-    
-    int a=0;
-    a=sendto(self.sock, msg, len, 0, NULL, 0);
-    if(a!=len)
-    {
-        printf("Mismatch in number of sent bytes!\n");
-        NSLog(@"Sent: %d",a);
-        printf("Error code: %d", errno);
-    }
-    else
-    {
-        NSLog(@"-> Tx: %s", msg);
-    }
-    return false;
-}
-
 -(void) updateEngineParameters
 {
     char *buffer=malloc(sizeof(char)*7);
@@ -443,12 +364,22 @@ extern int errno;
     buffer[5]=(char)self.objParameters.EngineSpeedFour.intValue;
     buffer[6]='\0';
 
-    [self sendServer:buffer length:6 ipAddress:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
+    [self.ConnectionParameters sendClient:buffer length:6];
     NSNumber *t=[[NSNumber alloc] initWithInt:(self.ConnectionParameters.PackagesSent.intValue+1)];
     self.ConnectionParameters.PackagesSent=t;
     self.labelSent.text=self.ConnectionParameters.PackagesSent.stringValue;
     
     free(buffer);
+}
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    
+    if([segue.identifier isEqualToString:@"showFlightBoard"])
+    {
+        ABSViewControllerFlight *destView=[segue destinationViewController];
+        destView.ConnectionParameters=self.ConnectionParameters;
+    }
 }
 
 @end

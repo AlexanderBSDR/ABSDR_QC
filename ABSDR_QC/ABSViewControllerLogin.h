@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ABSConnectionParameters.h"
 #import "ABSViewControllerControlBoard.h"
 
 @interface ABSViewControllerLogin : UIViewController
 
-@property ABSConnectionParameters *ConnectionParameters;
 
 @end
