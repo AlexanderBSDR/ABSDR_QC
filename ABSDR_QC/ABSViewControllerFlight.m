@@ -48,6 +48,7 @@
     
     if([segue.identifier isEqualToString:@"showManualBoard"])
     {
+        NSLog(@"Going back!");
         ABSViewControllerControlBoard *destView=[segue destinationViewController];
         destView.ConnectionParameters=self.ConnectionParameters;
     }
