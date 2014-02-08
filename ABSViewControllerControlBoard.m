@@ -36,6 +36,8 @@
 
 @property NSNumber  *old_Slider;
 @property NSNumber  *old_Stepper;
+
+
 @property (weak, nonatomic) IBOutlet UIButton *buttonClicked;
 
 //@property int sock;
