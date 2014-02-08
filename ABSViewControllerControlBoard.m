@@ -386,7 +386,7 @@
     
     NSLog(@"%@", self.ConnectionParameters.IPAddress);
     NSLog(@"%@", self.ConnectionParameters.RemotePort);
-    NSLog(@"%@", self.ConnectionParameters.LocalPort);
+//    NSLog(@"%@", self.ConnectionParameters.LocalPort);
     NSLog(@"%d", self.ConnectionParameters.sock_client);
     NSLog(@"%d", self.ConnectionParameters.sock_server);
 }
