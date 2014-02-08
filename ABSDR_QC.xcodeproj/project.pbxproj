@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		05671154189EB4BB000CEADE /* ABSUDPMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 05671153189EB4BB000CEADE /* ABSUDPMessaging.m */; };
+		1B54E171189C0B1700717533 /* ABSControlParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B54E170189C0B1700717533 /* ABSControlParameters.m */; };
+		1B79F886189BEA8400663523 /* ABSConnectionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79F885189BEA8400663523 /* ABSConnectionParameters.m */; };
+		1B93EB4A189BDFFE008FC8D1 /* ABSViewControllerLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B93EB49189BDFFE008FC8D1 /* ABSViewControllerLogin.m */; };
+		1B93EB4D189BE020008FC8D1 /* ABSViewControllerControlBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B93EB4C189BE020008FC8D1 /* ABSViewControllerControlBoard.m */; };
 		1BAD61BE189BDEB200DE6BD0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BAD61BD189BDEB200DE6BD0 /* Foundation.framework */; };
 		1BAD61C0189BDEB200DE6BD0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BAD61BF189BDEB200DE6BD0 /* CoreGraphics.framework */; };
 		1BAD61C2189BDEB200DE6BD0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BAD61C1189BDEB200DE6BD0 /* UIKit.framework */; };
@@ -19,6 +24,7 @@
 		1BAD61D9189BDEB200DE6BD0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BAD61C1189BDEB200DE6BD0 /* UIKit.framework */; };
 		1BAD61E1189BDEB200DE6BD0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1BAD61DF189BDEB200DE6BD0 /* InfoPlist.strings */; };
 		1BAD61E3189BDEB200DE6BD0 /* ABSDR_QCTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1BAD61E2189BDEB200DE6BD0 /* ABSDR_QCTests.m */; };
+		1BAD61ED189BDF2500DE6BD0 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1BAD61EC189BDF2500DE6BD0 /* Storyboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +38,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		05671152189EB4BB000CEADE /* ABSUDPMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABSUDPMessaging.h; path = ../ABSUDPMessaging.h; sourceTree = "<group>"; };
+		05671153189EB4BB000CEADE /* ABSUDPMessaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ABSUDPMessaging.m; path = ../ABSUDPMessaging.m; sourceTree = "<group>"; };
+		1B54E16F189C0B1700717533 /* ABSControlParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSControlParameters.h; sourceTree = "<group>"; };
+		1B54E170189C0B1700717533 /* ABSControlParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSControlParameters.m; sourceTree = "<group>"; };
+		1B79F884189BEA8400663523 /* ABSConnectionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSConnectionParameters.h; sourceTree = "<group>"; };
+		1B79F885189BEA8400663523 /* ABSConnectionParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSConnectionParameters.m; sourceTree = "<group>"; };
+		1B93EB48189BDFFE008FC8D1 /* ABSViewControllerLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSViewControllerLogin.h; sourceTree = "<group>"; };
+		1B93EB49189BDFFE008FC8D1 /* ABSViewControllerLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSViewControllerLogin.m; sourceTree = "<group>"; };
+		1B93EB4B189BE020008FC8D1 /* ABSViewControllerControlBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABSViewControllerControlBoard.h; path = ../ABSViewControllerControlBoard.h; sourceTree = "<group>"; };
+		1B93EB4C189BE020008FC8D1 /* ABSViewControllerControlBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ABSViewControllerControlBoard.m; path = ../ABSViewControllerControlBoard.m; sourceTree = "<group>"; };
 		1BAD61BA189BDEB200DE6BD0 /* ABSDR_QC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ABSDR_QC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BAD61BD189BDEB200DE6BD0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1BAD61BF189BDEB200DE6BD0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -48,6 +64,7 @@
 		1BAD61DE189BDEB200DE6BD0 /* ABSDR_QCTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ABSDR_QCTests-Info.plist"; sourceTree = "<group>"; };
 		1BAD61E0189BDEB200DE6BD0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1BAD61E2189BDEB200DE6BD0 /* ABSDR_QCTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ABSDR_QCTests.m; sourceTree = "<group>"; };
+		1BAD61EC189BDF2500DE6BD0 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +91,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1B54E172189C0B4200717533 /* DataClasses */ = {
+			isa = PBXGroup;
+			children = (
+				05671152189EB4BB000CEADE /* ABSUDPMessaging.h */,
+				05671153189EB4BB000CEADE /* ABSUDPMessaging.m */,
+				1B54E16F189C0B1700717533 /* ABSControlParameters.h */,
+				1B54E170189C0B1700717533 /* ABSControlParameters.m */,
+				1B79F884189BEA8400663523 /* ABSConnectionParameters.h */,
+				1B79F885189BEA8400663523 /* ABSConnectionParameters.m */,
+			);
+			name = DataClasses;
+			sourceTree = "<group>";
+		};
 		1BAD61B1189BDEB200DE6BD0 = {
 			isa = PBXGroup;
 			children = (
@@ -107,8 +137,14 @@
 		1BAD61C3189BDEB200DE6BD0 /* ABSDR_QC */ = {
 			isa = PBXGroup;
 			children = (
+				1B54E172189C0B4200717533 /* DataClasses */,
+				1B93EB4B189BE020008FC8D1 /* ABSViewControllerControlBoard.h */,
+				1B93EB4C189BE020008FC8D1 /* ABSViewControllerControlBoard.m */,
 				1BAD61CC189BDEB200DE6BD0 /* ABSAppDelegate.h */,
 				1BAD61CD189BDEB200DE6BD0 /* ABSAppDelegate.m */,
+				1BAD61EC189BDF2500DE6BD0 /* Storyboard.storyboard */,
+				1B93EB48189BDFFE008FC8D1 /* ABSViewControllerLogin.h */,
+				1B93EB49189BDFFE008FC8D1 /* ABSViewControllerLogin.m */,
 				1BAD61CF189BDEB200DE6BD0 /* Images.xcassets */,
 				1BAD61C4189BDEB200DE6BD0 /* Supporting Files */,
 			);
@@ -222,6 +258,7 @@
 			files = (
 				1BAD61C8189BDEB200DE6BD0 /* InfoPlist.strings in Resources */,
 				1BAD61D0189BDEB200DE6BD0 /* Images.xcassets in Resources */,
+				1BAD61ED189BDF2500DE6BD0 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,8 +277,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B79F886189BEA8400663523 /* ABSConnectionParameters.m in Sources */,
+				1B93EB4D189BE020008FC8D1 /* ABSViewControllerControlBoard.m in Sources */,
+				1B54E171189C0B1700717533 /* ABSControlParameters.m in Sources */,
 				1BAD61CA189BDEB200DE6BD0 /* main.m in Sources */,
+				1B93EB4A189BDFFE008FC8D1 /* ABSViewControllerLogin.m in Sources */,
 				1BAD61CE189BDEB200DE6BD0 /* ABSAppDelegate.m in Sources */,
+				05671154189EB4BB000CEADE /* ABSUDPMessaging.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -300,7 +342,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -340,7 +382,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -353,7 +395,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Release;
 		};
@@ -444,6 +486,7 @@
 				1BAD61E8189BDEB200DE6BD0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1BAD61E9189BDEB200DE6BD0 /* Build configuration list for PBXNativeTarget "ABSDR_QCTests" */ = {
 			isa = XCConfigurationList;
@@ -452,6 +495,7 @@
 				1BAD61EB189BDEB200DE6BD0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
