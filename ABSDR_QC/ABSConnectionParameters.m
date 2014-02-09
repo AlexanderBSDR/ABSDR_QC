@@ -6,6 +6,15 @@
 //  Copyright (c) 2014 CIG account. All rights reserved.
 //
 
+
+
+/*
+ Commands: 0x01 0xFF [0x00] [0x00] [0x00] [0x00] - direct access to engines
+ Altitute: 0x02 0xFF [0x00] [0x00] - (sign) and altitude control
+ Direction: 0x03 0xFF [0x00] [0x00] - (sign) and direction control
+ Rotation: 0x04 0xFF [0x00] [0x00] - (sign) and rotation control
+ */
+
 #import "ABSConnectionParameters.h"
 
 #include <sys/socket.h>
@@ -21,6 +30,9 @@ extern int errno;
     char buffer[1024];
     struct sockaddr_in sa;
     size_t fromlen, recsize;
+    
+    self.accArrayX = [[NSMutableArray alloc] init];
+    self.rotArrayX = [[NSMutableArray alloc] init];
     
     memset(&sa, 0 ,sizeof(sa));
     
@@ -46,8 +58,8 @@ extern int errno;
         recsize=recvfrom(self.sock_server, (void *)buffer, 1024, 0, (struct sockaddr *)&sa, (socklen_t *)&fromlen);
         buffer[recsize]='\0';
         inet_ntoa(sa.sin_addr);
-        //        NSString *bufferGot = [[NSString alloc] stringWithCString:buffer encoding:NSASCIIStringEncoding];
         NSLog(@"<- Rx[%zu] from (%s): %s",recsize,inet_ntoa(sa.sin_addr),buffer);
+        
     }
     
 }
@@ -89,14 +101,6 @@ extern int errno;
             NSLog(@"Error at connect: %d", errno);
         }
     }
-    /*    int flags;
-     
-     flags = fcntl(self.sock, F_GETFL);
-     err = fcntl(self.sock, F_SETFL, flags | O_NONBLOCK);
-     if (err < 0) {
-     NSLog(@"Error at flags: %d", errno);
-     }
-     */
     return YES;
 }
 
@@ -109,20 +113,109 @@ extern int errno;
     destination.sin_addr.s_addr=inet_addr([self.IPAddress UTF8String]);
     destination.sin_port=htons(self.RemotePort.intValue);
     
-    int a=0;
+    long a=0;
     a=sendto(self.sock_client, msg, len, 0, NULL, 0);
     if(a!=len)
     {
         printf("Mismatch in number of sent bytes!\n");
-        NSLog(@"Sent: %d",a);
+        NSLog(@"Sent: %ld",a);
         printf("Error code: %d", errno);
     }
     else
     {
-        NSLog(@"-> Tx: %s", msg);
+        char *new_msg=malloc(len+1);
+        strncpy(new_msg, msg, len);
+        new_msg[len]='\0';
+        NSLog(@"-> Tx: %s", new_msg);
+        free (new_msg);
     }
     return false;
 }
 
+-(void) updateEngineParameters:(int) engineOne engineO: (int) engineTwo engineT: (int)engineThree engineF: (int) engineFour
+{
+    char *buffer=malloc(sizeof(char)*6);
+    
+    buffer[0]=0x01;
+    buffer[1]=0xFF;
+    buffer[2]=(char)engineOne;
+    buffer[3]=(char)engineTwo;
+    buffer[4]=(char)engineThree;
+    buffer[5]=(char)engineFour;
+   // buffer[6]='\0';
+    
+    [self sendClient:buffer length:6];
+    self.PackagesSent+=1;
+    
+    free(buffer);
+}
+
+-(void) changeAltitude:(int) step
+{
+    char *buffer=malloc(sizeof(char)*4);
+
+    buffer[0]=0x02;
+    buffer[1]=0xFF;
+    if(step>0)
+    {
+        buffer[2]=(char)'+';
+    }
+    else
+    {
+        buffer[2]=(char)'-';
+    }
+    
+    buffer[3]=(char)abs(step);
+    
+    [self sendClient:buffer length:4];
+    self.PackagesSent+=1;
+    
+    free(buffer);
+}
+-(void) changeDirection:(int) step
+{
+    char *buffer=malloc(sizeof(char)*4);
+    
+    buffer[0]=0x03;
+    buffer[1]=0xFF;
+    if(step>0)
+    {
+        buffer[2]=(char)'+';
+    }
+    else
+    {
+        buffer[2]=(char)'-';
+    }
+    
+    buffer[3]=(char)abs(step);
+    
+    [self sendClient:buffer length:4];
+    self.PackagesSent+=1;
+    
+    free(buffer);
+
+}
+-(void) changeRotation:(int) step
+{
+    char *buffer=malloc(sizeof(char)*4);
+    
+    buffer[0]=0x03;
+    buffer[1]=0xFF;
+    if(step>0)
+    {
+        buffer[2]=(char)'+';
+    }
+    else
+    {
+        buffer[2]=(char)'-';
+    }
+    
+    buffer[3]=(char)abs(step);
+    
+    [self sendClient:buffer length:4];
+    self.PackagesSent+=1;
+    
+    free(buffer);
+}
 
 @end

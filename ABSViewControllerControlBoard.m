@@ -358,22 +358,10 @@
 
 -(void) updateEngineParameters
 {
-    char *buffer=malloc(sizeof(char)*7);
-    
-    buffer[0]=0x01;
-    buffer[1]=0xFF;
-    buffer[2]=(char)self.objParameters.EngineSpeedOne.intValue;
-    buffer[3]=(char)self.objParameters.EngineSpeedTwo.intValue;
-    buffer[4]=(char)self.objParameters.EngineSpeedThree.intValue;
-    buffer[5]=(char)self.objParameters.EngineSpeedFour.intValue;
-    buffer[6]='\0';
 
-    [self.ConnectionParameters sendClient:buffer length:6];
-    NSNumber *t=[[NSNumber alloc] initWithInt:(self.ConnectionParameters.PackagesSent.intValue+1)];
-    self.ConnectionParameters.PackagesSent=t;
-    self.labelSent.text=self.ConnectionParameters.PackagesSent.stringValue;
-    
-    free(buffer);
+    [self.ConnectionParameters updateEngineParameters:self.objParameters.EngineSpeedOne.intValue engineO:self.objParameters.EngineSpeedTwo.intValue engineT:self.objParameters.EngineSpeedThree.intValue engineF:self.objParameters.EngineSpeedFour.intValue];
+    NSString *str = [NSString stringWithFormat:@"%d",self.ConnectionParameters.PackagesSent];
+    self.labelSent.text=str;
 }
 
 

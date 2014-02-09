@@ -8,6 +8,8 @@
 
 #import "ABSViewControllerFlight.h"
 #import "ABSViewControllerControlBoard.h"
+#import "ABSViewControllerGyro.h"
+
 
 @interface ABSViewControllerFlight ()
 @property (weak, nonatomic) IBOutlet UISlider *sliderRotation;
@@ -17,6 +19,8 @@
 @end
 
 @implementation ABSViewControllerFlight
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,21 +44,49 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+
 - (IBAction)sliderAltitudeChanged:(id)sender {
-    [self.ConnectionParameters sendClient:"Alexa" length:6];
-    NSLog(@"%@", self.ConnectionParameters.IPAddress);
+    [self.ConnectionParameters changeAltitude:[self interpolatedFunction:self.sliderAltitude.value]];
+    /*NSLog(@"%@", self.ConnectionParameters.IPAddress);
     NSLog(@"%@", self.ConnectionParameters.RemotePort);
     NSLog(@"%@", self.ConnectionParameters.LocalPort);
     NSLog(@"%d", self.ConnectionParameters.sock_client);
-    NSLog(@"%d", self.ConnectionParameters.sock_server);
+    NSLog(@"%d", self.ConnectionParameters.sock_server);*/
+//    NSLog(@"%f", self.sliderAltitude.value);
+//    NSLog(@"Adjusted: %d", [self interpolatedFunction:self.sliderAltitude.value]);
 }
+
+- (IBAction)sliderDirectionChanged:(id)sender {
+    [self.ConnectionParameters changeDirection:[self interpolatedFunction:self.sliderDirection.value]];
+}
+- (IBAction)sliderRotationChanged:(id)sender {
+    [self.ConnectionParameters changeRotation:[self interpolatedFunction:self.sliderRotation.value]];
+}
+
+
+- (int) interpolatedFunction: (float) ch
+{
+    if(abs(ch)<50) return (int) (ch/10);
+    else if (abs(ch)>=50 && abs(ch)<=100) return (int) (ch/5);
+    else if (abs(ch)>=100 && abs(ch)<=200) return (int) (ch/3);
+    else return (int) ch;
+}
+
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     
     if([segue.identifier isEqualToString:@"showManualBoard"])
     {
-        NSLog(@"Going back!");
         ABSViewControllerControlBoard *destView=[segue destinationViewController];
+        destView.ConnectionParameters=self.ConnectionParameters;
+    }
+    
+    if([segue.identifier isEqualToString:@"showGyroBoard"])
+    {
+        ABSViewControllerGyro *destView=[segue destinationViewController];
         destView.ConnectionParameters=self.ConnectionParameters;
     }
 }

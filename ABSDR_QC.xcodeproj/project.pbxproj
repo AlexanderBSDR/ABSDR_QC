@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		05671154189EB4BB000CEADE /* ABSUDPMessaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 05671153189EB4BB000CEADE /* ABSUDPMessaging.m */; };
 		05F26E3B18A6E011009E7B62 /* ABSViewControllerGyro.m in Sources */ = {isa = PBXBuildFile; fileRef = 05F26E3A18A6E011009E7B62 /* ABSViewControllerGyro.m */; };
 		1B20D59918A67CA10027EA72 /* ABSViewControllerFlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B20D59818A67CA10027EA72 /* ABSViewControllerFlight.m */; };
 		1B54E171189C0B1700717533 /* ABSControlParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B54E170189C0B1700717533 /* ABSControlParameters.m */; };
@@ -40,8 +39,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		05671152189EB4BB000CEADE /* ABSUDPMessaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ABSUDPMessaging.h; path = ../ABSUDPMessaging.h; sourceTree = "<group>"; };
-		05671153189EB4BB000CEADE /* ABSUDPMessaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ABSUDPMessaging.m; path = ../ABSUDPMessaging.m; sourceTree = "<group>"; };
 		05F26E3918A6E011009E7B62 /* ABSViewControllerGyro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSViewControllerGyro.h; sourceTree = "<group>"; };
 		05F26E3A18A6E011009E7B62 /* ABSViewControllerGyro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSViewControllerGyro.m; sourceTree = "<group>"; };
 		1B20D59718A67CA10027EA72 /* ABSViewControllerFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSViewControllerFlight.h; sourceTree = "<group>"; };
@@ -100,8 +97,6 @@
 		1B54E172189C0B4200717533 /* DataClasses */ = {
 			isa = PBXGroup;
 			children = (
-				05671152189EB4BB000CEADE /* ABSUDPMessaging.h */,
-				05671153189EB4BB000CEADE /* ABSUDPMessaging.m */,
 				1B54E16F189C0B1700717533 /* ABSControlParameters.h */,
 				1B54E170189C0B1700717533 /* ABSControlParameters.m */,
 				1B79F884189BEA8400663523 /* ABSConnectionParameters.h */,
@@ -293,7 +288,6 @@
 				1BAD61CA189BDEB200DE6BD0 /* main.m in Sources */,
 				1B93EB4A189BDFFE008FC8D1 /* ABSViewControllerLogin.m in Sources */,
 				1BAD61CE189BDEB200DE6BD0 /* ABSAppDelegate.m in Sources */,
-				05671154189EB4BB000CEADE /* ABSUDPMessaging.m in Sources */,
 				1B20D59918A67CA10027EA72 /* ABSViewControllerFlight.m in Sources */,
 				05F26E3B18A6E011009E7B62 /* ABSViewControllerGyro.m in Sources */,
 			);

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreMotion/CoreMotion.h>
+#import "ABSConnectionParameters.h"
 
 double currentMaxAccelX;
 double currentMaxAccelY;
@@ -17,5 +18,7 @@ double currentMaxRotY;
 double currentMaxRotZ;
 
 @interface ABSViewControllerGyro : UIViewController
+
+@property ABSConnectionParameters *ConnectionParameters;
 
 @end
