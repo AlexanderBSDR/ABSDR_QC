@@ -27,7 +27,7 @@ extern int errno;
 
 - (void) startServer
 {
-    char buffer[1024];
+    unsigned char buffer[1024];
     struct sockaddr_in sa;
     size_t fromlen, recsize;
     
@@ -57,12 +57,81 @@ extern int errno;
     {
         recsize=recvfrom(self.sock_server, (void *)buffer, 1024, 0, (struct sockaddr *)&sa, (socklen_t *)&fromlen);
         buffer[recsize]='\0';
+        // 0x20 0xFF - values fro 6DOF
+        
+        if(buffer[0]==0x20)
+        {
+            if(buffer[1]==0xFF) [self parseSensorsData:buffer];
+        }
         inet_ntoa(sa.sin_addr);
         NSLog(@"<- Rx[%zu] from (%s): %s",recsize,inet_ntoa(sa.sin_addr),buffer);
         
     }
     
 }
+
+- (void) parseSensorsData: (unsigned char *) data
+{
+    union floatType byte;
+    
+    byte.bytes[0]=data[2];
+    byte.bytes[1]=data[3];
+    byte.bytes[2]=data[4];
+    byte.bytes[3]=data[5];
+    
+    NSLog(@"acc_X: %f", byte.f);
+    [self AddVariableToMutableArray:self.accArrayX var:byte.f];
+    
+    byte.bytes[0]=data[6];
+    byte.bytes[1]=data[7];
+    byte.bytes[2]=data[8];
+    byte.bytes[3]=data[9];
+    
+    NSLog(@"acc_Y: %f", byte.f);
+    [self AddVariableToMutableArray:self.accArrayY var:byte.f];
+    
+    byte.bytes[0]=data[10];
+    byte.bytes[1]=data[11];
+    byte.bytes[2]=data[12];
+    byte.bytes[3]=data[13];
+    
+    NSLog(@"acc_Z: %f", byte.f);
+    [self AddVariableToMutableArray:self.accArrayZ var:byte.f];
+    
+    byte.bytes[0]=data[14];
+    byte.bytes[1]=data[15];
+    byte.bytes[2]=data[16];
+    byte.bytes[3]=data[17];
+    
+    NSLog(@"rot_X: %f", byte.f);
+    [self AddVariableToMutableArray:self.rotArrayX var:byte.f];
+    
+    byte.bytes[0]=data[18];
+    byte.bytes[1]=data[19];
+    byte.bytes[2]=data[20];
+    byte.bytes[3]=data[21];
+    
+    NSLog(@"rot_Y: %f", byte.f);
+    [self AddVariableToMutableArray:self.rotArrayY var:byte.f];
+    
+    byte.bytes[0]=data[22];
+    byte.bytes[1]=data[23];
+    byte.bytes[2]=data[24];
+    byte.bytes[3]=data[25];
+    
+    NSLog(@"rot_Z: %f", byte.f);
+    [self AddVariableToMutableArray:self.rotArrayZ var:byte.f];
+}
+
+- (void) AddVariableToMutableArray:(NSMutableArray *) array var: (float) var
+{
+    if(array.count>self.maxSize-1)
+    {
+        [array removeObjectAtIndex:0];
+    }
+    [array addObject:[NSNumber numberWithFloat:var]];
+}
+
 
 - (bool) sendServerSocket:(NSString *) ip port:(int) p
 {

@@ -16,13 +16,16 @@
 @property int PackagesSent;
 @property int sock_client;
 @property int sock_server;
+@property int maxSize;
 @property NSMutableArray *accArrayX;
 @property NSMutableArray *accArrayY;
 @property NSMutableArray *accArrayZ;
+@property NSMutableArray *accArrayT;
 
 @property NSMutableArray *rotArrayX;
 @property NSMutableArray *rotArrayY;
 @property NSMutableArray *rotArrayZ;
+@property NSMutableArray *rotArrayT;
 
 - (void) startServer;
 - (bool) sendClient:(char *) msg length: (unsigned int) len;
@@ -32,6 +35,14 @@
 -(void) changeAltitude:(int) step;
 -(void) changeDirection:(int) step;
 -(void) changeRotation:(int) step;
+
+- (void) AddVariableToMutableArray:(NSMutableArray *) array var: (float) var;
+
+union floatType
+{
+    unsigned char bytes[4];
+    float f;
+};
 
 
 @end

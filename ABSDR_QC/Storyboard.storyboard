@@ -486,6 +486,7 @@
                         <outlet property="accX" destination="SG4-Rd-c1L" id="Ab5-dj-Vbu"/>
                         <outlet property="accY" destination="kE0-Zt-Y6g" id="uTi-aa-DsN"/>
                         <outlet property="accZ" destination="avl-j2-P9Z" id="vEM-aq-obf"/>
+                        <outlet property="canvasT" destination="IlA-Bm-khC" id="WCB-EZ-DQd"/>
                         <outlet property="canvasX" destination="E5s-vj-X9x" id="FVX-tU-u3O"/>
                         <outlet property="canvasY" destination="eXx-SB-orp" id="vaE-N4-38H"/>
                         <outlet property="canvasZ" destination="8AJ-di-vFE" id="95T-nA-A1l"/>

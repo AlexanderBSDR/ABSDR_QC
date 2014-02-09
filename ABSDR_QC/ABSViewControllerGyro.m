@@ -9,6 +9,8 @@
 #import "ABSViewControllerGyro.h"
 #import "ABSViewControllerFlight.h"
 
+bool aliasing=FALSE;
+
 @interface ABSViewControllerGyro ()
 @property (weak, nonatomic) IBOutlet UILabel *accX;
 @property (weak, nonatomic) IBOutlet UILabel *accY;
@@ -26,11 +28,10 @@
 @property (weak, nonatomic) IBOutlet UIImageView *canvasX;
 @property (weak, nonatomic) IBOutlet UIImageView *canvasY;
 @property (weak, nonatomic) IBOutlet UIImageView *canvasZ;
-@property CGPoint *arrayX;
-@property int lastPointArrayX;
-@property int multiplierX;
-@property int canvasSizeX;
+@property (weak, nonatomic) IBOutlet UIImageView *canvasT;
 
+@property int canvasMaxWidth;
+@property int canvasMaxHeight;
 @property int conversion_acc;
 @property int conversion_gyr;
 
@@ -75,23 +76,18 @@
                                                  }
                                              }];
     
-    [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue]
-                                    withHandler:^(CMGyroData *gyroData, NSError *error) {
-                                        [self outputRotationData:gyroData.rotationRate];
-                                    }];
-    
-    
-    
-    self.lastPointArrayX=0;
-    self.multiplierX=1;
-    self.conversion_acc=2;
-    self.conversion_gyr=1;
+    [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMGyroData *gyroData, NSError *error){ [self outputRotationData:gyroData.rotationRate];}];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    self.canvasSizeX=self.canvasX.frame.size.width;
+    self.canvasMaxWidth=self.canvasX.frame.size.width;
+    self.ConnectionParameters.maxSize=self.canvasMaxWidth;
+    self.canvasMaxHeight=self.canvasX.frame.size.height;
+    NSLog(@"Hieght: %d", self.canvasMaxHeight);
+    self.conversion_acc=2;
+    self.conversion_gyr=1;
 }
 
 -(void)outputAccelertionData:(CMAcceleration)acceleration
@@ -154,114 +150,95 @@
     currentMaxRotY = 0;
     currentMaxRotZ = 0;
     
-    [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:.1 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
 
 }
 
 - (void) addPoint
 {
-    NSNumber *accRand=[NSNumber numberWithFloat:self.conversion_acc*2*(((double)rand()/(RAND_MAX)))-self.conversion_acc];
+/*    NSNumber *accRand=[NSNumber numberWithFloat:self.conversion_acc*2*(((double)rand()/(RAND_MAX)))-self.conversion_acc];
     NSNumber *rotRand=[NSNumber numberWithFloat:self.conversion_gyr*2*(((double)rand()/(RAND_MAX)))-self.conversion_gyr];
-    
-    if(self.ConnectionParameters.accArrayX.count>self.canvasSizeX-1)
+ 
+    if(self.ConnectionParameters.accArrayX.count>self.canvasMaxWidth-1)
     {
         [self.ConnectionParameters.accArrayX removeObjectAtIndex:0];
     }
     [self.ConnectionParameters.accArrayX addObject:accRand];
     //NSLog(@"%f", [[self.ConnectionParameters.accArrayX objectAtIndex:0] floatValue]);
     
-    if(self.ConnectionParameters.rotArrayX.count>self.canvasSizeX-1)
+    if(self.ConnectionParameters.rotArrayX.count>self.canvasMaxWidth-1)
     {
         [self.ConnectionParameters.rotArrayX removeObjectAtIndex:0];
     }
     [self.ConnectionParameters.rotArrayX addObject:rotRand];
+ */
+//    [self.ConnectionParameters AddVariableToMutableArray:self.ConnectionParameters.accArrayX var:0.5];
+    [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX];
+    [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY];
+    [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ];
+    [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.accArrayT rotArray:self.ConnectionParameters.rotArrayT];
+
     
-//    NSLog(@"Numbers in NSMutableArray: %d", self.ConnectionParameters.accArrayX.count);
-    
-    [self reDrawCanvasX];
 
 }
 
-- (void) reDrawCanvasX
+- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray
 {
     
-    CGPoint *accArrayXCG;
-    CGPoint *rotArrayXCG;
-//    NSLog(@"HERE!");
-    accArrayXCG=(CGPoint *)malloc(sizeof(CGPoint)*self.ConnectionParameters.accArrayX.count);
-    rotArrayXCG=(CGPoint *)malloc(sizeof(CGPoint)*self.ConnectionParameters.rotArrayX.count);
+    CGPoint *accArrayCG;
+    CGPoint *rotArrayCG;
+    accArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*accArray.count);
+    rotArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*rotArray.count);
     
-    for (int i=0; i<self.ConnectionParameters.accArrayX.count; i++)
+    for (int i=0; i<accArray.count; i++)
     {
-        accArrayXCG[i].x=i;
-        accArrayXCG[i].y=[self reSizeAcc:[[self.ConnectionParameters.accArrayX objectAtIndex:i] floatValue]];
-        //NSLog(@"%f", accArrayXCG[i].y);
+        accArrayCG[i].x=i;
+        accArrayCG[i].y=[self reSizeAcc:[[accArray objectAtIndex:i] floatValue]];
     }
     
-    for (int i=0; i<self.ConnectionParameters.rotArrayX.count; i++)
+    for (int i=0; i<rotArray.count; i++)
     {
-        rotArrayXCG[i].x=i;
-        rotArrayXCG[i].y=[self reSizeAcc:[[self.ConnectionParameters.rotArrayX objectAtIndex:i] floatValue]];
+        rotArrayCG[i].x=i;
+        rotArrayCG[i].y=[self reSizeAcc:[[rotArray objectAtIndex:i] floatValue]];
     }
 
-    CGSize size = CGSizeMake(self.canvasX.frame.size.width, self.canvasX.frame.size.height);
+    CGSize size = CGSizeMake(canvas.frame.size.width, canvas.frame.size.height);
     
     UIGraphicsBeginImageContext(size);
     CGContextRef context=UIGraphicsGetCurrentContext();
     
-    CGContextSetStrokeColorWithColor(context, [[UIColor blackColor] CGColor]);
     CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
-    CGContextSetShouldAntialias(context, NO);
+    if(aliasing==FALSE) CGContextSetShouldAntialias(context, NO);
     CGContextFillRect(context, CGRectMake(0.0f, 0.0f, size.width, size.height));
-    CGContextSetLineWidth(context, 0.5f);
-    CGContextStrokeRect(context, CGRectMake(0.0f, 0.0f, size.width, size.height));
+    CGContextSetLineWidth(context, 1.0f);
+
     
- 
     CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
-    CGContextAddLines(context, accArrayXCG, self.ConnectionParameters.accArrayX.count);
-    
+    CGContextAddLines(context, accArrayCG, accArray.count);
     CGContextStrokePath(context);
-    CGContextFillPath(context);
 
     CGContextSetStrokeColorWithColor(context, [[UIColor redColor] CGColor]);
-    CGContextAddLines(context, rotArrayXCG, self.ConnectionParameters.rotArrayX.count);
-    
-    
+    CGContextAddLines(context, rotArrayCG, rotArray.count);
     CGContextStrokePath(context);
-    CGContextFillPath(context);
+
+    CGContextSetStrokeColorWithColor(context, [[UIColor blackColor] CGColor]);
+    CGContextStrokeRect(context, CGRectMake(0.0f, 0.0f, size.width, size.height));
+
     
     UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
-    
     UIGraphicsEndImageContext();
-    
-    self.canvasX.image=result;
-    [self.canvasX setNeedsDisplay];
+    canvas.image=result;
 }
+
 
 -(int) reSizeAcc: (float) var
 {
- //   NSLog(@"%f", (var+2)/4*self.canvasX.frame.size.height);
-    return (var+2)/4*self.canvasX.frame.size.height;
+    return ((var+self.conversion_acc)/(2*self.conversion_acc))*self.canvasMaxHeight;
 }
 
 -(int) reSizeRot: (float) var
 {
-    return (int)(var+1)/2*self.canvasX.frame.size.height;
-}
-
--(void) AddPointToArrayX:(double)x
-{
-    if(self.lastPointArrayX>=self.canvasSizeX-1)
-    {
-        for (int i=0;i<self.canvasSizeX-1;i++)
-            self.arrayX[i].y=self.arrayX[i+1].y;
-        self.lastPointArrayX=self.canvasSizeX-1;
-    }
-    double tempX=(x+2)/4*60;
-    self.arrayX[self.lastPointArrayX]=CGPointMake(self.lastPointArrayX*self.multiplierX, tempX);
-    NSLog(@"%f %f %d", self.arrayX[self.lastPointArrayX].x, self.arrayX[self.lastPointArrayX].y, self.lastPointArrayX);
-    self.lastPointArrayX+=1;
-    
+    return ((var+self.conversion_gyr)/(2*self.conversion_gyr))*self.canvasMaxHeight;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
