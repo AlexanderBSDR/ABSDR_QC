@@ -80,7 +80,7 @@ extern int errno;
             {
                 int commandSize=24;
                 unsigned char tempCommand[24];
-                strncpy(tempCommand, &buffer[i+2], commandSize);
+                strncpy((char *)tempCommand, (const char *)&buffer[i+2], commandSize);
 //                NSLog(@"Data: %s\n", tempCommand);
                 [self parseSensorsData:tempCommand];
                 i+=commandSize+1;
