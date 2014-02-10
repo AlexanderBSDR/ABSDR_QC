@@ -56,16 +56,29 @@ extern int errno;
     for (;;)
     {
         recsize=recvfrom(self.sock_server, (void *)buffer, 1024, 0, (struct sockaddr *)&sa, (socklen_t *)&fromlen);
-        buffer[recsize]='\0';
-        // 0x20 0xFF - values fro 6DOF
+//        buffer[recsize]='\0';
+        // 0xFF 0x20 - values fro 6DOF
         
-        if(buffer[0]==0x20)
-        {
-            if(buffer[1]==0xFF) [self parseSensorsData:buffer];
-        }
+        
         inet_ntoa(sa.sin_addr);
         NSLog(@"<- Rx[%zu] from (%s): %s",recsize,inet_ntoa(sa.sin_addr),buffer);
         
+        printf("--------parsing--------\n");
+        
+        for (int i=0; i<recsize; i++)
+        {
+            if(buffer[i]==0xFF && buffer[i+1]==0x20)
+            {
+                int commandSize=24;
+                char tempCommand[24];
+                strncpy(tempCommand, &buffer[i+2], commandSize);
+                NSLog(@"Data: %s\n", tempCommand);
+                [self parseSensorsData:tempCommand];
+                i+=commandSize+1;
+            }
+            else printf("%c",buffer[i]);
+        }
+        printf("---------end----------\n");
     }
     
 }
@@ -74,52 +87,55 @@ extern int errno;
 {
     union floatType byte;
     
-    byte.bytes[0]=data[2];
-    byte.bytes[1]=data[3];
-    byte.bytes[2]=data[4];
-    byte.bytes[3]=data[5];
+    bool flag=TRUE;
+
     
-    NSLog(@"acc_X: %f", byte.f);
+    byte.bytes[0]=data[0];
+    byte.bytes[1]=data[1];
+    byte.bytes[2]=data[2];
+    byte.bytes[3]=data[3];
+    
+    if(flag==TRUE)   NSLog(@"acc_X: %f", byte.f);
     [self AddVariableToMutableArray:self.accArrayX var:byte.f];
     
-    byte.bytes[0]=data[6];
-    byte.bytes[1]=data[7];
-    byte.bytes[2]=data[8];
-    byte.bytes[3]=data[9];
+    byte.bytes[0]=data[4];
+    byte.bytes[1]=data[5];
+    byte.bytes[2]=data[6];
+    byte.bytes[3]=data[7];
     
-    NSLog(@"acc_Y: %f", byte.f);
+    if(flag==TRUE)  NSLog(@"acc_Y: %f", byte.f);
     [self AddVariableToMutableArray:self.accArrayY var:byte.f];
     
-    byte.bytes[0]=data[10];
-    byte.bytes[1]=data[11];
-    byte.bytes[2]=data[12];
-    byte.bytes[3]=data[13];
+    byte.bytes[0]=data[8];
+    byte.bytes[1]=data[9];
+    byte.bytes[2]=data[10];
+    byte.bytes[3]=data[11];
     
-    NSLog(@"acc_Z: %f", byte.f);
+    if(flag==TRUE)  NSLog(@"acc_Z: %f", byte.f);
     [self AddVariableToMutableArray:self.accArrayZ var:byte.f];
     
-    byte.bytes[0]=data[14];
-    byte.bytes[1]=data[15];
-    byte.bytes[2]=data[16];
-    byte.bytes[3]=data[17];
-    
-    NSLog(@"rot_X: %f", byte.f);
+    byte.bytes[0]=data[12];
+    byte.bytes[1]=data[13];
+    byte.bytes[2]=data[14];
+    byte.bytes[3]=data[15];
+
+    if(flag==TRUE)  NSLog(@"rot_X: %f", byte.f);
     [self AddVariableToMutableArray:self.rotArrayX var:byte.f];
     
-    byte.bytes[0]=data[18];
-    byte.bytes[1]=data[19];
-    byte.bytes[2]=data[20];
-    byte.bytes[3]=data[21];
+    byte.bytes[0]=data[16];
+    byte.bytes[1]=data[17];
+    byte.bytes[2]=data[18];
+    byte.bytes[3]=data[19];
     
-    NSLog(@"rot_Y: %f", byte.f);
+    if(flag==TRUE)  NSLog(@"rot_Y: %f", byte.f);
     [self AddVariableToMutableArray:self.rotArrayY var:byte.f];
     
-    byte.bytes[0]=data[22];
-    byte.bytes[1]=data[23];
-    byte.bytes[2]=data[24];
-    byte.bytes[3]=data[25];
+    byte.bytes[0]=data[20];
+    byte.bytes[1]=data[21];
+    byte.bytes[2]=data[22];
+    byte.bytes[3]=data[23];
     
-    NSLog(@"rot_Z: %f", byte.f);
+    if(flag==TRUE)  NSLog(@"rot_Z: %f", byte.f);
     [self AddVariableToMutableArray:self.rotArrayZ var:byte.f];
 }
 
@@ -205,8 +221,8 @@ extern int errno;
 {
     char *buffer=malloc(sizeof(char)*6);
     
-    buffer[0]=0x01;
-    buffer[1]=0xFF;
+    buffer[0]=0xFF;
+    buffer[1]=0x01;
     buffer[2]=(char)engineOne;
     buffer[3]=(char)engineTwo;
     buffer[4]=(char)engineThree;
@@ -223,8 +239,8 @@ extern int errno;
 {
     char *buffer=malloc(sizeof(char)*4);
 
-    buffer[0]=0x02;
-    buffer[1]=0xFF;
+    buffer[0]=0xFF;
+    buffer[1]=0x02;
     if(step>0)
     {
         buffer[2]=(char)'+';
@@ -245,8 +261,8 @@ extern int errno;
 {
     char *buffer=malloc(sizeof(char)*4);
     
-    buffer[0]=0x03;
-    buffer[1]=0xFF;
+    buffer[0]=0xFF;
+    buffer[1]=0x03;
     if(step>0)
     {
         buffer[2]=(char)'+';
@@ -268,8 +284,8 @@ extern int errno;
 {
     char *buffer=malloc(sizeof(char)*4);
     
-    buffer[0]=0x03;
-    buffer[1]=0xFF;
+    buffer[0]=0xFF;
+    buffer[1]=0x04;
     if(step>0)
     {
         buffer[2]=(char)'+';
