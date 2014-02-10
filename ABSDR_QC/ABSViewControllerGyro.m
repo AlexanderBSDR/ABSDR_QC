@@ -9,8 +9,6 @@
 #import "ABSViewControllerGyro.h"
 #import "ABSViewControllerFlight.h"
 
-bool aliasing=FALSE;
-
 @interface ABSViewControllerGyro ()
 @property (weak, nonatomic) IBOutlet UILabel *accX;
 @property (weak, nonatomic) IBOutlet UILabel *accY;
@@ -34,6 +32,8 @@ bool aliasing=FALSE;
 @property int canvasMaxHeight;
 @property int conversion_acc;
 @property int conversion_gyr;
+@property int scaleX;
+
 
 @property (strong, nonatomic) CMMotionManager *motionManager;
 
@@ -86,10 +86,11 @@ bool aliasing=FALSE;
 {
     [super viewDidLayoutSubviews];
     self.canvasMaxWidth=self.canvasX.frame.size.width;
-    self.ConnectionParameters.maxSize=self.canvasMaxWidth;
     self.canvasMaxHeight=self.canvasX.frame.size.height;
     self.conversion_acc=2;
     self.conversion_gyr=1;
+    self.scaleX=4;
+    self.ConnectionParameters.maxSize=self.canvasMaxWidth/self.scaleX+1;
 }
 
 -(void)outputAccelertionData:(CMAcceleration)acceleration
@@ -191,13 +192,13 @@ bool aliasing=FALSE;
     
     for (int i=0; i<accArray.count; i++)
     {
-        accArrayCG[i].x=i;
+        accArrayCG[i].x=i*self.scaleX;
         accArrayCG[i].y=[self reSizeAcc:[[accArray objectAtIndex:i] floatValue]];
     }
     
     for (int i=0; i<rotArray.count; i++)
     {
-        rotArrayCG[i].x=i;
+        rotArrayCG[i].x=i*self.scaleX;
         rotArrayCG[i].y=[self reSizeAcc:[[rotArray objectAtIndex:i] floatValue]];
     }
 
@@ -206,7 +207,7 @@ bool aliasing=FALSE;
     UIGraphicsBeginImageContext(size);
     CGContextRef context=UIGraphicsGetCurrentContext();
     
-    if(aliasing==FALSE) CGContextSetShouldAntialias(context, NO);
+    // CGContextSetShouldAntialias(context, NO);
     
     CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
     CGContextFillRect(context, CGRectMake(0.0f, 0.0f, size.width, size.height));

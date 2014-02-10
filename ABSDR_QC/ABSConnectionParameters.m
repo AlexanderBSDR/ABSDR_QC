@@ -32,7 +32,15 @@ extern int errno;
     size_t fromlen, recsize;
     
     self.accArrayX = [[NSMutableArray alloc] init];
+    self.accArrayY = [[NSMutableArray alloc] init];
+    self.accArrayZ = [[NSMutableArray alloc] init];
+    self.accArrayT = [[NSMutableArray alloc] init];
+
     self.rotArrayX = [[NSMutableArray alloc] init];
+    self.rotArrayY = [[NSMutableArray alloc] init];
+    self.rotArrayZ = [[NSMutableArray alloc] init];
+    self.rotArrayT = [[NSMutableArray alloc] init];
+    
     
     memset(&sa, 0 ,sizeof(sa));
     
@@ -61,24 +69,25 @@ extern int errno;
         
         
         inet_ntoa(sa.sin_addr);
-        NSLog(@"<- Rx[%zu] from (%s): %s",recsize,inet_ntoa(sa.sin_addr),buffer);
+//        NSLog(@"<- Rx[%zu] from (%s): %s",recsize,inet_ntoa(sa.sin_addr), buffer);
+        NSLog(@"<- Rx[%zu] from (%s): ",recsize,inet_ntoa(sa.sin_addr));
         
-        printf("--------parsing--------\n");
+//        printf("--------parsing--------\n");
         
         for (int i=0; i<recsize; i++)
         {
             if(buffer[i]==0xFF && buffer[i+1]==0x20)
             {
                 int commandSize=24;
-                char tempCommand[24];
+                unsigned char tempCommand[24];
                 strncpy(tempCommand, &buffer[i+2], commandSize);
-                NSLog(@"Data: %s\n", tempCommand);
+//                NSLog(@"Data: %s\n", tempCommand);
                 [self parseSensorsData:tempCommand];
                 i+=commandSize+1;
             }
             else printf("%c",buffer[i]);
         }
-        printf("---------end----------\n");
+//        printf("---------end----------\n");
     }
     
 }
@@ -87,7 +96,7 @@ extern int errno;
 {
     union floatType byte;
     
-    bool flag=TRUE;
+    bool flag=FALSE;
 
     
     byte.bytes[0]=data[0];
