@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>65F871D2-FC15-4B2F-BF60-3A1D85ADE78F</string>
+	<string>5069857F-E48D-4D11-B07A-2983A987259A</string>
 	<key>IDESourceControlProjectName</key>
 	<string>ABSDR_QC</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>6634F123-C738-42A4-83B9-FD11A5C54C33</key>
-		<string>ssh://github.com/AlexanderBSDR/ABSDR_QC.git</string>
+		<key>59F2DBE8-B2BC-4E6D-952C-D96EB58FAD3A</key>
+		<string>https://github.com/AlexanderBSDR/ABSDR_QC</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>ABSDR_QC.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>6634F123-C738-42A4-83B9-FD11A5C54C33</key>
+		<key>59F2DBE8-B2BC-4E6D-952C-D96EB58FAD3A</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/AlexanderBSDR/ABSDR_QC.git</string>
+	<string>https://github.com/AlexanderBSDR/ABSDR_QC</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>6634F123-C738-42A4-83B9-FD11A5C54C33</string>
+	<string>59F2DBE8-B2BC-4E6D-952C-D96EB58FAD3A</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6634F123-C738-42A4-83B9-FD11A5C54C33</string>
+			<string>59F2DBE8-B2BC-4E6D-952C-D96EB58FAD3A</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ABSDR_QC</string>
 		</dict>
