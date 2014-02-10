@@ -77,6 +77,9 @@ bool aliasing=FALSE;
                                              }];
     
     [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMGyroData *gyroData, NSError *error){ [self outputRotationData:gyroData.rotationRate];}];
+    
+    [NSTimer scheduledTimerWithTimeInterval:.1 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
+
 }
 
 - (void)viewDidLayoutSubviews
@@ -85,7 +88,6 @@ bool aliasing=FALSE;
     self.canvasMaxWidth=self.canvasX.frame.size.width;
     self.ConnectionParameters.maxSize=self.canvasMaxWidth;
     self.canvasMaxHeight=self.canvasX.frame.size.height;
-    NSLog(@"Hieght: %d", self.canvasMaxHeight);
     self.conversion_acc=2;
     self.conversion_gyr=1;
 }
@@ -149,9 +151,6 @@ bool aliasing=FALSE;
     currentMaxRotX = 0;
     currentMaxRotY = 0;
     currentMaxRotZ = 0;
-    
-    [NSTimer scheduledTimerWithTimeInterval:.1 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
-
 }
 
 - (void) addPoint
@@ -207,22 +206,25 @@ bool aliasing=FALSE;
     UIGraphicsBeginImageContext(size);
     CGContextRef context=UIGraphicsGetCurrentContext();
     
-    CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
     if(aliasing==FALSE) CGContextSetShouldAntialias(context, NO);
+    
+    CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
     CGContextFillRect(context, CGRectMake(0.0f, 0.0f, size.width, size.height));
+    
     CGContextSetLineWidth(context, 1.0f);
 
     
     CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
     CGContextAddLines(context, accArrayCG, accArray.count);
     CGContextStrokePath(context);
-
+    
     CGContextSetStrokeColorWithColor(context, [[UIColor redColor] CGColor]);
     CGContextAddLines(context, rotArrayCG, rotArray.count);
     CGContextStrokePath(context);
 
     CGContextSetStrokeColorWithColor(context, [[UIColor blackColor] CGColor]);
-    CGContextStrokeRect(context, CGRectMake(0.0f, 0.0f, size.width, size.height));
+    CGContextStrokeRect(context, CGRectMake(0.0f, 1.0f, size.width-1, size.height-1));
+    CGContextStrokePath(context);
 
     
     UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
