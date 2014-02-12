@@ -23,11 +23,13 @@
 #include <errno.h>
 extern int errno;
 
+#define MAXSIZEPACKET 26
+
 @implementation ABSConnectionParameters
 
 - (void) startServer
 {
-    unsigned char buffer[1024];
+    unsigned char buffer[MAXSIZEPACKET];
     struct sockaddr_in sa;
     size_t fromlen, recsize;
     
@@ -63,30 +65,20 @@ extern int errno;
     }
     for (;;)
     {
-        recsize=recvfrom(self.sock_server, (void *)buffer, 1024, 0, (struct sockaddr *)&sa, (socklen_t *)&fromlen);
-//        buffer[recsize]='\0';
+        recsize=recvfrom(self.sock_server, (void *)buffer, MAXSIZEPACKET, 0, (struct sockaddr *)&sa, (socklen_t *)&fromlen);
         // 0xFF 0x20 - values fro 6DOF
         
         
         inet_ntoa(sa.sin_addr);
-//        NSLog(@"<- Rx[%zu] from (%s): %s",recsize,inet_ntoa(sa.sin_addr), buffer);
-        NSLog(@"<- Rx[%zu] from (%s): ",recsize,inet_ntoa(sa.sin_addr));
+ //       NSLog(@"<- Rx[%zu] from (%s): ",recsize,inet_ntoa(sa.sin_addr));
         
 //        printf("--------parsing--------\n");
-        
-        for (int i=0; i<recsize; i++)
+
+        if(buffer[0]==0xFF && buffer[1]==0x20)
         {
-            if(buffer[i]==0xFF && buffer[i+1]==0x20)
-            {
-                int commandSize=24;
-                unsigned char tempCommand[24];
-                strncpy((char *)tempCommand, (const char *)&buffer[i+2], commandSize);
-//                NSLog(@"Data: %s\n", tempCommand);
-                [self parseSensorsData:tempCommand];
-                i+=commandSize+1;
-            }
-            else printf("%c",buffer[i]);
+                [self parseSensorsData:buffer];
         }
+        else NSLog(@"%s\n",buffer);
 //        printf("---------end----------\n");
     }
     
@@ -99,50 +91,50 @@ extern int errno;
     bool flag=FALSE;
 
     
-    byte.bytes[0]=data[0];
-    byte.bytes[1]=data[1];
-    byte.bytes[2]=data[2];
-    byte.bytes[3]=data[3];
+    byte.bytes[0]=data[2];
+    byte.bytes[1]=data[3];
+    byte.bytes[2]=data[4];
+    byte.bytes[3]=data[5];
     
     if(flag==TRUE)   NSLog(@"acc_X: %f", byte.f);
     [self AddVariableToMutableArray:self.accArrayX var:byte.f];
     
-    byte.bytes[0]=data[4];
-    byte.bytes[1]=data[5];
-    byte.bytes[2]=data[6];
-    byte.bytes[3]=data[7];
+    byte.bytes[0]=data[6];
+    byte.bytes[1]=data[7];
+    byte.bytes[2]=data[8];
+    byte.bytes[3]=data[9];
     
     if(flag==TRUE)  NSLog(@"acc_Y: %f", byte.f);
     [self AddVariableToMutableArray:self.accArrayY var:byte.f];
     
-    byte.bytes[0]=data[8];
-    byte.bytes[1]=data[9];
-    byte.bytes[2]=data[10];
-    byte.bytes[3]=data[11];
+    byte.bytes[0]=data[10];
+    byte.bytes[1]=data[11];
+    byte.bytes[2]=data[12];
+    byte.bytes[3]=data[13];
     
     if(flag==TRUE)  NSLog(@"acc_Z: %f", byte.f);
     [self AddVariableToMutableArray:self.accArrayZ var:byte.f];
     
-    byte.bytes[0]=data[12];
-    byte.bytes[1]=data[13];
-    byte.bytes[2]=data[14];
-    byte.bytes[3]=data[15];
+    byte.bytes[0]=data[14];
+    byte.bytes[1]=data[15];
+    byte.bytes[2]=data[16];
+    byte.bytes[3]=data[17];
 
     if(flag==TRUE)  NSLog(@"rot_X: %f", byte.f);
     [self AddVariableToMutableArray:self.rotArrayX var:byte.f];
     
-    byte.bytes[0]=data[16];
-    byte.bytes[1]=data[17];
-    byte.bytes[2]=data[18];
-    byte.bytes[3]=data[19];
+    byte.bytes[0]=data[18];
+    byte.bytes[1]=data[19];
+    byte.bytes[2]=data[20];
+    byte.bytes[3]=data[21];
     
     if(flag==TRUE)  NSLog(@"rot_Y: %f", byte.f);
     [self AddVariableToMutableArray:self.rotArrayY var:byte.f];
     
-    byte.bytes[0]=data[20];
-    byte.bytes[1]=data[21];
-    byte.bytes[2]=data[22];
-    byte.bytes[3]=data[23];
+    byte.bytes[0]=data[22];
+    byte.bytes[1]=data[23];
+    byte.bytes[2]=data[24];
+    byte.bytes[3]=data[25];
     
     if(flag==TRUE)  NSLog(@"rot_Z: %f", byte.f);
     [self AddVariableToMutableArray:self.rotArrayZ var:byte.f];
@@ -212,7 +204,7 @@ extern int errno;
     if(a!=len)
     {
         printf("Mismatch in number of sent bytes!\n");
-        NSLog(@"Sent: %ld",a);
+        printf("Sent: %ld",a);
         printf("Error code: %d", errno);
     }
     else
@@ -220,7 +212,7 @@ extern int errno;
         char *new_msg=malloc(len+1);
         strncpy(new_msg, msg, len);
         new_msg[len]='\0';
-        NSLog(@"-> Tx: %s", new_msg);
+        NSLog(@"-> Tx: %s\n", new_msg);
         free (new_msg);
     }
     return false;
