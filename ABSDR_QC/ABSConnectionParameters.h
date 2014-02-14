@@ -27,6 +27,11 @@
 @property NSMutableArray *rotArrayZ;
 @property NSMutableArray *rotArrayT;
 
+@property int engOne;
+@property int engTwo;
+@property int engThree;
+@property int engFour;
+
 - (void) startServer;
 - (bool) sendClient:(char *) msg length: (unsigned int) len;
 - (bool) sendServerSocket:(NSString *) ip port:(int) p;

@@ -23,7 +23,7 @@
 #include <errno.h>
 extern int errno;
 
-#define MAXSIZEPACKET 26
+#define MAXSIZEPACKET 30
 
 @implementation ABSConnectionParameters
 
@@ -66,17 +66,17 @@ extern int errno;
     for (;;)
     {
         recsize=recvfrom(self.sock_server, (void *)buffer, MAXSIZEPACKET, 0, (struct sockaddr *)&sa, (socklen_t *)&fromlen);
-        // 0xFF 0x20 - values fro 6DOF
+        // 0xFF 0x20 - values from 6DOF
         
         
-        inet_ntoa(sa.sin_addr);
+//        inet_ntoa(sa.sin_addr);
  //       NSLog(@"<- Rx[%zu] from (%s): ",recsize,inet_ntoa(sa.sin_addr));
         
 //        printf("--------parsing--------\n");
 
         if(buffer[0]==0xFF && buffer[1]==0x20)
         {
-                [self parseSensorsData:buffer];
+              [self parseSensorsData:buffer];
         }
         else NSLog(@"%s\n",buffer);
 //        printf("---------end----------\n");
@@ -138,6 +138,14 @@ extern int errno;
     
     if(flag==TRUE)  NSLog(@"rot_Z: %f", byte.f);
     [self AddVariableToMutableArray:self.rotArrayZ var:byte.f];
+    
+    self.engOne=(int)data[26];
+    self.engTwo=(int)data[27];
+    self.engThree=(int)data[28];
+    self.engFour=(int)data[29];
+    
+//    NSLog(@"engs: [%d][%d][%d][%d]", self.engOne, self.engTwo, self.engThree, self.engFour);
+    
 }
 
 - (void) AddVariableToMutableArray:(NSMutableArray *) array var: (float) var

@@ -10,23 +10,13 @@
 #import "ABSViewControllerFlight.h"
 
 @interface ABSViewControllerGyro ()
-@property (weak, nonatomic) IBOutlet UILabel *accX;
-@property (weak, nonatomic) IBOutlet UILabel *accY;
-@property (weak, nonatomic) IBOutlet UILabel *accZ;
-@property (weak, nonatomic) IBOutlet UILabel *maxAccX;
-@property (weak, nonatomic) IBOutlet UILabel *maxAccY;
-@property (weak, nonatomic) IBOutlet UILabel *maxAccZ;
-@property (weak, nonatomic) IBOutlet UILabel *rotX;
-@property (weak, nonatomic) IBOutlet UILabel *rotY;
-@property (weak, nonatomic) IBOutlet UILabel *rotZ;
-@property (weak, nonatomic) IBOutlet UILabel *maxRotX;
-@property (weak, nonatomic) IBOutlet UILabel *maxRotY;
-@property (weak, nonatomic) IBOutlet UILabel *maxRotZ;
 
 @property (weak, nonatomic) IBOutlet UIImageView *canvasX;
 @property (weak, nonatomic) IBOutlet UIImageView *canvasY;
 @property (weak, nonatomic) IBOutlet UIImageView *canvasZ;
 @property (weak, nonatomic) IBOutlet UIImageView *canvasT;
+@property (weak, nonatomic) IBOutlet UIImageView *canvasEngines;
+@property (weak, nonatomic) IBOutlet UILabel *engineOneLabel;
 
 @property int canvasMaxWidth;
 @property int canvasMaxHeight;
@@ -55,7 +45,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    currentMaxAccelX = 0;
+/*    currentMaxAccelX = 0;
     currentMaxAccelY = 0;
     currentMaxAccelZ = 0;
     
@@ -77,8 +67,10 @@
                                              }];
     
     [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMGyroData *gyroData, NSError *error){ [self outputRotationData:gyroData.rotationRate];}];
+ 
+ */
     
-    [NSTimer scheduledTimerWithTimeInterval:.1 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
 
 }
 
@@ -89,11 +81,11 @@
     self.canvasMaxHeight=self.canvasX.frame.size.height;
     self.conversion_acc=2;
     self.conversion_gyr=1;
-    self.scaleX=4;
+    self.scaleX=2;
     self.ConnectionParameters.maxSize=self.canvasMaxWidth/self.scaleX+1;
 }
 
--(void)outputAccelertionData:(CMAcceleration)acceleration
+/*-(void)outputAccelertionData:(CMAcceleration)acceleration
 {
     self.accX.text = [NSString stringWithFormat:@"Acceleration in X: %.2fg",acceleration.x];
     if(fabs(acceleration.x) > fabs(currentMaxAccelX))
@@ -137,7 +129,7 @@
     self.maxRotX.text = [NSString stringWithFormat:@"Max: %.2f",currentMaxRotX];
     self.maxRotY.text = [NSString stringWithFormat:@"Max: %.2f",currentMaxRotY];
     self.maxRotZ.text = [NSString stringWithFormat:@"Max: %.2f",currentMaxRotZ];
-}
+}*/
 
 - (void)didReceiveMemoryWarning
 {
@@ -177,8 +169,76 @@
     [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY];
     [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ];
     [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.accArrayT rotArray:self.ConnectionParameters.rotArrayT];
-
     
+    
+    [self reDrawEngines:self.canvasEngines];
+
+}
+
+-(void) reDrawEngines: (UIImageView *) canvas
+{
+    
+    CGSize size = CGSizeMake(canvas.frame.size.width, canvas.frame.size.height);
+    
+    UIGraphicsBeginImageContext(size);
+    CGContextRef context=UIGraphicsGetCurrentContext();
+    
+    CGContextSetShouldAntialias(context, NO);
+    
+    CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
+    CGContextFillRect(context, CGRectMake(0.0f, 0.0f, size.width, size.height));
+    
+    CGContextSetLineWidth(context, 1.0f);
+    
+    
+    float box1x=45.0f;
+    float box1y=10.0f;
+    float box2x=20.0f;
+    float box2y=100.0f;
+    float box3x=70.0f;
+    float box3y=100.0f;
+    float box4x=45.0f;
+    float box4y=190.0f;
+    float box_height=80.0f;
+    float box_width=30.0f;
+    self.engineOneLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engOne];
+    
+    
+    CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
+    CGContextAddRect(context, CGRectMake(box1x, box1y, box_width, box_height));
+    CGContextStrokePath(context);
+    CGContextSetFillColorWithColor(context, [[UIColor blueColor] CGColor]);
+    CGContextFillRect(context, CGRectMake(box1x, box1y+(box_height*(1-(float)self.ConnectionParameters.engOne/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engOne/255))));
+
+    CGContextSetStrokeColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextAddRect(context, CGRectMake(box2x, box2y, box_width, box_height));
+    CGContextStrokePath(context);
+    CGContextSetFillColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextFillRect(context, CGRectMake(box2x, box2y+(box_height*(1-(float)self.ConnectionParameters.engTwo/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engTwo/255))));
+    
+    CGContextSetStrokeColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextAddRect(context, CGRectMake(box3x, box3y, box_width, box_height));
+    CGContextStrokePath(context);
+    CGContextSetFillColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextFillRect(context, CGRectMake(box3x, box3y+(box_height*(1-(float)self.ConnectionParameters.engThree/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engThree/255))));
+    
+    CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
+    CGContextAddRect(context, CGRectMake(box4x, box4y, box_width, box_height));
+    CGContextStrokePath(context);
+    CGContextSetFillColorWithColor(context, [[UIColor blueColor] CGColor]);
+    CGContextFillRect(context, CGRectMake(box4x, box4y+(box_height*(1-(float)self.ConnectionParameters.engFour/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engFour/255))));
+    
+/*    CGContextSetFillColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextFillRect(context, CGRectMake(80.0f, 20.0f, 30.0f, 100.0f));
+
+    CGContextSetStrokeColorWithColor(context, [[UIColor blackColor] CGColor]);
+    CGContextStrokeRect(context, CGRectMake(0.0f, 1.0f, size.width-1, size.height-1));
+    CGContextStrokePath(context);
+  */
+    
+    UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    canvas.image=result;
 
 }
 
@@ -207,7 +267,7 @@
     UIGraphicsBeginImageContext(size);
     CGContextRef context=UIGraphicsGetCurrentContext();
     
-    // CGContextSetShouldAntialias(context, NO);
+ //    CGContextSetShouldAntialias(context, NO);
     
     CGContextSetFillColorWithColor(context, [[UIColor whiteColor] CGColor]);
     CGContextFillRect(context, CGRectMake(0.0f, 0.0f, size.width, size.height));
@@ -231,6 +291,9 @@
     UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     canvas.image=result;
+    
+    free(rotArrayCG);
+    free(accArrayCG);
 }
 
 
