@@ -17,6 +17,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *canvasT;
 @property (weak, nonatomic) IBOutlet UIImageView *canvasEngines;
 @property (weak, nonatomic) IBOutlet UILabel *engineOneLabel;
+@property (weak, nonatomic) IBOutlet UILabel *engineTwoLabel;
+@property (weak, nonatomic) IBOutlet UILabel *engineThreeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *engineFourLabel;
 
 @property int canvasMaxWidth;
 @property int canvasMaxHeight;
@@ -148,28 +151,11 @@
 
 - (void) addPoint
 {
-/*    NSNumber *accRand=[NSNumber numberWithFloat:self.conversion_acc*2*(((double)rand()/(RAND_MAX)))-self.conversion_acc];
-    NSNumber *rotRand=[NSNumber numberWithFloat:self.conversion_gyr*2*(((double)rand()/(RAND_MAX)))-self.conversion_gyr];
- 
-    if(self.ConnectionParameters.accArrayX.count>self.canvasMaxWidth-1)
-    {
-        [self.ConnectionParameters.accArrayX removeObjectAtIndex:0];
-    }
-    [self.ConnectionParameters.accArrayX addObject:accRand];
-    //NSLog(@"%f", [[self.ConnectionParameters.accArrayX objectAtIndex:0] floatValue]);
-    
-    if(self.ConnectionParameters.rotArrayX.count>self.canvasMaxWidth-1)
-    {
-        [self.ConnectionParameters.rotArrayX removeObjectAtIndex:0];
-    }
-    [self.ConnectionParameters.rotArrayX addObject:rotRand];
- */
-//    [self.ConnectionParameters AddVariableToMutableArray:self.ConnectionParameters.accArrayX var:0.5];
+
     [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX];
     [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY];
     [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ];
     [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.accArrayT rotArray:self.ConnectionParameters.rotArrayT];
-    
     
     [self reDrawEngines:self.canvasEngines];
 
@@ -179,6 +165,7 @@
 {
     
     CGSize size = CGSizeMake(canvas.frame.size.width, canvas.frame.size.height);
+    NSLog(@"width: %f", canvas.frame.size.width);
     
     UIGraphicsBeginImageContext(size);
     CGContextRef context=UIGraphicsGetCurrentContext();
@@ -228,14 +215,6 @@
     CGContextSetFillColorWithColor(context, [[UIColor blueColor] CGColor]);
     CGContextFillRect(context, CGRectMake(box4x, box4y+(box_height*(1-(float)self.ConnectionParameters.engFour/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engFour/255))));
     
-/*    CGContextSetFillColorWithColor(context, [[UIColor redColor] CGColor]);
-    CGContextFillRect(context, CGRectMake(80.0f, 20.0f, 30.0f, 100.0f));
-
-    CGContextSetStrokeColorWithColor(context, [[UIColor blackColor] CGColor]);
-    CGContextStrokeRect(context, CGRectMake(0.0f, 1.0f, size.width-1, size.height-1));
-    CGContextStrokePath(context);
-  */
-    
     UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     canvas.image=result;
@@ -250,16 +229,34 @@
     accArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*accArray.count);
     rotArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*rotArray.count);
     
+    
     for (int i=0; i<accArray.count; i++)
     {
         accArrayCG[i].x=i*self.scaleX;
-        accArrayCG[i].y=[self reSizeAcc:[[accArray objectAtIndex:i] floatValue]];
+        @try {
+            accArrayCG[i].y=[self reSizeAcc:[[accArray objectAtIndex:i] floatValue]];
+        }
+        
+        @catch(NSException *exception)
+        {
+            NSLog(@"Exception @objectAtIndex.accArray!\n");
+        }
+        
     }
     
     for (int i=0; i<rotArray.count; i++)
     {
         rotArrayCG[i].x=i*self.scaleX;
-        rotArrayCG[i].y=[self reSizeAcc:[[rotArray objectAtIndex:i] floatValue]];
+        
+        @try {
+            rotArrayCG[i].y=[self reSizeAcc:[[rotArray objectAtIndex:i] floatValue]];
+        }
+    
+        @catch(NSException *exception)
+        {
+            NSLog(@"Exception @objectAtIndex.rotArray!\n");
+        }
+    
     }
 
     CGSize size = CGSizeMake(canvas.frame.size.width, canvas.frame.size.height);
