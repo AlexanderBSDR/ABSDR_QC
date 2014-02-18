@@ -188,32 +188,32 @@
     float box4y=190.0f;
     float box_height=80.0f;
     float box_width=30.0f;
-    self.engineOneLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engOne];
+    self.engineOneLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineOne];
     
     
     CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
     CGContextAddRect(context, CGRectMake(box1x, box1y, box_width, box_height));
     CGContextStrokePath(context);
     CGContextSetFillColorWithColor(context, [[UIColor blueColor] CGColor]);
-    CGContextFillRect(context, CGRectMake(box1x, box1y+(box_height*(1-(float)self.ConnectionParameters.engOne/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engOne/255))));
+    CGContextFillRect(context, CGRectMake(box1x, box1y+(box_height*(1-(float)self.ConnectionParameters.engineOne/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engineOne/255))));
 
     CGContextSetStrokeColorWithColor(context, [[UIColor redColor] CGColor]);
     CGContextAddRect(context, CGRectMake(box2x, box2y, box_width, box_height));
     CGContextStrokePath(context);
     CGContextSetFillColorWithColor(context, [[UIColor redColor] CGColor]);
-    CGContextFillRect(context, CGRectMake(box2x, box2y+(box_height*(1-(float)self.ConnectionParameters.engTwo/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engTwo/255))));
+    CGContextFillRect(context, CGRectMake(box2x, box2y+(box_height*(1-(float)self.ConnectionParameters.engineTwo/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engineTwo/255))));
     
     CGContextSetStrokeColorWithColor(context, [[UIColor redColor] CGColor]);
     CGContextAddRect(context, CGRectMake(box3x, box3y, box_width, box_height));
     CGContextStrokePath(context);
     CGContextSetFillColorWithColor(context, [[UIColor redColor] CGColor]);
-    CGContextFillRect(context, CGRectMake(box3x, box3y+(box_height*(1-(float)self.ConnectionParameters.engThree/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engThree/255))));
+    CGContextFillRect(context, CGRectMake(box3x, box3y+(box_height*(1-(float)self.ConnectionParameters.engineThree/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engineThree/255))));
     
     CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
     CGContextAddRect(context, CGRectMake(box4x, box4y, box_width, box_height));
     CGContextStrokePath(context);
     CGContextSetFillColorWithColor(context, [[UIColor blueColor] CGColor]);
-    CGContextFillRect(context, CGRectMake(box4x, box4y+(box_height*(1-(float)self.ConnectionParameters.engFour/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engFour/255))));
+    CGContextFillRect(context, CGRectMake(box4x, box4y+(box_height*(1-(float)self.ConnectionParameters.engineFour/255)), box_width, box_height-(box_height*(1-(float)self.ConnectionParameters.engineFour/255))));
     
     UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

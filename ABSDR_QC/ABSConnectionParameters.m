@@ -23,7 +23,7 @@
 #include <errno.h>
 extern int errno;
 
-#define MAXSIZEPACKET 30
+#define MAXSIZEPACKET 32
 
 @implementation ABSConnectionParameters
 
@@ -86,63 +86,63 @@ extern int errno;
 
 - (void) parseSensorsData: (unsigned char *) data
 {
-    union floatType byte;
+    unsigned int temp;
     
     bool flag=FALSE;
 
+    //engines
+    self.engineOne=(data[3]<<8) | data[2];
+    self.engineTwo=(data[5]<<8) | data[4];
+    self.engineThree=(data[7]<<8) | data[6];
+    self.engineFour=(data[9]<<8) | data[8];
     
-    byte.bytes[0]=data[2];
-    byte.bytes[1]=data[3];
-    byte.bytes[2]=data[4];
-    byte.bytes[3]=data[5];
-    
-    if(flag==TRUE)   NSLog(@"acc_X: %f", byte.f);
-    [self AddVariableToMutableArray:self.accArrayX var:byte.f];
-    
-    byte.bytes[0]=data[6];
-    byte.bytes[1]=data[7];
-    byte.bytes[2]=data[8];
-    byte.bytes[3]=data[9];
-    
-    if(flag==TRUE)  NSLog(@"acc_Y: %f", byte.f);
-    [self AddVariableToMutableArray:self.accArrayY var:byte.f];
-    
-    byte.bytes[0]=data[10];
-    byte.bytes[1]=data[11];
-    byte.bytes[2]=data[12];
-    byte.bytes[3]=data[13];
-    
-    if(flag==TRUE)  NSLog(@"acc_Z: %f", byte.f);
-    [self AddVariableToMutableArray:self.accArrayZ var:byte.f];
-    
-    byte.bytes[0]=data[14];
-    byte.bytes[1]=data[15];
-    byte.bytes[2]=data[16];
-    byte.bytes[3]=data[17];
+    //accel
+    temp=(data[11]<<8) | data[10];
+    if(flag==TRUE)   NSLog(@"acc_X: %ud", temp);
+    [self AddVariableToMutableArray:self.accArrayX var:((float)temp/1024*8-4)];
 
-    if(flag==TRUE)  NSLog(@"rot_X: %f", byte.f);
-    [self AddVariableToMutableArray:self.rotArrayX var:byte.f];
+    temp=(data[13]<<8) | data[12];
+    if(flag==TRUE)  NSLog(@"acc_Y: %ud", temp);
+    [self AddVariableToMutableArray:self.accArrayY var:((float)temp/1024*8-4)];
     
-    byte.bytes[0]=data[18];
-    byte.bytes[1]=data[19];
-    byte.bytes[2]=data[20];
-    byte.bytes[3]=data[21];
+    temp=(data[15]<<8) | data[14];
+    if(flag==TRUE)  NSLog(@"acc_Z: %ud", temp);
+    [self AddVariableToMutableArray:self.accArrayZ var:((float)temp/1024*8-4)];
+
+    //gyro
+    temp=(data[17]<<8) | data[16];
+    if(flag==TRUE)  NSLog(@"rot_X: %ud", temp);
+    [self AddVariableToMutableArray:self.rotArrayX var:((float)temp/1024*8-4)];
+
+    temp=(data[19]<<8) | data[18];
+    if(flag==TRUE)  NSLog(@"rot_Y: %ud", temp);
+    [self AddVariableToMutableArray:self.rotArrayY var:((float)temp/1024*8-4)];
     
-    if(flag==TRUE)  NSLog(@"rot_Y: %f", byte.f);
-    [self AddVariableToMutableArray:self.rotArrayY var:byte.f];
+    temp=(data[21]<<8) | data[20];
+    if(flag==TRUE)  NSLog(@"rot_Z: %ud", temp);
+    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
     
-    byte.bytes[0]=data[22];
-    byte.bytes[1]=data[23];
-    byte.bytes[2]=data[24];
-    byte.bytes[3]=data[25];
+    //compass
+    temp=(data[23]<<8) | data[22];
+    if(flag==TRUE)  NSLog(@"com_X: %ud", temp);
+//    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
     
-    if(flag==TRUE)  NSLog(@"rot_Z: %f", byte.f);
-    [self AddVariableToMutableArray:self.rotArrayZ var:byte.f];
+    temp=(data[25]<<8) | data[24];
+    if(flag==TRUE)  NSLog(@"com_Y: %ud", temp);
+//    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
     
-    self.engOne=(int)data[26];
-    self.engTwo=(int)data[27];
-    self.engThree=(int)data[28];
-    self.engFour=(int)data[29];
+    temp=(data[27]<<8) | data[26];
+    if(flag==TRUE)  NSLog(@"com_Z: %ud", temp);
+//    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
+
+    //battery
+    self.batteryPower=(data[29]<<8) | data[28];
+    if(flag==TRUE)  NSLog(@"Power: %f", (float)temp/100);
+
+    //altitude
+    self.altitudeEnterprise=(data[31]<<8) | data[30];
+    if(flag==TRUE)  NSLog(@"Altitude: %f", (float)temp/100);
+
     
 //    NSLog(@"engs: [%d][%d][%d][%d]", self.engOne, self.engTwo, self.engThree, self.engFour);
     

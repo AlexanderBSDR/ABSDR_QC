@@ -27,10 +27,13 @@
 @property NSMutableArray *rotArrayZ;
 @property NSMutableArray *rotArrayT;
 
-@property int engOne;
-@property int engTwo;
-@property int engThree;
-@property int engFour;
+@property int engineOne;
+@property int engineTwo;
+@property int engineThree;
+@property int engineFour;
+
+@property int altitudeEnterprise;
+@property int batteryPower;
 
 - (void) startServer;
 - (bool) sendClient:(char *) msg length: (unsigned int) len;
@@ -42,12 +45,5 @@
 -(void) changeRotation:(int) step;
 
 - (void) AddVariableToMutableArray:(NSMutableArray *) array var: (float) var;
-
-union floatType
-{
-    unsigned char bytes[4];
-    float f;
-};
-
 
 @end
