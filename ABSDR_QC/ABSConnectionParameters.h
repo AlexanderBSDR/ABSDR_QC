@@ -27,19 +27,22 @@
 @property NSMutableArray *rotArrayZ;
 @property NSMutableArray *rotArrayT;
 
-@property int engineOne;
-@property int engineTwo;
-@property int engineThree;
-@property int engineFour;
+@property unsigned short engineOne;
+@property unsigned short engineTwo;
+@property unsigned short engineThree;
+@property unsigned short engineFour;
 
-@property int altitudeEnterprise;
-@property int batteryPower;
+@property float altitudeEnterprise;
+@property float batteryPower;
+
+@property unsigned short engineMax;
+@property unsigned short engineMin;
 
 - (void) startServer;
 - (bool) sendClient:(char *) msg length: (unsigned int) len;
 - (bool) sendServerSocket:(NSString *) ip port:(int) p;
 
--(void) updateEngineParameters:(int) engineOne engineO: (int) engineTwo engineT: (int)engineThree engineF: (int) engineFour;
+-(void) updateEngineParameters;
 -(void) changeAltitude:(int) step;
 -(void) changeDirection:(int) step;
 -(void) changeRotation:(int) step;

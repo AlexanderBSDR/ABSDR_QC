@@ -78,7 +78,13 @@ extern int errno;
         {
               [self parseSensorsData:buffer];
         }
-        else NSLog(@"%s\n",buffer);
+        else
+        {
+            char temp[MAXSIZEPACKET+1];
+            strncpy(temp, (const char *)buffer, MAXSIZEPACKET);
+            temp[MAXSIZEPACKET]='\0';
+            NSLog(@"%s ---- %zu\n",temp, recsize);
+        }
 //        printf("---------end----------\n");
     }
     
@@ -87,7 +93,6 @@ extern int errno;
 - (void) parseSensorsData: (unsigned char *) data
 {
     unsigned int temp;
-    
     bool flag=FALSE;
 
     //engines
@@ -121,7 +126,7 @@ extern int errno;
     temp=(data[21]<<8) | data[20];
     if(flag==TRUE)  NSLog(@"rot_Z: %ud", temp);
     [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
-    
+
     //compass
     temp=(data[23]<<8) | data[22];
     if(flag==TRUE)  NSLog(@"com_X: %ud", temp);
@@ -136,11 +141,14 @@ extern int errno;
 //    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
 
     //battery
-    self.batteryPower=(data[29]<<8) | data[28];
-    if(flag==TRUE)  NSLog(@"Power: %f", (float)temp/100);
+    self.batteryPower=((data[29]<<8) | data[28]);
+    self.batteryPower=self.batteryPower*3.3/1024;
+    self.batteryPower=self.batteryPower/0.5;
+//    self.batteryPower=self.batteryPower/(2200/(2200+2200));
+    if(flag==TRUE)  NSLog(@"Power: %f", (float)temp);
 
     //altitude
-    self.altitudeEnterprise=(data[31]<<8) | data[30];
+    self.altitudeEnterprise=((data[31]<<8) | data[30])/100;
     if(flag==TRUE)  NSLog(@"Altitude: %f", (float)temp/100);
 
     
@@ -226,19 +234,25 @@ extern int errno;
     return false;
 }
 
--(void) updateEngineParameters:(int) engineOne engineO: (int) engineTwo engineT: (int)engineThree engineF: (int) engineFour
+-(void) updateEngineParameters
 {
-    char *buffer=malloc(sizeof(char)*6);
+    char *buffer=malloc(sizeof(char)*2+sizeof(unsigned int)*4);
     
     buffer[0]=0xFF;
     buffer[1]=0x01;
-    buffer[2]=(char)engineOne;
-    buffer[3]=(char)engineTwo;
-    buffer[4]=(char)engineThree;
-    buffer[5]=(char)engineFour;
-   // buffer[6]='\0';
+    buffer[2]=self.engineOne & 0xFF;
+    buffer[3]=(self.engineOne>>8) & 0xFF;
     
-    [self sendClient:buffer length:6];
+    buffer[4]=self.engineTwo & 0xFF;
+    buffer[5]=(self.engineTwo>>8) & 0xFF;
+    
+    buffer[6]=self.engineThree & 0xFF;
+    buffer[7]=(self.engineThree>>8) & 0xFF;
+    
+    buffer[8]=self.engineFour & 0xFF;
+    buffer[9]=(self.engineFour>>8) & 0xFF;
+    
+    [self sendClient:buffer length:(sizeof(char)*2+sizeof(unsigned int)*4)];
     self.PackagesSent+=1;
     
     free(buffer);
