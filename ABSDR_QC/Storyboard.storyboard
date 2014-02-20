@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="LCC-MZ-fu8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A598" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="LCC-MZ-fu8">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
     </dependencies>
@@ -186,7 +186,7 @@
                                     <action selector="engineFourSteppedChanged:" destination="xmV-Cv-qnq" eventType="valueChanged" id="JuD-yE-RNJ"/>
                                 </connections>
                             </stepper>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="700" minValue="700" maxValue="2300" id="C5r-gc-NzK">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="255" id="C5r-gc-NzK">
                                 <rect key="frame" x="27" y="184" width="157" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
@@ -224,6 +224,16 @@
                                     <segue destination="MQg-rv-wk4" kind="push" identifier="showFlightBoard" id="l8P-vS-PpG"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="aa5-FB-Lbv">
+                                <rect key="frame" x="30" y="276" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="clickedButton:" destination="xmV-Cv-qnq" eventType="touchUpInside" id="wv3-Hw-HLw"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -231,6 +241,7 @@
                     <navigationItem key="navigationItem" id="OZY-GN-IXy"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="buttonClicked" destination="aa5-FB-Lbv" id="oMc-lE-Tie"/>
                         <outlet property="engineAllLabel" destination="duY-Pc-7ad" id="dD4-oD-Jgx"/>
                         <outlet property="engineAllSlider" destination="YNa-MX-5HX" id="sf4-AZ-XTs"/>
                         <outlet property="engineAllStepper" destination="tNU-O7-sln" id="tq3-6e-agU"/>
@@ -431,31 +442,17 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-<<<<<<< HEAD
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yvp-LR-HjH">
                                 <rect key="frame" x="290" y="294" width="42" height="21"/>
-=======
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Battery power:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="YYM-Nn-nmN">
-                                <rect key="frame" x="321" y="294" width="113" height="21"/>
->>>>>>> 73aab0984ed907a0c2a35b4b2ca734b156f7f410
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-<<<<<<< HEAD
                             <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="100" maximumValue="500" stepValue="10" id="qRO-V4-lax">
                                 <rect key="frame" x="340" y="290" width="94" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </stepper>
-=======
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Altitude:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9P9-hJ-RcH">
-                                <rect key="frame" x="209" y="294" width="64" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="highlightedColor"/>
-                            </label>
->>>>>>> 73aab0984ed907a0c2a35b4b2ca734b156f7f410
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -463,8 +460,6 @@
                     <navigationItem key="navigationItem" id="ODI-mU-Vh1"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
-                        <outlet property="altitudeLabel" destination="9P9-hJ-RcH" id="TJa-Ct-cPX"/>
-                        <outlet property="batteryLabel" destination="YYM-Nn-nmN" id="aXZ-pp-wfT"/>
                         <outlet property="canvasEngines" destination="VLh-Rj-g06" id="4y5-ED-3pE"/>
                         <outlet property="canvasT" destination="IlA-Bm-khC" id="WCB-EZ-DQd"/>
                         <outlet property="canvasX" destination="E5s-vj-X9x" id="FVX-tU-u3O"/>
@@ -507,12 +502,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-<<<<<<< HEAD
         <segue reference="DHd-KH-xHe"/>
         <segue reference="bEk-FL-fIX"/>
-=======
-        <segue reference="l8P-vS-PpG"/>
-        <segue reference="O0f-xm-Egz"/>
->>>>>>> 73aab0984ed907a0c2a35b4b2ca734b156f7f410
     </inferredMetricsTieBreakers>
 </document>
