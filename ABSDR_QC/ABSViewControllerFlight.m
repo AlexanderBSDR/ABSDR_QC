@@ -54,8 +54,8 @@
     NSLog(@"%@", self.ConnectionParameters.LocalPort);
     NSLog(@"%d", self.ConnectionParameters.sock_client);
     NSLog(@"%d", self.ConnectionParameters.sock_server);*/
-//    NSLog(@"%f", self.sliderAltitude.value);
-//    NSLog(@"Adjusted: %d", [self interpolatedFunction:self.sliderAltitude.value]);
+///    NSLog(@"%f", self.sliderAltitude.value);
+///   NSLog(@"Adjusted: %d", [self interpolatedFunction:self.sliderAltitude.value]);
 }
 
 - (IBAction)sliderDirectionChanged:(id)sender {
