@@ -75,6 +75,14 @@
  
  */
     
+    self.resolutionStepper.minimumValue=0;
+    self.resolutionStepper.maximumValue=1000;
+    self.resolutionStepper.value=100;
+    self.resolutionStepper.stepValue=5;
+    
+   
+    NSString *temp=[[NSString alloc]initWithFormat:@"%8.0f", self.resolutionStepper.value];
+    self.resolutionLabel.text=temp;
     [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
 
 }
@@ -167,7 +175,7 @@
 {
     
     CGSize size = CGSizeMake(canvas.frame.size.width, canvas.frame.size.height);
-    NSLog(@"width: %f", canvas.frame.size.width);
+//    NSLog(@"width: %f", canvas.frame.size.width);
     
     UIGraphicsBeginImageContext(size);
     CGContextRef context=UIGraphicsGetCurrentContext();
