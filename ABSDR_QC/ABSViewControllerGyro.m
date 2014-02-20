@@ -20,6 +20,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *engineTwoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *engineThreeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *engineFourLabel;
+@property (weak, nonatomic) IBOutlet UILabel *resolutionLabel;
+@property (weak, nonatomic) IBOutlet UIStepper *resolutionStepper;
 
 @property int canvasMaxWidth;
 @property int canvasMaxHeight;
