@@ -20,10 +20,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *engineTwoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *engineThreeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *engineFourLabel;
+<<<<<<< HEAD
 @property (weak, nonatomic) IBOutlet UILabel *resolutionLabel;
 @property (weak, nonatomic) IBOutlet UIStepper *resolutionStepper;
+=======
 @property (weak, nonatomic) IBOutlet UILabel *altitudeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *batteryLabel;
+>>>>>>> 73aab0984ed907a0c2a35b4b2ca734b156f7f410
 
 @property int canvasMaxWidth;
 @property int canvasMaxHeight;
@@ -177,6 +180,10 @@
 {
     
     CGSize size = CGSizeMake(canvas.frame.size.width, canvas.frame.size.height);
+<<<<<<< HEAD
+//    NSLog(@"width: %f", canvas.frame.size.width);
+=======
+>>>>>>> 73aab0984ed907a0c2a35b4b2ca734b156f7f410
     
     UIGraphicsBeginImageContext(size);
     CGContextRef context=UIGraphicsGetCurrentContext();
