@@ -61,36 +61,72 @@
 
 - (void)viewDidLoad
 {
-    self.old_Slider=[[NSNumber alloc] init];
-    self.old_Stepper=[[NSNumber alloc] init];
     
-    self.objParameters = [[ABSControlParameters alloc] init];
-    NSNumber *max_int=@255;
-    
-    self.objParameters.maxValue=max_int;
     [super viewDidLoad];
     
-    self.engineOneStepper.maximumValue=self.objParameters.maxValue.doubleValue;
-    self.engineOneSlider.maximumValue=self.objParameters.maxValue.doubleValue;
     
-    self.engineTwoStepper.maximumValue=self.objParameters.maxValue.doubleValue;
-    self.engineTwoSlider.maximumValue=self.objParameters.maxValue.doubleValue;
+    self.ConnectionParameters.engineMin=700;       ///////////////////////////////
+    self.ConnectionParameters.engineMax=2300;      ///////////////////////////////
     
-    self.engineThreeStepper.maximumValue=self.objParameters.maxValue.doubleValue;
-    self.engineThreeSlider.maximumValue=self.objParameters.maxValue.doubleValue;
+    self.old_Slider=[[NSNumber alloc] initWithInt:self.ConnectionParameters.engineMin];
+    self.old_Stepper=[[NSNumber alloc] initWithInt:self.ConnectionParameters.engineMin];
     
-    self.engineFourStepper.maximumValue=self.objParameters.maxValue.doubleValue;
-    self.engineFourSlider.maximumValue=self.objParameters.maxValue.doubleValue;
+/*    self.engineOneSlider=[[UISlider alloc]init];
+    self.engineTwoSlider=[[UISlider alloc]init];
+    self.engineThreeSlider=[[UISlider alloc]init];
+    self.engineFourSlider=[[UISlider alloc]init];
+    self.engineAllSlider=[[UISlider alloc]init];
     
-    self.engineAllStepper.maximumValue=self.objParameters.maxValue.doubleValue;
-    self.engineAllSlider.maximumValue=self.objParameters.maxValue.doubleValue;
+    self.engineOneStepper=[[UIStepper alloc]init];
+    self.engineTwoStepper=[[UIStepper alloc]init];
+    self.engineThreeStepper=[[UIStepper alloc]init];
+    self.engineFourStepper=[[UIStepper alloc]init];
+    self.engineAllStepper=[[UIStepper alloc]init];
 
-  
+*/
+//    NSUInteger value = self.engineOneStepper.value;
+    self.engineOneStepper.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineOneSlider.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineOneStepper.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineOneSlider.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineOneStepper.value=self.ConnectionParameters.engineMin;
+    self.engineOneSlider.value=self.ConnectionParameters.engineMin;
+    
+    self.engineTwoStepper.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineTwoSlider.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineTwoStepper.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineTwoSlider.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineTwoStepper.value=self.ConnectionParameters.engineMin;
+    self.engineTwoSlider.value=self.ConnectionParameters.engineMin;
+    
+    self.engineThreeStepper.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineThreeSlider.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineThreeStepper.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineThreeSlider.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineThreeStepper.value=self.ConnectionParameters.engineMin;
+    self.engineThreeSlider.value=self.ConnectionParameters.engineMin;
+    
+    self.engineFourStepper.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineFourSlider.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineFourStepper.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineFourSlider.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineFourStepper.value=self.ConnectionParameters.engineMin;
+    self.engineFourSlider.value=self.ConnectionParameters.engineMin;
+    
+    self.engineAllStepper.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineAllSlider.maximumValue=self.ConnectionParameters.engineMax;
+    self.engineAllStepper.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineAllSlider.minimumValue=self.ConnectionParameters.engineMin;
+    self.engineAllStepper.value=self.ConnectionParameters.engineMin;
+    self.engineAllSlider.value=self.ConnectionParameters.engineMin;
+    
     [NSThread detachNewThreadSelector:@selector(startServer) toTarget:self.ConnectionParameters withObject:Nil];
     
     [self.ConnectionParameters sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
     
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -100,9 +136,9 @@
 
 - (IBAction)engineOneStepperChanged:(id)sender {
     NSString *temp=@"Engine #1: ";
-    self.objParameters.EngineSpeedOne=[NSNumber numberWithInt:(int)self.engineOneStepper.value];
+    self.ConnectionParameters.engineOne=(unsigned short)self.engineOneStepper.value;
     
-    self.engineOneLabel.text=[temp stringByAppendingString:self.objParameters.EngineSpeedOne.stringValue];
+    self.engineOneLabel.text=[temp stringByAppendingFormat:@"%d",self.ConnectionParameters.engineOne];
     self.engineOneSlider.value=self.engineOneStepper.value;
     
     //sending updated parameters
@@ -110,9 +146,9 @@
 }
 - (IBAction)engineOneSliderChanged:(id)sender {
     NSString *temp=@"Engine #1: ";
-    self.objParameters.EngineSpeedOne=[NSNumber numberWithInt:(int)self.engineOneSlider.value];
+    self.ConnectionParameters.engineOne=(unsigned short)self.engineOneSlider.value;
     
-    self.engineOneLabel.text=[temp stringByAppendingString:self.objParameters.EngineSpeedOne.stringValue];
+    self.engineOneLabel.text=[temp stringByAppendingFormat:@"%d",self.ConnectionParameters.engineOne];
     self.engineOneStepper.value=self.engineOneSlider.value;
     
     //sending updated parameters
@@ -120,8 +156,9 @@
 }
 - (IBAction)engineTwoSteppedChanged:(id)sender {
     NSString *temp=@"Engine #2: ";
-    self.objParameters.EngineSpeedTwo=[NSNumber numberWithInt:(int)self.engineTwoStepper.value];
-    self.engineTwoLabel.text=[temp stringByAppendingString:self.objParameters.EngineSpeedTwo.stringValue];
+    self.ConnectionParameters.engineTwo=(unsigned short)self.engineTwoStepper.value;
+    
+    self.engineTwoLabel.text=[temp stringByAppendingFormat:@"%d",self.ConnectionParameters.engineTwo];
     self.engineTwoSlider.value=self.engineTwoStepper.value;
     
     //sending updated parameters
@@ -129,9 +166,9 @@
 }
 - (IBAction)engineTwoSliderChanged:(id)sender {
     NSString *temp=@"Engine #2: ";
-    self.objParameters.EngineSpeedTwo=[NSNumber numberWithInt:(int)self.engineTwoSlider.value];
+    self.ConnectionParameters.engineTwo=(unsigned short)self.engineTwoSlider.value;
     
-    self.engineTwoLabel.text=[temp stringByAppendingString:self.objParameters.EngineSpeedTwo.stringValue];
+    self.engineTwoLabel.text=[temp stringByAppendingFormat:@"%d",self.ConnectionParameters.engineTwo];
     self.engineTwoStepper.value=self.engineTwoSlider.value;
     
     //sending updated parameters
@@ -139,8 +176,9 @@
 }
 - (IBAction)engineThreeStepperChanged:(id)sender {
     NSString *temp=@"Engine #3: ";
-    self.objParameters.EngineSpeedThree=[NSNumber numberWithInt:(int)self.engineThreeStepper.value];
-    self.engineThreeLabel.text=[temp stringByAppendingString:self.objParameters.EngineSpeedThree.stringValue];
+    self.ConnectionParameters.engineThree=(unsigned short)self.engineThreeStepper.value;
+
+    self.engineThreeLabel.text=[temp stringByAppendingFormat:@"%d",self.ConnectionParameters.engineThree];
     self.engineThreeSlider.value=self.engineThreeStepper.value;
     
     //sending updated parameters
@@ -148,9 +186,9 @@
 }
 - (IBAction)engineThreeSliderChanged:(id)sender {
     NSString *temp=@"Engine #3: ";
-    self.objParameters.EngineSpeedThree=[NSNumber numberWithInt:(int)self.engineThreeSlider.value];
+    self.ConnectionParameters.engineThree=(unsigned short)self.engineThreeSlider.value;
     
-    self.engineThreeLabel.text=[temp stringByAppendingString:self.objParameters.EngineSpeedThree.stringValue];
+    self.engineThreeLabel.text=[temp stringByAppendingFormat:@"%d",self.ConnectionParameters.engineThree];
     self.engineThreeStepper.value=self.engineThreeSlider.value;
     
     //sending updated parameters
@@ -158,8 +196,9 @@
 }
 - (IBAction)engineFourSteppedChanged:(id)sender {
     NSString *temp=@"Engine #4: ";
-    self.objParameters.EngineSpeedFour=[NSNumber numberWithInt:(int)self.engineFourStepper.value];
-    self.engineFourLabel.text=[temp stringByAppendingString:self.objParameters.EngineSpeedFour.stringValue];
+    self.ConnectionParameters.engineFour=(unsigned short)self.engineFourStepper.value;
+    
+    self.engineFourLabel.text=[temp stringByAppendingFormat:@"%d",self.ConnectionParameters.engineFour];
     self.engineFourSlider.value=self.engineFourStepper.value;
     
     //sending updated parameters
@@ -168,9 +207,9 @@
 
 - (IBAction)engineFourSliderChanged:(id)sender {
     NSString *temp=@"Engine #4: ";
-    self.objParameters.EngineSpeedFour=[NSNumber numberWithInt:(int)self.engineFourSlider.value];
+    self.ConnectionParameters.engineFour=(unsigned short)self.engineFourSlider.value;
     
-    self.engineFourLabel.text=[temp stringByAppendingString:self.objParameters.EngineSpeedFour.stringValue];
+    self.engineFourLabel.text=[temp stringByAppendingFormat:@"%d",self.ConnectionParameters.engineFour];
     self.engineFourStepper.value=self.engineFourSlider.value;
     
     //sending updated parameters
@@ -180,83 +219,82 @@
 
     int delta;
     delta=(int)self.engineAllStepper.value-self.old_Stepper.intValue;
-    NSNumber *e1d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedOne.intValue+delta)];
-    NSNumber *e2d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedTwo.intValue+delta)];
-    NSNumber *e3d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedThree.intValue+delta)];
-    NSNumber *e4d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedFour.intValue+delta)];
-    NSNumber *ezero=@0;
     
     NSString *temp1=@"Engine #1: ";
     //self.objParameters.EngineSpeedOne=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedOne.intValue+delta)];
-    if(e1d.intValue>self.objParameters.maxValue.intValue)
+    if(self.ConnectionParameters.engineOne+delta>self.ConnectionParameters.engineMax)
     {
-        self.objParameters.EngineSpeedOne=self.objParameters.maxValue;
-    } else if(e1d.intValue<0)
+        self.ConnectionParameters.engineOne=self.ConnectionParameters.engineMax;
+    } else if(self.ConnectionParameters.engineOne+delta<self.ConnectionParameters.engineMin)
     {
-        self.objParameters.EngineSpeedOne=ezero;
+        self.ConnectionParameters.engineOne=self.ConnectionParameters.engineMin;
     }
     else
     {
-        self.objParameters.EngineSpeedOne=e1d;
+        self.ConnectionParameters.engineOne+=delta;
     }
     
-    self.engineOneLabel.text=[temp1 stringByAppendingString:self.objParameters.EngineSpeedOne.stringValue];
-    self.engineOneSlider.value=self.objParameters.EngineSpeedOne.doubleValue;
-    self.engineOneStepper.value=self.objParameters.EngineSpeedOne.doubleValue;
+    self.engineOneLabel.text=[temp1 stringByAppendingFormat:@"%d",self.ConnectionParameters.engineOne];
+    
+    self.engineOneSlider.value=self.ConnectionParameters.engineOne;
+    self.engineOneStepper.value=self.ConnectionParameters.engineOne;
     
     NSString *temp2=@"Engine #2: ";
 //    self.objParameters.EngineSpeedTwo=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedTwo.intValue+delta)];
-    if(e2d.intValue>self.objParameters.maxValue.intValue)
+    if(self.ConnectionParameters.engineTwo+delta>self.ConnectionParameters.engineMax)
     {
-        self.objParameters.EngineSpeedTwo=self.objParameters.maxValue;
-    } else if(e2d.intValue<0)
+        self.ConnectionParameters.engineTwo=self.ConnectionParameters.engineMax;
+    } else if(self.ConnectionParameters.engineTwo+delta<self.ConnectionParameters.engineMin)
     {
-        self.objParameters.EngineSpeedTwo=ezero;
+        self.ConnectionParameters.engineTwo=self.ConnectionParameters.engineMin;
     }
     else
     {
-        self.objParameters.EngineSpeedTwo=e2d;
+        self.ConnectionParameters.engineTwo+=delta;
     }
     
-    self.engineTwoLabel.text=[temp2 stringByAppendingString:self.objParameters.EngineSpeedTwo.stringValue];
-    self.engineTwoSlider.value=self.objParameters.EngineSpeedTwo.doubleValue;
-    self.engineTwoStepper.value=self.objParameters.EngineSpeedTwo.doubleValue;
+    self.engineTwoLabel.text=[temp2 stringByAppendingFormat:@"%d",self.ConnectionParameters.engineTwo];
+    
+    self.engineTwoSlider.value=self.ConnectionParameters.engineTwo;
+    self.engineTwoStepper.value=self.ConnectionParameters.engineTwo;
 
     NSString *temp3=@"Engine #3: ";
 //    self.objParameters.EngineSpeedThree=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedThree.intValue+delta)];
-    if(e3d.intValue>self.objParameters.maxValue.intValue)
+    if(self.ConnectionParameters.engineThree+delta>self.ConnectionParameters.engineMax)
     {
-        self.objParameters.EngineSpeedThree=self.objParameters.maxValue;
-    } else if(e3d.intValue<0)
+        self.ConnectionParameters.engineThree=self.ConnectionParameters.engineMax;
+    } else if(self.ConnectionParameters.engineThree+delta<self.ConnectionParameters.engineMin)
     {
-        self.objParameters.EngineSpeedThree=ezero;
+        self.ConnectionParameters.engineThree=self.ConnectionParameters.engineMin;
     }
     else
     {
-        self.objParameters.EngineSpeedThree=e3d;
+        self.ConnectionParameters.engineThree+=delta;
     }
     
-    self.engineThreeLabel.text=[temp3 stringByAppendingString:self.objParameters.EngineSpeedThree.stringValue];
-    self.engineThreeSlider.value=self.objParameters.EngineSpeedThree.doubleValue;
-    self.engineThreeStepper.value=self.objParameters.EngineSpeedThree.doubleValue;
+    self.engineThreeLabel.text=[temp3 stringByAppendingFormat:@"%d",self.ConnectionParameters.engineThree];
+    
+    self.engineThreeSlider.value=self.ConnectionParameters.engineThree;
+    self.engineThreeStepper.value=self.ConnectionParameters.engineThree;
     
     NSString *temp4=@"Engine #4: ";
 //    self.objParameters.EngineSpeedFour=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedFour.intValue+delta)];
-    if(e4d.intValue>self.objParameters.maxValue.intValue)
+    if(self.ConnectionParameters.engineFour+delta>self.ConnectionParameters.engineMax)
     {
-        self.objParameters.EngineSpeedFour=self.objParameters.maxValue;
-    } else if(e4d.intValue<0)
+        self.ConnectionParameters.engineFour=self.ConnectionParameters.engineMax;
+    } else if(self.ConnectionParameters.engineFour+delta<self.ConnectionParameters.engineMin)
     {
-        self.objParameters.EngineSpeedFour=ezero;
+        self.ConnectionParameters.engineFour=self.ConnectionParameters.engineMin;
     }
     else
     {
-        self.objParameters.EngineSpeedFour=e4d;
+        self.ConnectionParameters.engineFour+=delta;
     }
     
-    self.engineFourLabel.text=[temp4 stringByAppendingString:self.objParameters.EngineSpeedFour.stringValue];
-    self.engineFourSlider.value=self.objParameters.EngineSpeedFour.doubleValue;
-    self.engineFourStepper.value=self.objParameters.EngineSpeedFour.doubleValue;
+    self.engineFourLabel.text=[temp4 stringByAppendingFormat:@"%d",self.ConnectionParameters.engineFour];
+    
+    self.engineFourSlider.value=self.ConnectionParameters.engineFour;
+    self.engineFourStepper.value=self.ConnectionParameters.engineFour;
     
     self.engineAllSlider.value=self.engineAllStepper.value;
     
@@ -269,84 +307,76 @@
     
     int delta;
     delta=(int)self.engineAllSlider.value-self.old_Slider.intValue;
-    NSNumber *e1d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedOne.intValue+delta)];
-    NSNumber *e2d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedTwo.intValue+delta)];
-    NSNumber *e3d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedThree.intValue+delta)];
-    NSNumber *e4d=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedFour.intValue+delta)];
-    NSNumber *ezero=@0;
 //    NSLog(@"Delta: %d", delta);
 //    NSLog(@"E1D: %d",self.objParameters.EngineSpeedOne.intValue+delta);
     
     NSString *temp1=@"Engine #1: ";
-    if(e1d.intValue>self.objParameters.maxValue.intValue)
+    if(self.ConnectionParameters.engineOne+delta>self.ConnectionParameters.engineMax)
     {
-        self.objParameters.EngineSpeedOne=self.objParameters.maxValue;
-    } else if(e1d.intValue<0)
+        self.ConnectionParameters.engineOne=self.ConnectionParameters.engineMax;
+    } else if(self.ConnectionParameters.engineOne+delta<self.ConnectionParameters.engineMin)
     {
-        self.objParameters.EngineSpeedOne=ezero;
+        self.ConnectionParameters.engineOne=self.ConnectionParameters.engineMin;
     }
     else
     {
-        self.objParameters.EngineSpeedOne=e1d;
+        self.ConnectionParameters.engineOne+=delta;
     }
     
-    self.engineOneLabel.text=[temp1 stringByAppendingString:self.objParameters.EngineSpeedOne.stringValue];
-    self.engineOneSlider.value=self.objParameters.EngineSpeedOne.doubleValue;
-    self.engineOneStepper.value=self.objParameters.EngineSpeedOne.doubleValue;
+    self.engineOneLabel.text=[temp1 stringByAppendingFormat:@"%d",self.ConnectionParameters.engineOne];
+    self.engineOneSlider.value=self.ConnectionParameters.engineOne;
+    self.engineOneStepper.value=self.ConnectionParameters.engineOne;
     
     NSString *temp2=@"Engine #2: ";
-    if(e2d.intValue>self.objParameters.maxValue.intValue)
+    if(self.ConnectionParameters.engineTwo+delta>self.ConnectionParameters.engineMax)
     {
-        self.objParameters.EngineSpeedTwo=self.objParameters.maxValue;
-    } else if(e2d.intValue<0)
+        self.ConnectionParameters.engineTwo=self.ConnectionParameters.engineMax;
+    } else if(self.ConnectionParameters.engineTwo+delta<self.ConnectionParameters.engineMin)
     {
-        self.objParameters.EngineSpeedTwo=ezero;
-        
+        self.ConnectionParameters.engineTwo=self.ConnectionParameters.engineMin;
     }
     else
     {
-        self.objParameters.EngineSpeedTwo=e2d;
+        self.ConnectionParameters.engineTwo+=delta;
     }
     
-    self.engineTwoLabel.text=[temp2 stringByAppendingString:self.objParameters.EngineSpeedTwo.stringValue];
-    self.engineTwoSlider.value=self.objParameters.EngineSpeedTwo.doubleValue;
-    self.engineTwoStepper.value=self.objParameters.EngineSpeedTwo.doubleValue;
+    self.engineTwoLabel.text=[temp2 stringByAppendingFormat:@"%d",self.ConnectionParameters.engineTwo];
+    self.engineTwoSlider.value=self.ConnectionParameters.engineTwo;
+    self.engineTwoStepper.value=self.ConnectionParameters.engineTwo;
     
     NSString *temp3=@"Engine #3: ";
-    if(e3d.intValue>self.objParameters.maxValue.intValue)
+    if(self.ConnectionParameters.engineThree+delta>self.ConnectionParameters.engineMax)
     {
-        self.objParameters.EngineSpeedThree=self.objParameters.maxValue;
-    }  else if(e3d.intValue<0)
+        self.ConnectionParameters.engineThree=self.ConnectionParameters.engineMax;
+    } else if(self.ConnectionParameters.engineThree+delta<self.ConnectionParameters.engineMin)
     {
-        self.objParameters.EngineSpeedThree=ezero;
-        
+        self.ConnectionParameters.engineThree=self.ConnectionParameters.engineMin;
     }
     else
     {
-        self.objParameters.EngineSpeedThree=e3d;
+        self.ConnectionParameters.engineThree+=delta;
     }
     
-    self.engineThreeLabel.text=[temp3 stringByAppendingString:self.objParameters.EngineSpeedThree.stringValue];
-    self.engineThreeSlider.value=self.objParameters.EngineSpeedThree.doubleValue;
-    self.engineThreeStepper.value=self.objParameters.EngineSpeedThree.doubleValue;
+    self.engineThreeLabel.text=[temp3 stringByAppendingFormat:@"%d",self.ConnectionParameters.engineThree];
+    self.engineThreeSlider.value=self.ConnectionParameters.engineThree;
+    self.engineThreeStepper.value=self.ConnectionParameters.engineThree;
     
     NSString *temp4=@"Engine #4: ";
-    if(e4d.intValue>self.objParameters.maxValue.intValue)
+    if(self.ConnectionParameters.engineFour+delta>self.ConnectionParameters.engineMax)
     {
-        self.objParameters.EngineSpeedFour=self.objParameters.maxValue;
-    } else if(e4d.intValue<0)
+        self.ConnectionParameters.engineFour=self.ConnectionParameters.engineMax;
+    } else if(self.ConnectionParameters.engineFour+delta<self.ConnectionParameters.engineMin)
     {
-        self.objParameters.EngineSpeedFour=ezero;
-        
+        self.ConnectionParameters.engineFour=self.ConnectionParameters.engineMin;
     }
     else
     {
-        self.objParameters.EngineSpeedFour=e4d;
+        self.ConnectionParameters.engineFour+=delta;
     }
     
-    self.engineFourLabel.text=[temp4 stringByAppendingString:self.objParameters.EngineSpeedFour.stringValue];
-    self.engineFourSlider.value=self.objParameters.EngineSpeedFour.doubleValue;
-    self.engineFourStepper.value=self.objParameters.EngineSpeedFour.doubleValue;
+    self.engineFourLabel.text=[temp4 stringByAppendingFormat:@"%d",self.ConnectionParameters.engineFour];
+    self.engineFourSlider.value=self.ConnectionParameters.engineFour;
+    self.engineFourStepper.value=self.ConnectionParameters.engineFour;
     
     self.engineAllStepper.value=self.engineAllSlider.value;
     
@@ -359,7 +389,7 @@
 -(void) updateEngineParameters
 {
 
-    [self.ConnectionParameters updateEngineParameters:self.objParameters.EngineSpeedOne.intValue engineO:self.objParameters.EngineSpeedTwo.intValue engineT:self.objParameters.EngineSpeedThree.intValue engineF:self.objParameters.EngineSpeedFour.intValue];
+    [self.ConnectionParameters updateEngineParameters];
     NSString *str = [NSString stringWithFormat:@"%d",self.ConnectionParameters.PackagesSent];
     self.labelSent.text=str;
 }
@@ -372,14 +402,6 @@
         ABSViewControllerFlight *destView=[segue destinationViewController];
         destView.ConnectionParameters=self.ConnectionParameters;
     }
-}
-- (IBAction)clickedButton:(id)sender {
-    
-    NSLog(@"%@", self.ConnectionParameters.IPAddress);
-    NSLog(@"%@", self.ConnectionParameters.RemotePort);
-//    NSLog(@"%@", self.ConnectionParameters.LocalPort);
-    NSLog(@"%d", self.ConnectionParameters.sock_client);
-    NSLog(@"%d", self.ConnectionParameters.sock_server);
 }
 
 @end
