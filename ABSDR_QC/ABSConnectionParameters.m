@@ -48,6 +48,17 @@ extern int errno;
     self.batteryStatus = [[NSMutableArray alloc] init];
     self.altitudePosition = [[NSMutableArray alloc] init];
     self.timer1s = [[NSDate date] timeIntervalSince1970];
+    self.batteryLagTime=1.5;
+    self.newData=FALSE;
+    
+    
+    self.engineMin=700;       ///////////////////////////////
+    self.engineMax=2300;      ///////////////////////////////
+    
+    self.engineOne=self.engineMin;
+    self.engineTwo=self.engineMin;
+    self.engineThree=self.engineMin;
+    self.engineFour=self.engineMin;
 
     memset(&sa, 0 ,sizeof(sa));
     
@@ -81,7 +92,8 @@ extern int errno;
 
         if(buffer[0]==0xFF && buffer[1]==0x20)
         {
-              [self parseSensorsData:buffer];
+            [self parseSensorsData:buffer];
+            self.newData=TRUE;
         }
         else
         {
@@ -146,14 +158,15 @@ extern int errno;
 //    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
 
     //battery
-
+    double temp_battery;
     temp=((data[29]<<8) | data[28]);
-    temp=temp*3.3/1024;
-    temp=temp/0.5;
+    temp_battery=(double)temp*3.3/1024;
+    temp_battery=temp_battery/0.5;
+//    NSLog(@"%f\n", temp_battery);
 //    self.batteryPower=self.batteryPower/(2200/(2200+2200));
-    if([[NSDate date] timeIntervalSince1970]-self.timer1s>1)
+    if([[NSDate date] timeIntervalSince1970]-self.timer1s>self.batteryLagTime)
     {
-        [self AddVariableToMutableArray:self.batteryStatus var:temp];
+        [self AddVariableToMutableArray:self.batteryStatus var:temp_battery];
         self.timer1s = [[NSDate date] timeIntervalSince1970];
     }
 

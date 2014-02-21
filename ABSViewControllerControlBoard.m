@@ -41,10 +41,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonClicked;
 
-//@property int sock;
-
-@property ABSControlParameters *objParameters;
-
 @end
 
 @implementation ABSViewControllerControlBoard
@@ -63,15 +59,6 @@
 {
     
     [super viewDidLoad];
-    
-    
-    self.ConnectionParameters.engineMin=700;       ///////////////////////////////
-    self.ConnectionParameters.engineMax=2300;      ///////////////////////////////
-    
-    self.ConnectionParameters.engineOne=self.ConnectionParameters.engineMin;
-    self.ConnectionParameters.engineTwo=self.ConnectionParameters.engineMin;
-    self.ConnectionParameters.engineThree=self.ConnectionParameters.engineMin;
-    self.ConnectionParameters.engineFour=self.ConnectionParameters.engineMin;
 
     
     self.old_Slider=[[NSNumber alloc] initWithInt:self.ConnectionParameters.engineMin];
@@ -91,6 +78,8 @@
 
 */
 //    NSUInteger value = self.engineOneStepper.value;
+    
+    
     self.engineOneStepper.maximumValue=self.ConnectionParameters.engineMax;
     self.engineOneSlider.maximumValue=self.ConnectionParameters.engineMax;
     self.engineOneStepper.minimumValue=self.ConnectionParameters.engineMin;
@@ -125,11 +114,6 @@
     self.engineAllSlider.minimumValue=self.ConnectionParameters.engineMin;
     self.engineAllStepper.value=self.ConnectionParameters.engineMin;
     self.engineAllSlider.value=self.ConnectionParameters.engineMin;
-    
-    [NSThread detachNewThreadSelector:@selector(startServer) toTarget:self.ConnectionParameters withObject:Nil];
-    
-    [self.ConnectionParameters sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
-    
 }
 
 

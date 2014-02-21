@@ -21,4 +21,6 @@ double currentMaxRotZ;
 
 @property ABSConnectionParameters *ConnectionParameters;
 
+- (void) addPoint;
+
 @end

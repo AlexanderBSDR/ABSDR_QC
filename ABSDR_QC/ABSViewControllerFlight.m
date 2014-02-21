@@ -10,6 +10,8 @@
 #import "ABSViewControllerControlBoard.h"
 #import "ABSViewControllerGyro.h"
 
+#define FACTORFORCONTROL 0.67
+#define ZERORANGE 30
 
 @interface ABSViewControllerFlight ()
 @property (weak, nonatomic) IBOutlet UISlider *sliderRotation;
@@ -68,13 +70,10 @@
 
 - (int) interpolatedFunction: (float) ch
 {
-    if(abs(ch)<50) return (int) (ch/10);
-    else if (abs(ch)>=50 && abs(ch)<=100) return (int) (ch/5);
-    else if (abs(ch)>=100 && abs(ch)<=200) return (int) (ch/3);
-    else return (int) ch;
+    if(abs(ch)<ZERORANGE) return 0;
+    else if(ch>=0) return (int)pow(abs(ch-ZERORANGE), FACTORFORCONTROL);
+    else return -(int)pow(abs(ch+ZERORANGE), FACTORFORCONTROL);
 }
-
-
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     

@@ -22,12 +22,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *engineFourLabel;
 @property (weak, nonatomic) IBOutlet UILabel *resolutionLabel;
 @property (weak, nonatomic) IBOutlet UIStepper *resolutionStepper;
+@property (weak, nonatomic) IBOutlet UILabel *batteryLabel;
 
 @property int canvasMaxWidth;
 @property int canvasMaxHeight;
-@property float conversion_acc;
-@property float conversion_gyr;
 @property int scaleX;
+
+@property double batteryTime;
 @property CGColorRef blueColor, redColor, greenColor, yellowColor;
 
 @property (strong, nonatomic) CMMotionManager *motionManager;
@@ -74,14 +75,20 @@
     [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMGyroData *gyroData, NSError *error){ [self outputRotationData:gyroData.rotationRate];}];
  
  */
+    
+    [NSThread detachNewThreadSelector:@selector(startServer) toTarget:self.ConnectionParameters withObject:Nil];
+    
+    [self.ConnectionParameters sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
+    
     self.blueColor=[[UIColor blueColor] CGColor];
     self.redColor=[[UIColor redColor] CGColor];
     self.greenColor=[[UIColor greenColor] CGColor];
     self.yellowColor=[[UIColor yellowColor] CGColor];
     
     [self.resolutionLabel setText:[[NSString alloc] initWithFormat:@"%5.0f", self.resolutionStepper.value]];
+    self.batteryTime=[[NSDate date] timeIntervalSince1970];
     
-    [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
+    [NSTimer scheduledTimerWithTimeInterval:.001 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
 
 }
 
@@ -90,8 +97,6 @@
     [super viewDidLayoutSubviews];
     self.canvasMaxWidth=self.canvasX.frame.size.width;
     self.canvasMaxHeight=self.canvasX.frame.size.height;
-    self.conversion_acc=4;
-    self.conversion_gyr=4;
     self.scaleX=2;
     self.ConnectionParameters.maxSize=self.canvasMaxWidth/self.scaleX+1;
 }
@@ -150,13 +155,16 @@
 
 - (void) addPoint
 {
-
-    [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor];
-    [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor];
-    [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor];
-    [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition  color1:self.greenColor color2:self.yellowColor];
+    if(self.ConnectionParameters.newData==TRUE)
+    {
+        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor conv1: -4 conv2: -4];
+        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor conv1: -4 conv2: -4];
+        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor conv1: -4 conv2: -4];
+        [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition  color1:self.greenColor color2:self.yellowColor conv1:-4 conv2: -4];
     
-    [self reDrawEngines:self.canvasEngines];
+        [self reDrawEngines:self.canvasEngines];
+        self.ConnectionParameters.newData=FALSE;
+    }
 
 }
 
@@ -191,6 +199,12 @@
     self.engineThreeLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineThree];
     self.engineFourLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineFour];
     
+    if([[NSDate date] timeIntervalSince1970]-self.batteryTime>self.ConnectionParameters.batteryLagTime)
+    {
+        self.batteryTime=[[NSDate date] timeIntervalSince1970];
+        [self.batteryLabel setText:[[NSString alloc] initWithFormat:@"%3.2f", [self.ConnectionParameters.batteryStatus.lastObject doubleValue]]];
+    }
+    
     CGContextSetStrokeColorWithColor(context, self.blueColor);
     CGContextAddRect(context, CGRectMake(box1x, box1y, box_width, box_height));
     CGContextStrokePath(context);
@@ -222,7 +236,7 @@
 
 }
 
-- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray color1:(CGColorRef)color1 color2:(CGColorRef) color2
+- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray color1:(CGColorRef)color1 color2:(CGColorRef) color2 conv1:(float)conversion1 conv2:(float)conversion2
 {
     
     CGPoint *accArrayCG;
@@ -235,7 +249,7 @@
     {
         accArrayCG[i].x=i*self.scaleX;
         @try {
-            accArrayCG[i].y=[self reSizeAcc:[[accArray objectAtIndex:i] floatValue]];
+            accArrayCG[i].y=[self reSizeAcc:[[accArray objectAtIndex:i] floatValue]conv:conversion1];
         }
         
         @catch(NSException *exception)
@@ -250,7 +264,7 @@
         rotArrayCG[i].x=i*self.scaleX;
         
         @try {
-            rotArrayCG[i].y=[self reSizeAcc:[[rotArray objectAtIndex:i] floatValue]];
+            rotArrayCG[i].y=[self reSizeAcc:[[rotArray objectAtIndex:i] floatValue] conv:conversion2];
         }
     
         @catch(NSException *exception)
@@ -295,14 +309,14 @@
 }
 
 
--(float) reSizeAcc: (float) var
+-(float) reSizeAcc: (float) var conv:(float) conversion
 {
-    return ((var+self.conversion_acc)/(2*self.conversion_acc))*self.canvasMaxHeight;
+    return ((var+conversion)/(2*conversion))*self.canvasMaxHeight;
 }
 
--(float) reSizeRot: (float) var
+-(float) reSizeRot: (float) var conv:(float) conversion
 {
-    return ((var+self.conversion_gyr)/(2*self.conversion_gyr))*self.canvasMaxHeight;
+    return ((var+conversion)/(2*conversion))*self.canvasMaxHeight;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {

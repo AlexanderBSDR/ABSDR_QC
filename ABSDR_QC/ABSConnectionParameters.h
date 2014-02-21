@@ -30,7 +30,10 @@
 @property NSMutableArray *batteryStatus;
 @property NSMutableArray *altitudePosition;
 
+
 @property double timer1s;
+@property double batteryLagTime;
+@property bool newData;
 
 
 @property unsigned short engineOne;

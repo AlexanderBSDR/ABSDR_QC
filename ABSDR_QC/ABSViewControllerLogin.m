@@ -7,7 +7,8 @@
 //
 
 #import "ABSViewControllerLogin.h"
-#import "ABSViewControllerControlBoard.h"
+#import "ABSViewControllerGyro.h"
+
 
 @interface ABSViewControllerLogin ()
 @property (weak, nonatomic) IBOutlet UIButton *ConnectButton;
@@ -48,11 +49,11 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
-    if([segue.identifier isEqualToString:@"showControlBoard"])
+    if([segue.identifier isEqualToString:@"showStartBoard"])
     {
  //       NSLog(@"HERE!");
         
-        ABSViewControllerControlBoard *destView=[segue destinationViewController];
+        ABSViewControllerGyro *destView=[segue destinationViewController];
         destView.ConnectionParameters = [[ABSConnectionParameters alloc] init];
         
         destView.ConnectionParameters.IPAddress=self.IPAddressBox.text;
