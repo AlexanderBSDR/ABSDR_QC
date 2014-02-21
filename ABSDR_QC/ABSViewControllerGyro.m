@@ -20,15 +20,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *engineTwoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *engineThreeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *engineFourLabel;
-@property (weak, nonatomic) IBOutlet UILabel *altitudeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *batteryLabel;
+@property (weak, nonatomic) IBOutlet UILabel *resolutionLabel;
+@property (weak, nonatomic) IBOutlet UIStepper *resolutionStepper;
 
 @property int canvasMaxWidth;
 @property int canvasMaxHeight;
 @property float conversion_acc;
 @property float conversion_gyr;
 @property int scaleX;
-
+@property CGColorRef blueColor, redColor, greenColor, yellowColor;
 
 @property (strong, nonatomic) CMMotionManager *motionManager;
 
@@ -74,6 +74,12 @@
     [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMGyroData *gyroData, NSError *error){ [self outputRotationData:gyroData.rotationRate];}];
  
  */
+    self.blueColor=[[UIColor blueColor] CGColor];
+    self.redColor=[[UIColor redColor] CGColor];
+    self.greenColor=[[UIColor greenColor] CGColor];
+    self.yellowColor=[[UIColor yellowColor] CGColor];
+    
+    [self.resolutionLabel setText:[[NSString alloc] initWithFormat:@"%5.0f", self.resolutionStepper.value]];
     
     [NSTimer scheduledTimerWithTimeInterval:.01 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
 
@@ -141,23 +147,14 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (IBAction)resetMaxValue:(id)sender {
-    currentMaxAccelX = 0;
-    currentMaxAccelY = 0;
-    currentMaxAccelZ = 0;
-    
-    currentMaxRotX = 0;
-    currentMaxRotY = 0;
-    currentMaxRotZ = 0;
-}
 
 - (void) addPoint
 {
 
-    [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX];
-    [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY];
-    [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ];
-    [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.accArrayT rotArray:self.ConnectionParameters.rotArrayT];
+    [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor];
+    [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor];
+    [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor];
+    [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition  color1:self.greenColor color2:self.yellowColor];
     
     [self reDrawEngines:self.canvasEngines];
 
@@ -180,13 +177,13 @@
     
     
     float box1x=45.0f;
-    float box1y=10.0f;
+    float box1y=5.0f;
     float box2x=20.0f;
-    float box2y=100.0f;
+    float box2y=90.0f;
     float box3x=70.0f;
-    float box3y=100.0f;
+    float box3y=90.0f;
     float box4x=45.0f;
-    float box4y=190.0f;
+    float box4y=175.0f;
     float box_height=80.0f;
     float box_width=30.0f;
     self.engineOneLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineOne];
@@ -194,32 +191,29 @@
     self.engineThreeLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineThree];
     self.engineFourLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineFour];
     
-    self.batteryLabel.text=[NSString stringWithFormat:@"%1.2f", self.ConnectionParameters.batteryPower];
-    self.altitudeLabel.text=[NSString stringWithFormat:@"%8.2f", self.ConnectionParameters.altitudeEnterprise];
-    
-    CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
+    CGContextSetStrokeColorWithColor(context, self.blueColor);
     CGContextAddRect(context, CGRectMake(box1x, box1y, box_width, box_height));
     CGContextStrokePath(context);
     int range=self.ConnectionParameters.engineMax-self.ConnectionParameters.engineMin;
-    CGContextSetFillColorWithColor(context, [[UIColor blueColor] CGColor]);
+    CGContextSetFillColorWithColor(context, self.blueColor);
     CGContextFillRect(context, CGRectMake(box1x, box1y+(box_height*(1-(float)(self.ConnectionParameters.engineOne-self.ConnectionParameters.engineMin)/range)), box_width, box_height-(box_height*(1-(float)(self.ConnectionParameters.engineOne-self.ConnectionParameters.engineMin)/range))));
 
-    CGContextSetStrokeColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextSetStrokeColorWithColor(context, self.redColor);
     CGContextAddRect(context, CGRectMake(box2x, box2y, box_width, box_height));
     CGContextStrokePath(context);
-    CGContextSetFillColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextSetFillColorWithColor(context, self.redColor);
     CGContextFillRect(context, CGRectMake(box2x, box2y+(box_height*(1-(float)(self.ConnectionParameters.engineTwo-self.ConnectionParameters.engineMin)/range)), box_width, box_height-(box_height*(1-(float)(self.ConnectionParameters.engineTwo-self.ConnectionParameters.engineMin)/range))));
     
-    CGContextSetStrokeColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextSetStrokeColorWithColor(context, self.redColor);
     CGContextAddRect(context, CGRectMake(box3x, box3y, box_width, box_height));
     CGContextStrokePath(context);
-    CGContextSetFillColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextSetFillColorWithColor(context, self.redColor);
     CGContextFillRect(context, CGRectMake(box3x, box3y+(box_height*(1-(float)(self.ConnectionParameters.engineThree-self.ConnectionParameters.engineMin)/range)), box_width, box_height-(box_height*(1-(float)(self.ConnectionParameters.engineThree-self.ConnectionParameters.engineMin)/range))));
     
-    CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
+    CGContextSetStrokeColorWithColor(context, self.blueColor);
     CGContextAddRect(context, CGRectMake(box4x, box4y, box_width, box_height));
     CGContextStrokePath(context);
-    CGContextSetFillColorWithColor(context, [[UIColor blueColor] CGColor]);
+    CGContextSetFillColorWithColor(context, self.blueColor);
     CGContextFillRect(context, CGRectMake(box4x, box4y+(box_height*(1-(float)(self.ConnectionParameters.engineFour-self.ConnectionParameters.engineMin)/range)), box_width, box_height-(box_height*(1-(float)(self.ConnectionParameters.engineFour-self.ConnectionParameters.engineMin)/range))));
     
     UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
@@ -228,7 +222,7 @@
 
 }
 
-- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray
+- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray color1:(CGColorRef)color1 color2:(CGColorRef) color2
 {
     
     CGPoint *accArrayCG;
@@ -279,11 +273,11 @@
     CGContextSetLineWidth(context, 1.0f);
 
     
-    CGContextSetStrokeColorWithColor(context, [[UIColor blueColor] CGColor]);
+    CGContextSetStrokeColorWithColor(context, color1);
     CGContextAddLines(context, accArrayCG, accArray.count);
     CGContextStrokePath(context);
     
-    CGContextSetStrokeColorWithColor(context, [[UIColor redColor] CGColor]);
+    CGContextSetStrokeColorWithColor(context, color2);
     CGContextAddLines(context, rotArrayCG, rotArray.count);
     CGContextStrokePath(context);
 
@@ -319,5 +313,14 @@
         destView.ConnectionParameters=self.ConnectionParameters;
     }
 }
+- (IBAction)resolutionChanged:(id)sender {
+
+    [self.ConnectionParameters changeResolutionInterval:(unsigned short)self.resolutionStepper.value];
+}
+- (IBAction)resolutionLabelChange:(id)sender {
+        [self.resolutionLabel setText:[[NSString alloc] initWithFormat:@"%5.0f", self.resolutionStepper.value]];
+}
+
+
 
 @end

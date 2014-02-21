@@ -20,20 +20,23 @@
 @property NSMutableArray *accArrayX;
 @property NSMutableArray *accArrayY;
 @property NSMutableArray *accArrayZ;
-@property NSMutableArray *accArrayT;
+@property NSMutableArray *accArrayT;   //////////
 
 @property NSMutableArray *rotArrayX;
 @property NSMutableArray *rotArrayY;
 @property NSMutableArray *rotArrayZ;
-@property NSMutableArray *rotArrayT;
+@property NSMutableArray *rotArrayT;   //////////
+
+@property NSMutableArray *batteryStatus;
+@property NSMutableArray *altitudePosition;
+
+@property double timer1s;
+
 
 @property unsigned short engineOne;
 @property unsigned short engineTwo;
 @property unsigned short engineThree;
 @property unsigned short engineFour;
-
-@property float altitudeEnterprise;
-@property float batteryPower;
 
 @property unsigned short engineMax;
 @property unsigned short engineMin;
@@ -46,6 +49,8 @@
 -(void) changeAltitude:(int) step;
 -(void) changeDirection:(int) step;
 -(void) changeRotation:(int) step;
+-(void) changeResolutionInterval:(unsigned short) val;
+
 
 - (void) AddVariableToMutableArray:(NSMutableArray *) array var: (float) var;
 
