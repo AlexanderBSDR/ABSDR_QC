@@ -13,6 +13,8 @@
  Altitute: 0x02 0xFF [0x00] [0x00] - (sign) and altitude control
  Direction: 0x03 0xFF [0x00] [0x00] - (sign) and direction control
  Rotation: 0x04 0xFF [0x00] [0x00] - (sign) and rotation control
+ Rotation: 0x09 0xFF [0x00] [0x00] - change resolution 0-1000 ms
+
  */
 
 #import "ABSConnectionParameters.h"
@@ -43,7 +45,10 @@ extern int errno;
     self.rotArrayZ = [[NSMutableArray alloc] init];
     self.rotArrayT = [[NSMutableArray alloc] init];
     
-    
+    self.batteryStatus = [[NSMutableArray alloc] init];
+    self.altitudePosition = [[NSMutableArray alloc] init];
+    self.timer1s = [[NSDate date] timeIntervalSince1970];
+
     memset(&sa, 0 ,sizeof(sa));
     
     sa.sin_family=AF_INET;
@@ -141,19 +146,23 @@ extern int errno;
 //    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
 
     //battery
-    self.batteryPower=((data[29]<<8) | data[28]);
-    self.batteryPower=self.batteryPower*3.3/1024;
-    self.batteryPower=self.batteryPower/0.5;
+
+    temp=((data[29]<<8) | data[28]);
+    temp=temp*3.3/1024;
+    temp=temp/0.5;
 //    self.batteryPower=self.batteryPower/(2200/(2200+2200));
+    if([[NSDate date] timeIntervalSince1970]-self.timer1s>1)
+    {
+        [self AddVariableToMutableArray:self.batteryStatus var:temp];
+        self.timer1s = [[NSDate date] timeIntervalSince1970];
+    }
+
     if(flag==TRUE)  NSLog(@"Power: %f", (float)temp);
 
     //altitude
-    self.altitudeEnterprise=((data[31]<<8) | data[30])/100;
     if(flag==TRUE)  NSLog(@"Altitude: %f", (float)temp/100);
+    [self AddVariableToMutableArray:self.altitudePosition var:(float)temp/10000];
 
-    
-//    NSLog(@"engs: [%d][%d][%d][%d]", self.engOne, self.engTwo, self.engThree, self.engFour);
-    
 }
 
 - (void) AddVariableToMutableArray:(NSMutableArray *) array var: (float) var
@@ -319,6 +328,21 @@ extern int errno;
     }
     
     buffer[3]=(char)abs(step);
+    
+    [self sendClient:buffer length:4];
+    self.PackagesSent+=1;
+    
+    free(buffer);
+}
+
+-(void) changeResolutionInterval:(unsigned short) val
+{
+    char *buffer=malloc(sizeof(char)*4);
+    
+    buffer[0]=0xFF;
+    buffer[1]=0x09;
+    buffer[2]=val & 0xFF;
+    buffer[3]=(val>>8) & 0xFF;
     
     [self sendClient:buffer length:4];
     self.PackagesSent+=1;

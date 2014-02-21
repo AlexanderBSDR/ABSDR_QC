@@ -68,6 +68,12 @@
     self.ConnectionParameters.engineMin=700;       ///////////////////////////////
     self.ConnectionParameters.engineMax=2300;      ///////////////////////////////
     
+    self.ConnectionParameters.engineOne=self.ConnectionParameters.engineMin;
+    self.ConnectionParameters.engineTwo=self.ConnectionParameters.engineMin;
+    self.ConnectionParameters.engineThree=self.ConnectionParameters.engineMin;
+    self.ConnectionParameters.engineFour=self.ConnectionParameters.engineMin;
+
+    
     self.old_Slider=[[NSNumber alloc] initWithInt:self.ConnectionParameters.engineMin];
     self.old_Stepper=[[NSNumber alloc] initWithInt:self.ConnectionParameters.engineMin];
     
