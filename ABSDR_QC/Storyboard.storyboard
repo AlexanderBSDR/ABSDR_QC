@@ -97,7 +97,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CbY-TX-DHG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="913" y="1014"/>
+            <point key="canvasLocation" x="225" y="308"/>
         </scene>
         <!--View Controller Control Board-->
         <scene sceneID="36B-8D-Hap">
@@ -251,7 +251,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pWp-Aq-vY5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="989" y="114"/>
+            <point key="canvasLocation" x="1656" y="838"/>
         </scene>
         <!--View Controller Flight-->
         <scene sceneID="ABP-0g-EPD">
@@ -391,7 +391,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tdx-6V-qrm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1720" y="114"/>
+            <point key="canvasLocation" x="1656" y="308"/>
         </scene>
         <!--View Controller Gyro-->
         <scene sceneID="Ecs-3F-T1x">
@@ -544,7 +544,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zzZ-t1-5as" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1625" y="990"/>
+            <point key="canvasLocation" x="977" y="308"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="j5z-v5-TEn">
@@ -571,7 +571,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="bEk-FL-fIX"/>
+        <segue reference="l8P-vS-PpG"/>
         <segue reference="TnZ-74-oQX"/>
     </inferredMetricsTieBreakers>
 </document>
