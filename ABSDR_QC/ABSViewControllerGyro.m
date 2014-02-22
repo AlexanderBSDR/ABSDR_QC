@@ -27,6 +27,8 @@
 @property int canvasMaxWidth;
 @property int canvasMaxHeight;
 @property int scaleX;
+@property CGPoint *accArrayCG;
+@property CGPoint *rotArrayCG;
 
 @property double batteryTime;
 @property CGColorRef blueColor, redColor, greenColor, yellowColor;
@@ -75,7 +77,6 @@
     [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMGyroData *gyroData, NSError *error){ [self outputRotationData:gyroData.rotationRate];}];
  
  */
-    
     [NSThread detachNewThreadSelector:@selector(startServer) toTarget:self.ConnectionParameters withObject:Nil];
     
     [self.ConnectionParameters sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
@@ -99,6 +100,15 @@
     self.canvasMaxHeight=self.canvasX.frame.size.height;
     self.scaleX=2;
     self.ConnectionParameters.maxSize=self.canvasMaxWidth/self.scaleX+1;
+    
+    self.accArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*self.canvasMaxWidth);
+    self.rotArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*self.canvasMaxWidth);
+    
+    for (int i=0; i<self.canvasMaxWidth; i++)
+    {
+        self.accArrayCG[i].x=i*self.scaleX;
+        self.rotArrayCG[i].x=i*self.scaleX;
+    }
 }
 
 /*-(void)outputAccelertionData:(CMAcceleration)acceleration
@@ -238,18 +248,11 @@
 
 - (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray color1:(CGColorRef)color1 color2:(CGColorRef) color2 conv1:(float)conversion1 conv2:(float)conversion2
 {
-    
-    CGPoint *accArrayCG;
-    CGPoint *rotArrayCG;
-    accArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*accArray.count);
-    rotArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*rotArray.count);
-    
-    
     for (int i=0; i<accArray.count; i++)
     {
-        accArrayCG[i].x=i*self.scaleX;
+//        accArrayCG[i].x=i*self.scaleX;
         @try {
-            accArrayCG[i].y=[self reSizeAcc:[[accArray objectAtIndex:i] floatValue]conv:conversion1];
+            self.accArrayCG[i].y=[self reSizeAcc:[[accArray objectAtIndex:i] floatValue] conv:conversion1];
         }
         
         @catch(NSException *exception)
@@ -261,12 +264,10 @@
     
     for (int i=0; i<rotArray.count; i++)
     {
-        rotArrayCG[i].x=i*self.scaleX;
-        
         @try {
-            rotArrayCG[i].y=[self reSizeAcc:[[rotArray objectAtIndex:i] floatValue] conv:conversion2];
+            self.rotArrayCG[i].y=[self reSizeAcc:[[rotArray objectAtIndex:i] floatValue] conv:conversion2];
         }
-    
+ 
         @catch(NSException *exception)
         {
             NSLog(@"Exception @objectAtIndex.rotArray!\n");
@@ -285,14 +286,13 @@
     CGContextFillRect(context, CGRectMake(0.0f, 0.0f, size.width, size.height));
     
     CGContextSetLineWidth(context, 1.0f);
-
     
     CGContextSetStrokeColorWithColor(context, color1);
-    CGContextAddLines(context, accArrayCG, accArray.count);
+    CGContextAddLines(context, self.accArrayCG, accArray.count);
     CGContextStrokePath(context);
     
     CGContextSetStrokeColorWithColor(context, color2);
-    CGContextAddLines(context, rotArrayCG, rotArray.count);
+    CGContextAddLines(context, self.rotArrayCG, rotArray.count);
     CGContextStrokePath(context);
 
     CGContextSetStrokeColorWithColor(context, [[UIColor blackColor] CGColor]);
@@ -304,8 +304,8 @@
     UIGraphicsEndImageContext();
     canvas.image=result;
     
-    free(rotArrayCG);
-    free(accArrayCG);
+//    free(rotArrayCG);
+//    free(accArrayCG);
 }
 
 

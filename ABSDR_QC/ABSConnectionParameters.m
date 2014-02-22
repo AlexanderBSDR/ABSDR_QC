@@ -173,7 +173,8 @@ extern int errno;
     if(flag==TRUE)  NSLog(@"Power: %f", (float)temp);
 
     //altitude
-    if(flag==TRUE)  NSLog(@"Altitude: %f", (float)temp/100);
+    temp=((data[31]<<8) | data[30]);
+    if(flag==TRUE)  NSLog(@"Altitude: %f", (float)temp/10000);
     [self AddVariableToMutableArray:self.altitudePosition var:(float)temp/10000];
 
 }
