@@ -84,29 +84,29 @@
     self.engineOneSlider.maximumValue=self.ConnectionParameters.engineMax;
     self.engineOneStepper.minimumValue=self.ConnectionParameters.engineMin;
     self.engineOneSlider.minimumValue=self.ConnectionParameters.engineMin;
-    self.engineOneStepper.value=self.ConnectionParameters.engineMin;
-    self.engineOneSlider.value=self.ConnectionParameters.engineMin;
+    self.engineOneStepper.value=self.ConnectionParameters.engineOne;
+    self.engineOneSlider.value=self.ConnectionParameters.engineOne;
     
     self.engineTwoStepper.maximumValue=self.ConnectionParameters.engineMax;
     self.engineTwoSlider.maximumValue=self.ConnectionParameters.engineMax;
     self.engineTwoStepper.minimumValue=self.ConnectionParameters.engineMin;
     self.engineTwoSlider.minimumValue=self.ConnectionParameters.engineMin;
-    self.engineTwoStepper.value=self.ConnectionParameters.engineMin;
-    self.engineTwoSlider.value=self.ConnectionParameters.engineMin;
+    self.engineTwoStepper.value=self.ConnectionParameters.engineTwo;
+    self.engineTwoSlider.value=self.ConnectionParameters.engineTwo;
     
     self.engineThreeStepper.maximumValue=self.ConnectionParameters.engineMax;
     self.engineThreeSlider.maximumValue=self.ConnectionParameters.engineMax;
     self.engineThreeStepper.minimumValue=self.ConnectionParameters.engineMin;
     self.engineThreeSlider.minimumValue=self.ConnectionParameters.engineMin;
-    self.engineThreeStepper.value=self.ConnectionParameters.engineMin;
-    self.engineThreeSlider.value=self.ConnectionParameters.engineMin;
+    self.engineThreeStepper.value=self.ConnectionParameters.engineThree;
+    self.engineThreeSlider.value=self.ConnectionParameters.engineThree;
     
     self.engineFourStepper.maximumValue=self.ConnectionParameters.engineMax;
     self.engineFourSlider.maximumValue=self.ConnectionParameters.engineMax;
     self.engineFourStepper.minimumValue=self.ConnectionParameters.engineMin;
     self.engineFourSlider.minimumValue=self.ConnectionParameters.engineMin;
-    self.engineFourStepper.value=self.ConnectionParameters.engineMin;
-    self.engineFourSlider.value=self.ConnectionParameters.engineMin;
+    self.engineFourStepper.value=self.ConnectionParameters.engineFour;
+    self.engineFourSlider.value=self.ConnectionParameters.engineFour;
     
     self.engineAllStepper.maximumValue=self.ConnectionParameters.engineMax;
     self.engineAllSlider.maximumValue=self.ConnectionParameters.engineMax;

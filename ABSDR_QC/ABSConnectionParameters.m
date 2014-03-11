@@ -52,8 +52,8 @@ extern int errno;
     self.newData=FALSE;
     
     
-    self.engineMin=700;       ///////////////////////////////
-    self.engineMax=2300;      ///////////////////////////////
+    self.engineMin=1000;       ///////////////////////////////
+    self.engineMax=2000;      ///////////////////////////////
     
     self.engineOne=self.engineMin;
     self.engineTwo=self.engineMin;
@@ -161,7 +161,7 @@ extern int errno;
     double temp_battery;
     temp=((data[29]<<8) | data[28]);
     temp_battery=(double)temp*3.3/1024;
-    temp_battery=temp_battery/0.5;
+    temp_battery=temp_battery/0.3;
 //    NSLog(@"%f\n", temp_battery);
 //    self.batteryPower=self.batteryPower/(2200/(2200+2200));
     if([[NSDate date] timeIntervalSince1970]-self.timer1s>self.batteryLagTime)
