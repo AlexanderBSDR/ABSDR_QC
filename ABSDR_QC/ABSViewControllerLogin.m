@@ -63,5 +63,9 @@
     }
 }
 
+-(IBAction)textFieldReturn:(id)sender
+{
+    [sender resignFirstResponder];
+}
 
 @end

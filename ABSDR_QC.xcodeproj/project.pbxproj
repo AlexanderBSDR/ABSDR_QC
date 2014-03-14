@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		05F26E3B18A6E011009E7B62 /* ABSViewControllerGyro.m in Sources */ = {isa = PBXBuildFile; fileRef = 05F26E3A18A6E011009E7B62 /* ABSViewControllerGyro.m */; };
 		1B20D59918A67CA10027EA72 /* ABSViewControllerFlight.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B20D59818A67CA10027EA72 /* ABSViewControllerFlight.m */; };
-		1B54E171189C0B1700717533 /* ABSControlParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B54E170189C0B1700717533 /* ABSControlParameters.m */; };
 		1B79F886189BEA8400663523 /* ABSConnectionParameters.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B79F885189BEA8400663523 /* ABSConnectionParameters.m */; };
 		1B93EB4A189BDFFE008FC8D1 /* ABSViewControllerLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B93EB49189BDFFE008FC8D1 /* ABSViewControllerLogin.m */; };
 		1B93EB4D189BE020008FC8D1 /* ABSViewControllerControlBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B93EB4C189BE020008FC8D1 /* ABSViewControllerControlBoard.m */; };
@@ -43,8 +42,6 @@
 		05F26E3A18A6E011009E7B62 /* ABSViewControllerGyro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSViewControllerGyro.m; sourceTree = "<group>"; };
 		1B20D59718A67CA10027EA72 /* ABSViewControllerFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSViewControllerFlight.h; sourceTree = "<group>"; };
 		1B20D59818A67CA10027EA72 /* ABSViewControllerFlight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSViewControllerFlight.m; sourceTree = "<group>"; };
-		1B54E16F189C0B1700717533 /* ABSControlParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSControlParameters.h; sourceTree = "<group>"; };
-		1B54E170189C0B1700717533 /* ABSControlParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSControlParameters.m; sourceTree = "<group>"; };
 		1B79F884189BEA8400663523 /* ABSConnectionParameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSConnectionParameters.h; sourceTree = "<group>"; };
 		1B79F885189BEA8400663523 /* ABSConnectionParameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABSConnectionParameters.m; sourceTree = "<group>"; };
 		1B93EB48189BDFFE008FC8D1 /* ABSViewControllerLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABSViewControllerLogin.h; sourceTree = "<group>"; };
@@ -97,8 +94,6 @@
 		1B54E172189C0B4200717533 /* DataClasses */ = {
 			isa = PBXGroup;
 			children = (
-				1B54E16F189C0B1700717533 /* ABSControlParameters.h */,
-				1B54E170189C0B1700717533 /* ABSControlParameters.m */,
 				1B79F884189BEA8400663523 /* ABSConnectionParameters.h */,
 				1B79F885189BEA8400663523 /* ABSConnectionParameters.m */,
 			);
@@ -230,7 +225,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = ABS;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "CIG account";
 				TargetAttributes = {
 					1BAD61D4189BDEB200DE6BD0 = {
@@ -284,7 +279,6 @@
 			files = (
 				1B79F886189BEA8400663523 /* ABSConnectionParameters.m in Sources */,
 				1B93EB4D189BE020008FC8D1 /* ABSViewControllerControlBoard.m in Sources */,
-				1B54E171189C0B1700717533 /* ABSControlParameters.m in Sources */,
 				1BAD61CA189BDEB200DE6BD0 /* main.m in Sources */,
 				1B93EB4A189BDFFE008FC8D1 /* ABSViewControllerLogin.m in Sources */,
 				1BAD61CE189BDEB200DE6BD0 /* ABSAppDelegate.m in Sources */,
@@ -335,7 +329,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -375,7 +368,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -434,7 +426,6 @@
 		1BAD61EA189BDEB200DE6BD0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ABSDR_QC.app/ABSDR_QC";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -457,7 +448,6 @@
 		1BAD61EB189BDEB200DE6BD0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/ABSDR_QC.app/ABSDR_QC";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

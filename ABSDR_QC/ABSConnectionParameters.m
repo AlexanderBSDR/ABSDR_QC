@@ -118,18 +118,18 @@ extern int errno;
     self.engineThree=(data[7]<<8) | data[6];
     self.engineFour=(data[9]<<8) | data[8];
     
-    //accel
+    //actial_Angles
     temp=(data[11]<<8) | data[10];
     if(flag==TRUE)   NSLog(@"acc_X: %ud", temp);
-    [self AddVariableToMutableArray:self.accArrayX var:((float)temp/1024*8-4)];
+    [self AddVariableToMutableArray:self.accArrayX var:((float)temp/3600)];
 
     temp=(data[13]<<8) | data[12];
     if(flag==TRUE)  NSLog(@"acc_Y: %ud", temp);
-    [self AddVariableToMutableArray:self.accArrayY var:((float)temp/1024*8-4)];
+    [self AddVariableToMutableArray:self.accArrayY var:((float)temp/3600)];
     
     temp=(data[15]<<8) | data[14];
     if(flag==TRUE)  NSLog(@"acc_Z: %ud", temp);
-    [self AddVariableToMutableArray:self.accArrayZ var:((float)temp/1024*8-4)];
+    [self AddVariableToMutableArray:self.accArrayZ var:((float)temp/3600)];
 
     //gyro
     temp=(data[17]<<8) | data[16];
@@ -251,7 +251,7 @@ extern int errno;
         char *new_msg=malloc(len+1);
         strncpy(new_msg, msg, len);
         new_msg[len]='\0';
-        NSLog(@"-> Tx: %s\n", new_msg);
+        NSLog(@"-> Tx[%ld]: %s\n", a, new_msg);
         free (new_msg);
     }
     return false;
@@ -281,44 +281,36 @@ extern int errno;
     free(buffer);
 }
 
--(void) changeAltitude:(int) step
+-(void) changeAltitude:(float) step
 {
     char *buffer=malloc(sizeof(char)*4);
 
     buffer[0]=0xFF;
     buffer[1]=0x02;
-    if(step>0)
-    {
-        buffer[2]=(char)'+';
-    }
-    else
-    {
-        buffer[2]=(char)'-';
-    }
     
-    buffer[3]=(char)abs(step);
+    int temp=(int)round(step*10);
+    
+    
+    buffer[2]=temp & 0xFF;
+    buffer[3]=(temp>>8) & 0xFF;
     
     [self sendClient:buffer length:4];
     self.PackagesSent+=1;
     
     free(buffer);
 }
--(void) changeDirection:(int) step
+-(void) changeDirection:(float) step
 {
     char *buffer=malloc(sizeof(char)*4);
     
     buffer[0]=0xFF;
     buffer[1]=0x03;
-    if(step>0)
-    {
-        buffer[2]=(char)'+';
-    }
-    else
-    {
-        buffer[2]=(char)'-';
-    }
     
-    buffer[3]=(char)abs(step);
+    int temp=(int)round(step*10);
+    
+    
+    buffer[2]=temp & 0xFF;
+    buffer[3]=(temp>>8) & 0xFF;
     
     [self sendClient:buffer length:4];
     self.PackagesSent+=1;
@@ -326,22 +318,17 @@ extern int errno;
     free(buffer);
 
 }
--(void) changeRotation:(int) step
+-(void) changeRotation:(float) step
 {
     char *buffer=malloc(sizeof(char)*4);
     
     buffer[0]=0xFF;
     buffer[1]=0x04;
-    if(step>0)
-    {
-        buffer[2]=(char)'+';
-    }
-    else
-    {
-        buffer[2]=(char)'-';
-    }
     
-    buffer[3]=(char)abs(step);
+    int temp=(int)round(step*10);
+    
+    buffer[2]=temp & 0xFF;
+    buffer[3]=(temp>>8) & 0xFF;
     
     [self sendClient:buffer length:4];
     self.PackagesSent+=1;
@@ -359,6 +346,50 @@ extern int errno;
     buffer[3]=(val>>8) & 0xFF;
     
     [self sendClient:buffer length:4];
+    self.PackagesSent+=1;
+    
+    free(buffer);
+}
+
+
+-(void) changeMixerGains:(unsigned short) val gain_1: (double) g1 gain_2: (double) g2 gain_3: (double) g3 gain_4:(double) g4
+{
+    char *buffer=malloc(sizeof(char)*10);
+    
+    buffer[0]=0xFF;
+    switch (val)
+    {
+        case 1:
+            buffer[1]=0x05;
+            break;
+        case 2:
+            buffer[1]=0x06;
+            break;
+        case 3:
+            buffer[1]=0x07;
+            break;
+            
+    }
+    
+    int g1_t=(int)round(g1*100);
+    int g2_t=(int)round(g2*100);
+    int g3_t=(int)round(g3*100);
+    int g4_t=(int)round(g4*100);
+
+    
+    buffer[2]=g1_t & 0xFF;
+    buffer[3]=(g1_t>>8) & 0xFF;
+    
+    buffer[4]=g2_t & 0xFF;
+    buffer[5]=(g2_t>>8) & 0xFF;
+    
+    buffer[6]=g3_t & 0xFF;
+    buffer[7]=(g3_t>>8) & 0xFF;
+    
+    buffer[8]=g4_t & 0xFF;
+    buffer[9]=(g4_t>>8) & 0xFF;
+    
+    [self sendClient:buffer length:10];
     self.PackagesSent+=1;
     
     free(buffer);

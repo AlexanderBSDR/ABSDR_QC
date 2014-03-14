@@ -49,10 +49,12 @@
 - (bool) sendServerSocket:(NSString *) ip port:(int) p;
 
 -(void) updateEngineParameters;
--(void) changeAltitude:(int) step;
--(void) changeDirection:(int) step;
--(void) changeRotation:(int) step;
+-(void) changeAltitude:(float) step;
+-(void) changeDirection:(float) step;
+-(void) changeRotation:(float) step;
 -(void) changeResolutionInterval:(unsigned short) val;
+-(void) changeMixerGains:(unsigned short) val gain_1: (double) g1 gain_2: (double) g2 gain_3: (double) g3 gain_4:(double) g4;
+
 
 
 - (void) AddVariableToMutableArray:(NSMutableArray *) array var: (float) var;

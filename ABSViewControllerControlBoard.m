@@ -10,9 +10,6 @@
 #import "ABSViewControllerLogin.h"
 #import "ABSViewControllerFlight.h"
 
-#import "ABSControlParameters.h"
-
-
 @interface ABSViewControllerControlBoard ()
 @property (weak, nonatomic) IBOutlet UILabel *labelSent;
 @property (weak, nonatomic) IBOutlet UISlider *engineOneSlider;

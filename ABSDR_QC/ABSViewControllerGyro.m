@@ -20,9 +20,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *engineTwoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *engineThreeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *engineFourLabel;
-@property (weak, nonatomic) IBOutlet UILabel *resolutionLabel;
-@property (weak, nonatomic) IBOutlet UIStepper *resolutionStepper;
 @property (weak, nonatomic) IBOutlet UILabel *batteryLabel;
+@property (weak, nonatomic) IBOutlet UITextField *resolutionField;
 
 @property int canvasMaxWidth;
 @property int canvasMaxHeight;
@@ -53,30 +52,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-/*    currentMaxAccelX = 0;
-    currentMaxAccelY = 0;
-    currentMaxAccelZ = 0;
-    
-    currentMaxRotX = 0;
-    currentMaxRotY = 0;
-    currentMaxRotZ = 0;
-    
-    self.motionManager = [[CMMotionManager alloc]init];
-    self.motionManager.accelerometerUpdateInterval = .1;
-    self.motionManager.gyroUpdateInterval = .1;
-    
-    [self.motionManager startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue]
-                                             withHandler:^(CMAccelerometerData  *accelerometerData, NSError *error) {
-                                                 [self outputAccelertionData:accelerometerData.acceleration];
-                                                 if(error){
-                                                     
-                                                     NSLog(@"%@", error);
-                                                 }
-                                             }];
-    
-    [self.motionManager startGyroUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMGyroData *gyroData, NSError *error){ [self outputRotationData:gyroData.rotationRate];}];
- 
- */
     [NSThread detachNewThreadSelector:@selector(startServer) toTarget:self.ConnectionParameters withObject:Nil];
     
     [self.ConnectionParameters sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
@@ -86,7 +61,6 @@
     self.greenColor=[[UIColor greenColor] CGColor];
     self.yellowColor=[[UIColor yellowColor] CGColor];
     
-    [self.resolutionLabel setText:[[NSString alloc] initWithFormat:@"%5.0f", self.resolutionStepper.value]];
     self.batteryTime=[[NSDate date] timeIntervalSince1970];
     
     [NSTimer scheduledTimerWithTimeInterval:.001 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
@@ -167,10 +141,10 @@
 {
     if(self.ConnectionParameters.newData==TRUE)
     {
-        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor conv1: -4 conv2: -4];
-        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor conv1: -4 conv2: -4];
-        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor conv1: -4 conv2: -4];
-        [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition  color1:self.greenColor color2:self.yellowColor conv1:-4 conv2: -4];
+        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor conv1: -1 conv2: -1];
+        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor conv1: -1 conv2: -1];
+        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor conv1: -1 conv2: -1];
+        [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition  color1:self.greenColor color2:self.yellowColor conv1:-1 conv2: -1];
     
         [self reDrawEngines:self.canvasEngines];
         self.ConnectionParameters.newData=FALSE;
@@ -327,14 +301,16 @@
         destView.ConnectionParameters=self.ConnectionParameters;
     }
 }
-- (IBAction)resolutionChanged:(id)sender {
 
-    [self.ConnectionParameters changeResolutionInterval:(unsigned short)self.resolutionStepper.value];
-}
-- (IBAction)resolutionLabelChange:(id)sender {
-        [self.resolutionLabel setText:[[NSString alloc] initWithFormat:@"%5.0f", self.resolutionStepper.value]];
+- (IBAction)clickedSetResolution:(id)sender {
+    
+    [self.ConnectionParameters changeResolutionInterval:(unsigned short)self.resolutionField.text.intValue];
 }
 
+-(IBAction)textFieldReturn:(id)sender
+{
+    [sender resignFirstResponder];
+}
 
 
 @end
