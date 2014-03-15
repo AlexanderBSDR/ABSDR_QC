@@ -10,10 +10,14 @@
 #import "ABSViewControllerControlBoard.h"
 #import "ABSViewControllerGyro.h"
 
-#define FACTORFORCONTROL 0.67
-#define MAX_PITCH_ANGLES 180
-#define MAX_ROLL_ANGLES 180
-#define MAX_SPEED_ANGLES 360
+//#define FACTORFORCONTROL 0.67
+
+#define MAX_SPEED_ANGLES 1000
+
+
+#define MAX_PITCH_ANGLES MAX_SPEED_ANGLES/2
+#define MAX_ROLL_ANGLES MAX_SPEED_ANGLES/2
+
 //#define ZERORANGE_SPEED 10
 //#define ZERORANGE_ANGLES (ZERORANGE_SPEED/2)
 
@@ -45,6 +49,19 @@
 @property (weak, nonatomic) IBOutlet UITextField *gains_E3_Roll;
 @property (weak, nonatomic) IBOutlet UITextField *gains_E4_Roll;
 @property double rollLast,pitchLast, speedLast;
+@property double speedCumulative, pitchCumulative, rollCumulative;
+
+
+@property (weak, nonatomic) IBOutlet UIProgressView *progress_E1;
+@property (weak, nonatomic) IBOutlet UIProgressView *progress_E2;
+@property (weak, nonatomic) IBOutlet UIProgressView *progress_E3;
+@property (weak, nonatomic) IBOutlet UIProgressView *progress_E4;
+@property (weak, nonatomic) IBOutlet UILabel *label_E1;
+@property (weak, nonatomic) IBOutlet UILabel *label_E2;
+@property (weak, nonatomic) IBOutlet UILabel *label_E3;
+@property (weak, nonatomic) IBOutlet UILabel *label_E4;
+
+@property NSTimer* timer1;
 
 
 
@@ -68,7 +85,11 @@
     [super viewDidLoad];
     self.sliderAltitude.transform=CGAffineTransformMakeRotation(-M_PI_2);
     self.sliderDirection.transform=CGAffineTransformMakeRotation(-M_PI_2);
-
+    
+    self.progress_E1.transform=CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI_2),CGAffineTransformMakeScale(10.0f, 1.0f));
+    self.progress_E2.transform=CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI_2),CGAffineTransformMakeScale(10.0f, 1.0f));
+    self.progress_E3.transform=CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI_2),CGAffineTransformMakeScale(10.0f, 1.0f));
+    self.progress_E4.transform=CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI_2),CGAffineTransformMakeScale(10.0f, 1.0f));
 	// Do any additional setup after loading the view.
     // NSLog(@"%f", MAX_PITCH_SLIDER_SETTINGS);
     // NSLog(@"%f", MAX_ROLL_SLIDER_SETTINGS);
@@ -86,6 +107,9 @@
     self.sliderDirection.maximumValue=(MAX_PITCH_ANGLES);
     
     self.sliderDirection.value=0;
+    self.speedCumulative=self.speedLast=0;
+    self.pitchCumulative=self.pitchLast=0;
+    self.rollCumulative=self.rollLast=0;
     
     self.gains_E1_Speed.text=[[NSString alloc]initWithFormat:@"%1.2f", self.ConnectionParameters.g_E1_S];
     self.gains_E2_Speed.text=[[NSString alloc]initWithFormat:@"%1.2f", self.ConnectionParameters.g_E2_S];
@@ -102,6 +126,10 @@
     self.gains_E3_Roll.text=[[NSString alloc]initWithFormat:@"%1.2f", self.ConnectionParameters.g_E3_R];
     self.gains_E4_Roll.text=[[NSString alloc]initWithFormat:@"%1.2f", self.ConnectionParameters.g_E4_R];
     
+    self.timer1=[NSTimer scheduledTimerWithTimeInterval:.001 target:self selector:@selector(updateProgressBars) userInfo:nil repeats:YES];
+    self.ConnectionParameters.newData=TRUE;
+
+    
     
    // self.sliderAltitude.
 }
@@ -113,30 +141,154 @@
 }
 
 
+- (void) updateProgressBars
+{
+    if(self.ConnectionParameters.newData==TRUE)
+    {
+        self.label_E1.text=[[NSString alloc] initWithFormat:@"%d", self.ConnectionParameters.engineOne];
+        self.label_E2.text=[[NSString alloc] initWithFormat:@"%d", self.ConnectionParameters.engineTwo];
+        self.label_E3.text=[[NSString alloc] initWithFormat:@"%d", self.ConnectionParameters.engineThree];
+        self.label_E4.text=[[NSString alloc] initWithFormat:@"%d", self.ConnectionParameters.engineFour];
+        
+        int range=self.ConnectionParameters.engineMax-self.ConnectionParameters.engineMin;
+        
+        self.progress_E1.progress=(float)(self.ConnectionParameters.engineOne-self.ConnectionParameters.engineMin)/range;
+        self.progress_E2.progress=(float)(self.ConnectionParameters.engineTwo-self.ConnectionParameters.engineMin)/range;
+        self.progress_E3.progress=(float)(self.ConnectionParameters.engineThree-self.ConnectionParameters.engineMin)/range;
+        self.progress_E4.progress=(float)(self.ConnectionParameters.engineFour-self.ConnectionParameters.engineMin)/range;
+    }
+    
+    self.ConnectionParameters.newData=FALSE;
+}
+
+
 
 - (IBAction)sliderAltitudeChanged:(id)sender {
-    [self.ConnectionParameters changeAltitude:self.sliderAltitude.value-self.speedLast];
+    
+    self.speedCumulative+=roundf(self.sliderAltitude.value-self.speedLast);
+
+    if(self.speedCumulative>MAX_SPEED_ANGLES){
+        
+        [self.ConnectionParameters changeAltitude:-self.speedCumulative+MAX_SPEED_ANGLES];
+        self.speedCumulative+=-self.speedCumulative+MAX_SPEED_ANGLES;
+        NSLog(@"Speed: %f-%f", self.speedCumulative,-self.speedCumulative+MAX_SPEED_ANGLES);
+
+    }
+    
+    else if(self.sliderAltitude.value==MAX_SPEED_ANGLES)
+    {
+        [self.ConnectionParameters changeAltitude:MAX_SPEED_ANGLES-self.speedCumulative];
+        self.speedCumulative+=MAX_SPEED_ANGLES-self.speedCumulative;
+        NSLog(@"Speed: %f-%f", self.speedCumulative,MAX_SPEED_ANGLES-self.speedCumulative);
+
+    }
+    
+    else if(self.sliderAltitude.value==0)
+            {
+                
+                [self.ConnectionParameters changeAltitude:-self.speedCumulative];
+                self.speedCumulative+=-self.speedCumulative;
+                NSLog(@"Speed: %f-%f", self.speedCumulative,-self.speedCumulative);
+
+            }
+    else
+    {
+        [self.ConnectionParameters changeAltitude:roundf(self.sliderAltitude.value-self.speedLast)];
+        NSLog(@"Speed: %f-%f", self.speedCumulative,roundf(self.sliderAltitude.value-self.speedLast));
+
+    }
+    
+
     self.speedLast=self.sliderAltitude.value;
-    /*NSLog(@"%@", self.ConnectionParameters.IPAddress);
-    NSLog(@"%@", self.ConnectionParameters.RemotePort);
-    NSLog(@"%@", self.ConnectionParameters.LocalPort);
-    NSLog(@"%d", self.ConnectionParameters.sock_client);
-    NSLog(@"%d", self.ConnectionParameters.sock_server);*/
-//    NSLog(@"%f", self.sliderAltitude.value);
-//    NSLog(@"Adjusted: %d", [self interpolatedFunction:self.sliderAltitude.value]);
 }
 
 - (IBAction)sliderDirectionChanged:(id)sender {
-    if(self.pitchLast!=self.sliderDirection.value)
-    [self.ConnectionParameters changeDirection:-(self.sliderDirection.value-self.pitchLast)];
-    self.pitchLast=-self.sliderDirection.value;
-   // NSLog(@"Direction: %f", -[self interpolatedFunctionAngles:self.sliderDirection.value]);
+    self.pitchCumulative+=roundf(self.sliderDirection.value-self.pitchLast);
+    
+    if(self.pitchCumulative>MAX_PITCH_ANGLES){
+        
+        [self.ConnectionParameters changeDirection:self.pitchCumulative+MAX_PITCH_ANGLES];
+        self.pitchCumulative+=self.pitchCumulative+MAX_PITCH_ANGLES;
+        NSLog(@"Pitch: %f-%f", self.pitchCumulative,self.pitchCumulative+MAX_PITCH_ANGLES);
+        
+    }
+    
+    if(self.pitchCumulative<-MAX_PITCH_ANGLES){
+        
+        [self.ConnectionParameters changeDirection:self.pitchCumulative+MAX_PITCH_ANGLES];
+        self.pitchCumulative+=-self.pitchCumulative+MAX_PITCH_ANGLES;
+        NSLog(@"Pitch: %f-%f", self.pitchCumulative,-self.pitchCumulative+MAX_PITCH_ANGLES);
+        
+    }
+    
+    else if(self.sliderDirection.value==MAX_PITCH_ANGLES)
+    {
+        [self.ConnectionParameters changeDirection:MAX_PITCH_ANGLES-self.pitchCumulative];
+        self.pitchCumulative+=MAX_PITCH_ANGLES-self.pitchCumulative;
+        NSLog(@"Pitch: %f-%f", self.pitchCumulative,MAX_PITCH_ANGLES-self.pitchCumulative);
+        
+    }
+    
+    else if(self.sliderDirection.value==-MAX_PITCH_ANGLES)
+    {
+        [self.ConnectionParameters changeDirection:-(MAX_PITCH_ANGLES+self.pitchCumulative)];
+        self.pitchCumulative+=-(MAX_PITCH_ANGLES+self.pitchCumulative);
+        NSLog(@"Pitch: %f-%f", self.pitchCumulative,-(MAX_PITCH_ANGLES+self.pitchCumulative));
+        
+    }
+    
+    else
+    {
+        [self.ConnectionParameters changeDirection:roundf(self.sliderDirection.value-self.pitchLast)];
+        NSLog(@"Pitch: %f-%f", self.pitchCumulative,roundf(self.sliderDirection.value-self.pitchLast));
+        
+    }
+    
+    self.pitchLast=self.sliderDirection.value;
 }
 - (IBAction)sliderRotationChanged:(id)sender {
-    if(self.rollLast!=self.sliderRotation.value)
-    [self.ConnectionParameters changeRotation:(self.sliderRotation.value-self.rollLast)];
+    self.rollCumulative+=roundf(self.sliderRotation.value-self.rollLast);
+    
+    if(self.rollCumulative>MAX_ROLL_ANGLES){
+        
+        [self.ConnectionParameters changeRotation:self.rollCumulative+MAX_ROLL_ANGLES];
+        self.rollCumulative+=self.rollCumulative+MAX_ROLL_ANGLES;
+        NSLog(@"Roll: %f-%f", self.rollCumulative,self.rollCumulative+MAX_ROLL_ANGLES);
+        
+    }
+    
+    if(self.rollCumulative<-MAX_ROLL_ANGLES){
+        
+        [self.ConnectionParameters changeRotation:self.rollCumulative+MAX_ROLL_ANGLES];
+        self.rollCumulative+=-self.rollCumulative+MAX_ROLL_ANGLES;
+        NSLog(@"Roll: %f-%f", self.rollCumulative,-self.rollCumulative+MAX_ROLL_ANGLES);
+        
+    }
+    
+    else if(self.sliderRotation.value==MAX_ROLL_ANGLES)
+    {
+        [self.ConnectionParameters changeRotation:MAX_ROLL_ANGLES-self.rollCumulative];
+        self.rollCumulative+=MAX_ROLL_ANGLES-self.rollCumulative;
+        NSLog(@"Roll: %f-%f", self.rollCumulative,MAX_ROLL_ANGLES-self.rollCumulative);
+        
+    }
+    
+    else if(self.sliderRotation.value==-MAX_ROLL_ANGLES)
+    {
+        [self.ConnectionParameters changeRotation:-(MAX_ROLL_ANGLES+self.rollCumulative)];
+        self.rollCumulative+=-(MAX_ROLL_ANGLES+self.rollCumulative);
+        NSLog(@"Roll: %f-%f", self.rollCumulative,-(MAX_ROLL_ANGLES+self.rollCumulative));
+        
+    }
+    
+    else
+    {
+        [self.ConnectionParameters changeRotation:roundf(self.sliderRotation.value-self.rollLast)];
+        NSLog(@"Roll: %f-%f", self.rollCumulative,roundf(self.sliderRotation.value-self.rollLast));
+        
+    }
+    
     self.rollLast=self.sliderRotation.value;
-   // NSLog(@"ROtaion: %f", [self interpolatedFunctionAngles:self.sliderRotation.value]);
 }
 
 /*- (float) interpolatedFunctionSpeed: (float) ch
@@ -159,12 +311,16 @@
     {
         ABSViewControllerControlBoard *destView=[segue destinationViewController];
         destView.ConnectionParameters=self.ConnectionParameters;
+        [self.timer1 invalidate];
+        self.timer1 = nil;
     }
     
     if([segue.identifier isEqualToString:@"showGyroBoard"])
     {
         ABSViewControllerGyro *destView=[segue destinationViewController];
         destView.ConnectionParameters=self.ConnectionParameters;
+        [self.timer1 invalidate];
+        self.timer1 = nil;
     }
 }
 - (IBAction)buttonUpdateMixerSettings:(id)sender {
@@ -212,4 +368,9 @@
     self.sliderDirection.value=0;
 }
 
+
+- (BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 @end

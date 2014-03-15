@@ -65,6 +65,11 @@
         [self.ConnectionParameters sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
     }
     self.timer1=[NSTimer scheduledTimerWithTimeInterval:.001 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
+    
+    self.blueColor=[[UIColor blueColor] CGColor];
+    self.redColor=[[UIColor redColor] CGColor];
+    self.greenColor=[[UIColor greenColor] CGColor];
+    self.yellowColor=[[UIColor yellowColor] CGColor];
 
     //NSLog(@"Server: %d --- %d", self.ConnectionParameters.sock_server, self.ConnectionParameters.sock_client);
 }
@@ -88,51 +93,6 @@
     }
 }
 
-/*-(void)outputAccelertionData:(CMAcceleration)acceleration
-{
-    self.accX.text = [NSString stringWithFormat:@"Acceleration in X: %.2fg",acceleration.x];
-    if(fabs(acceleration.x) > fabs(currentMaxAccelX))
-    {
-        currentMaxAccelX = acceleration.x;
-    }
-    self.accY.text = [NSString stringWithFormat:@"Acceleration in Y: %.2fg",acceleration.y];
-    if(fabs(acceleration.y) > fabs(currentMaxAccelY))
-    {
-        currentMaxAccelY = acceleration.y;
-    }
-    self.accZ.text = [NSString stringWithFormat:@"Acceleration in Z: %.2fg",acceleration.z];
-    if(fabs(acceleration.z) > fabs(currentMaxAccelZ))
-    {
-        currentMaxAccelZ = acceleration.z;
-    }
-    
-    self.maxAccX.text = [NSString stringWithFormat:@"Max: %.2f",currentMaxAccelX];
-    self.maxAccY.text = [NSString stringWithFormat:@"Max: %.2f",currentMaxAccelY];
-    self.maxAccZ.text = [NSString stringWithFormat:@"Max: %.2f",currentMaxAccelZ];
-
-}
--(void)outputRotationData:(CMRotationRate)rotation
-{
-    self.rotX.text = [NSString stringWithFormat:@"Rotation in X: %.2fr/s",rotation.x];
-    if(fabs(rotation.x) > fabs(currentMaxRotX))
-    {
-        currentMaxRotX = rotation.x;
-    }
-    self.rotY.text = [NSString stringWithFormat:@"Rotation in Y: %.2fr/s",rotation.y];
-    if(fabs(rotation.y) > fabs(currentMaxRotY))
-    {
-        currentMaxRotY = rotation.y;
-    }
-    self.rotZ.text = [NSString stringWithFormat:@"Rotation in Z: %.2fr/s",rotation.z];
-    if(fabs(rotation.z) > fabs(currentMaxRotZ))
-    {
-        currentMaxRotZ = rotation.z;
-    }
-    
-    self.maxRotX.text = [NSString stringWithFormat:@"Max: %.2f",currentMaxRotX];
-    self.maxRotY.text = [NSString stringWithFormat:@"Max: %.2f",currentMaxRotY];
-    self.maxRotZ.text = [NSString stringWithFormat:@"Max: %.2f",currentMaxRotZ];
-}*/
 
 - (void)didReceiveMemoryWarning
 {
@@ -151,12 +111,6 @@
     
         [self reDrawEngines:self.canvasEngines];
         self.ConnectionParameters.newData=FALSE;
-        
-        
-        self.blueColor=[[UIColor blueColor] CGColor];
-        self.redColor=[[UIColor redColor] CGColor];
-        self.greenColor=[[UIColor greenColor] CGColor];
-        self.yellowColor=[[UIColor yellowColor] CGColor];
     }
 
 }
