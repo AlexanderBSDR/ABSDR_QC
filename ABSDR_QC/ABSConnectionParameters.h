@@ -34,6 +34,7 @@
 @property double timer1s;
 @property double batteryLagTime;
 @property bool newData;
+@property int server_Started;
 
 
 @property unsigned short engineOne;
@@ -43,6 +44,7 @@
 
 @property unsigned short engineMax;
 @property unsigned short engineMin;
+@property double g_E1_S, g_E2_S, g_E3_S, g_E4_S,g_E1_P, g_E2_P, g_E3_P, g_E4_P,g_E1_R, g_E2_R, g_E3_R, g_E4_R;
 
 - (void) startServer;
 - (bool) sendClient:(char *) msg length: (unsigned int) len;

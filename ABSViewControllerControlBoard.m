@@ -137,7 +137,7 @@
     
     self.engineOneLabel.text=[temp stringByAppendingFormat:@"%d",self.ConnectionParameters.engineOne];
     self.engineOneStepper.value=self.engineOneSlider.value;
-    
+    //NSLog(@"Eng one: %d", )
     //sending updated parameters
     [self updateEngineParameters];
 }

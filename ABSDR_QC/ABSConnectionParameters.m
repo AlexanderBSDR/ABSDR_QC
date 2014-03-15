@@ -50,7 +50,9 @@ extern int errno;
     self.timer1s = [[NSDate date] timeIntervalSince1970];
     self.batteryLagTime=1.5;
     self.newData=FALSE;
-    
+    self.g_E1_S=self.g_E2_S=self.g_E3_S=self.g_E4_S=1;
+    self.g_E1_P=self.g_E2_P=self.g_E3_P=self.g_E4_P=1;
+    self.g_E1_R=self.g_E2_R=self.g_E3_R=self.g_E4_R=1;
     
     self.engineMin=1000;       ///////////////////////////////
     self.engineMax=2000;      ///////////////////////////////
@@ -59,7 +61,9 @@ extern int errno;
     self.engineTwo=self.engineMin;
     self.engineThree=self.engineMin;
     self.engineFour=self.engineMin;
-
+    
+    self.server_Started=100;
+    
     memset(&sa, 0 ,sizeof(sa));
     
     sa.sin_family=AF_INET;
@@ -88,7 +92,7 @@ extern int errno;
 //        inet_ntoa(sa.sin_addr);
  //       NSLog(@"<- Rx[%zu] from (%s): ",recsize,inet_ntoa(sa.sin_addr));
         
-//        printf("--------parsing--------\n");
+       // printf("--------parsing--------\n");
 
         if(buffer[0]==0xFF && buffer[1]==0x20)
         {
@@ -109,7 +113,7 @@ extern int errno;
 
 - (void) parseSensorsData: (unsigned char *) data
 {
-    unsigned int temp;
+    short temp;
     bool flag=FALSE;
 
     //engines
@@ -119,30 +123,31 @@ extern int errno;
     self.engineFour=(data[9]<<8) | data[8];
     
     //actial_Angles
-    temp=(data[11]<<8) | data[10];
+    temp=(short)((data[11]<<8) | data[10]);
     if(flag==TRUE)   NSLog(@"acc_X: %ud", temp);
-    [self AddVariableToMutableArray:self.accArrayX var:((float)temp/3600)];
+//    NSLog(@"act_Ang: %f", (float)temp/10);
+    [self AddVariableToMutableArray:self.accArrayX var:((float)temp/10)];
 
     temp=(data[13]<<8) | data[12];
     if(flag==TRUE)  NSLog(@"acc_Y: %ud", temp);
-    [self AddVariableToMutableArray:self.accArrayY var:((float)temp/3600)];
+    [self AddVariableToMutableArray:self.accArrayY var:((float)temp/10)];
     
     temp=(data[15]<<8) | data[14];
     if(flag==TRUE)  NSLog(@"acc_Z: %ud", temp);
-    [self AddVariableToMutableArray:self.accArrayZ var:((float)temp/3600)];
+    [self AddVariableToMutableArray:self.accArrayZ var:((float)temp/10)];
 
     //gyro
     temp=(data[17]<<8) | data[16];
     if(flag==TRUE)  NSLog(@"rot_X: %ud", temp);
-    [self AddVariableToMutableArray:self.rotArrayX var:((float)temp/1024*8-4)];
+    [self AddVariableToMutableArray:self.rotArrayX var:((float)temp/10)];
 
     temp=(data[19]<<8) | data[18];
     if(flag==TRUE)  NSLog(@"rot_Y: %ud", temp);
-    [self AddVariableToMutableArray:self.rotArrayY var:((float)temp/1024*8-4)];
+    [self AddVariableToMutableArray:self.rotArrayY var:((float)temp/10)];
     
     temp=(data[21]<<8) | data[20];
     if(flag==TRUE)  NSLog(@"rot_Z: %ud", temp);
-    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
+    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/10)];
 
     //compass
     temp=(data[23]<<8) | data[22];
@@ -275,6 +280,8 @@ extern int errno;
     buffer[8]=self.engineFour & 0xFF;
     buffer[9]=(self.engineFour>>8) & 0xFF;
     
+    //NSLog(@"%d-%d-%d-%d", self.engineOne, self.engineTwo, self.engineThree, self.engineFour);
+    
     [self sendClient:buffer length:(sizeof(char)*2+sizeof(unsigned int)*4)];
     self.PackagesSent+=1;
     
@@ -371,10 +378,12 @@ extern int errno;
             
     }
     
-    int g1_t=(int)round(g1*100);
-    int g2_t=(int)round(g2*100);
-    int g3_t=(int)round(g3*100);
-    int g4_t=(int)round(g4*100);
+    short g1_t=(short)round(g1*100);
+    short g2_t=(short)round(g2*100);
+    short g3_t=(short)round(g3*100);
+    short g4_t=(short)round(g4*100);
+    
+    //NSLog(@"%d--%d--%d--%d", g1_t, g2_t, g3_t, g4_t);
 
     
     buffer[2]=g1_t & 0xFF;

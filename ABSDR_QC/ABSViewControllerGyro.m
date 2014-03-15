@@ -32,17 +32,22 @@
 @property double batteryTime;
 @property CGColorRef blueColor, redColor, greenColor, yellowColor;
 
+@property NSTimer* timer1;
+
 @property (strong, nonatomic) CMMotionManager *motionManager;
 
 @end
 
 @implementation ABSViewControllerGyro
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+
     if (self) {
         // Custom initialization
+
     }
     return self;
 }
@@ -52,19 +57,16 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
-    [NSThread detachNewThreadSelector:@selector(startServer) toTarget:self.ConnectionParameters withObject:Nil];
-    
-    [self.ConnectionParameters sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
-    
-    self.blueColor=[[UIColor blueColor] CGColor];
-    self.redColor=[[UIColor redColor] CGColor];
-    self.greenColor=[[UIColor greenColor] CGColor];
-    self.yellowColor=[[UIColor yellowColor] CGColor];
     
     self.batteryTime=[[NSDate date] timeIntervalSince1970];
-    
-    [NSTimer scheduledTimerWithTimeInterval:.001 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
+    if(self.ConnectionParameters.server_Started!=100)
+    {
+        [NSThread detachNewThreadSelector:@selector(startServer) toTarget:self.ConnectionParameters withObject:Nil];
+        [self.ConnectionParameters sendServerSocket:self.ConnectionParameters.IPAddress port:self.ConnectionParameters.RemotePort.intValue];
+    }
+    self.timer1=[NSTimer scheduledTimerWithTimeInterval:.001 target:self selector:@selector(addPoint) userInfo:nil repeats:YES];
 
+    //NSLog(@"Server: %d --- %d", self.ConnectionParameters.sock_server, self.ConnectionParameters.sock_client);
 }
 
 - (void)viewDidLayoutSubviews
@@ -72,8 +74,9 @@
     [super viewDidLayoutSubviews];
     self.canvasMaxWidth=self.canvasX.frame.size.width;
     self.canvasMaxHeight=self.canvasX.frame.size.height;
-    self.scaleX=2;
-    self.ConnectionParameters.maxSize=self.canvasMaxWidth/self.scaleX+1;
+    
+    self.scaleX=1;
+    self.ConnectionParameters.maxSize=self.canvasMaxWidth/self.scaleX;
     
     self.accArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*self.canvasMaxWidth);
     self.rotArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*self.canvasMaxWidth);
@@ -141,13 +144,19 @@
 {
     if(self.ConnectionParameters.newData==TRUE)
     {
-        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor conv1: -1 conv2: -1];
-        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor conv1: -1 conv2: -1];
-        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor conv1: -1 conv2: -1];
+        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90];
+        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90];
+        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90];
         [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition  color1:self.greenColor color2:self.yellowColor conv1:-1 conv2: -1];
     
         [self reDrawEngines:self.canvasEngines];
         self.ConnectionParameters.newData=FALSE;
+        
+        
+        self.blueColor=[[UIColor blueColor] CGColor];
+        self.redColor=[[UIColor redColor] CGColor];
+        self.greenColor=[[UIColor greenColor] CGColor];
+        self.yellowColor=[[UIColor yellowColor] CGColor];
     }
 
 }
@@ -156,7 +165,7 @@
 {
     
     CGSize size = CGSizeMake(canvas.frame.size.width, canvas.frame.size.height);
-    
+
     UIGraphicsBeginImageContext(size);
     CGContextRef context=UIGraphicsGetCurrentContext();
     
@@ -217,7 +226,6 @@
     UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     canvas.image=result;
-
 }
 
 - (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray color1:(CGColorRef)color1 color2:(CGColorRef) color2 conv1:(float)conversion1 conv2:(float)conversion2
@@ -299,6 +307,8 @@
     {
         ABSViewControllerFlight *destView=[segue destinationViewController];
         destView.ConnectionParameters=self.ConnectionParameters;
+        [self.timer1 invalidate];
+        self.timer1 = nil;
     }
 }
 
@@ -311,6 +321,7 @@
 {
     [sender resignFirstResponder];
 }
+
 
 
 @end
