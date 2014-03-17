@@ -157,15 +157,15 @@ extern int errno;
     //control_Angles
     temp=(data[23]<<8) | data[22];
     if(flag==TRUE)  NSLog(@"com_X: %ud", temp);
-    [self AddVariableToMutableArray:self.controlArrayX var:((float)temp/10)];
+    [self AddVariableToMutableArray:self.controlArrayX var:((float)temp)];
     
     temp=(data[25]<<8) | data[24];
     if(flag==TRUE)  NSLog(@"com_Y: %ud", temp);
-    [self AddVariableToMutableArray:self.controlArrayY var:((float)temp/10)];
+    [self AddVariableToMutableArray:self.controlArrayY var:((float)temp)];
     
     temp=(data[27]<<8) | data[26];
     if(flag==TRUE)  NSLog(@"com_Z: %ud", temp);
-    [self AddVariableToMutableArray:self.controlArrayZ var:((float)temp/10)];
+    [self AddVariableToMutableArray:self.controlArrayZ var:((float)temp)];
 
     //battery
     double temp_battery;
