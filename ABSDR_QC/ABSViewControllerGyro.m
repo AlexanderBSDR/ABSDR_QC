@@ -23,6 +23,23 @@
 @property (weak, nonatomic) IBOutlet UILabel *batteryLabel;
 @property (weak, nonatomic) IBOutlet UITextField *resolutionField;
 
+
+@property (weak, nonatomic) IBOutlet UILabel *label_Canvas1_Max;
+@property (weak, nonatomic) IBOutlet UILabel *label_Canvas1_Curr;
+@property (weak, nonatomic) IBOutlet UILabel *label_Canvas1_Min;
+
+@property (weak, nonatomic) IBOutlet UILabel *label_Canvas2_Max;
+@property (weak, nonatomic) IBOutlet UILabel *label_Canvas2_Curr;
+@property (weak, nonatomic) IBOutlet UILabel *label_Canvas2_Min;
+
+@property (weak, nonatomic) IBOutlet UILabel *label_Canvas3_Max;
+@property (weak, nonatomic) IBOutlet UILabel *label_Canvas3_Curr;
+@property (weak, nonatomic) IBOutlet UILabel *label_Canvas3_Min;
+
+@property float *max1, *min1, *max2, *min2, *max3, *min3;
+
+
+
 @property int canvasMaxWidth;
 @property int canvasMaxHeight;
 @property int scaleX;
@@ -70,6 +87,26 @@
     self.redColor=[[UIColor redColor] CGColor];
     self.greenColor=[[UIColor greenColor] CGColor];
     self.yellowColor=[[UIColor yellowColor] CGColor];
+    self.min1=malloc(8);
+    self.min2=malloc(8);
+    self.min3=malloc(8);
+    self.max1=malloc(8);
+    self.max2=malloc(8);
+    self.max3=malloc(8);
+    
+    self.label_Canvas1_Min.text=@"0.0";
+    self.label_Canvas1_Curr.text=@"0.0";
+    self.label_Canvas1_Max.text=@"0.0";
+
+    self.label_Canvas2_Min.text=@"0.0";
+    self.label_Canvas2_Curr.text=@"0.0";
+    self.label_Canvas2_Max.text=@"0.0";
+    
+    self.label_Canvas3_Min.text=@"0.0";
+    self.label_Canvas3_Curr.text=@"0.0";
+    self.label_Canvas3_Max.text=@"0.0";
+    
+    
 
     //NSLog(@"Server: %d --- %d", self.ConnectionParameters.sock_server, self.ConnectionParameters.sock_client);
 }
@@ -104,10 +141,10 @@
 {
     if(self.ConnectionParameters.newData==TRUE)
     {
-        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90];
-        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90];
-        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90];
-        [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition  color1:self.greenColor color2:self.yellowColor conv1:-1 conv2: -1];
+        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90 l1:self.label_Canvas1_Max l2:self.label_Canvas1_Curr l3:self.label_Canvas1_Min mmax:self.max1 mmin:self.min1];
+        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90 l1:self.label_Canvas2_Max l2:self.label_Canvas2_Curr l3:self.label_Canvas2_Min mmax:self.max2 mmin:self.min2];
+        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90 l1:self.label_Canvas3_Max l2:self.label_Canvas3_Curr l3:self.label_Canvas3_Min mmax:self.max3 mmin:self.min3];
+        [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition  color1:self.greenColor color2:self.yellowColor conv1:-1 conv2: -1 l1:nil l2:nil l3:nil mmax:0 mmin:0];
     
         [self reDrawEngines:self.canvasEngines];
         self.ConnectionParameters.newData=FALSE;
@@ -182,7 +219,7 @@
     canvas.image=result;
 }
 
-- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray color1:(CGColorRef)color1 color2:(CGColorRef) color2 conv1:(float)conversion1 conv2:(float)conversion2
+- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray color1:(CGColorRef)color1 color2:(CGColorRef) color2 conv1:(float)conversion1 conv2:(float)conversion2 l1:(UILabel *) l_max l2:(UILabel *) l_curr l3:(UILabel *) l_min mmax:(float *) maxx mmin:(float *) minx
 {
     for (int i=0; i<accArray.count; i++)
     {
@@ -242,6 +279,23 @@
     
 //    free(rotArrayCG);
 //    free(accArrayCG);
+    if(l_curr!=nil)
+    {
+        float current=[[accArray lastObject] floatValue];
+        *maxx=max(current, [[l_max text] floatValue]);
+        *minx=min(current, [[l_min text] floatValue]);
+        l_curr.text=[[NSString alloc]initWithFormat:@"%f", current];
+        l_max.text=[[NSString alloc]initWithFormat:@"%f", *maxx];
+        l_min.text=[[NSString alloc]initWithFormat:@"%f", *minx];
+    }
+}
+
+float min(float a, float b) {
+    return a<b ? a : b;
+}
+
+float max(float a, float b) {
+    return a>b ? a : b;
 }
 
 

@@ -12,7 +12,7 @@
 
 //#define FACTORFORCONTROL 0.67
 
-#define MAX_SPEED_ANGLES 1000
+#define MAX_SPEED_ANGLES 360
 
 
 #define MAX_PITCH_ANGLES MAX_SPEED_ANGLES/2
@@ -60,6 +60,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *label_E2;
 @property (weak, nonatomic) IBOutlet UILabel *label_E3;
 @property (weak, nonatomic) IBOutlet UILabel *label_E4;
+@property (weak, nonatomic) IBOutlet UIProgressView *pb;
 
 @property NSTimer* timer1;
 
@@ -90,6 +91,9 @@
     self.progress_E2.transform=CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI_2),CGAffineTransformMakeScale(10.0f, 1.0f));
     self.progress_E3.transform=CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI_2),CGAffineTransformMakeScale(10.0f, 1.0f));
     self.progress_E4.transform=CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI_2),CGAffineTransformMakeScale(10.0f, 1.0f));
+    
+    self.pb.transform=CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI_2),CGAffineTransformMakeScale(10.0f, 1.0f));
+
 	// Do any additional setup after loading the view.
     // NSLog(@"%f", MAX_PITCH_SLIDER_SETTINGS);
     // NSLog(@"%f", MAX_ROLL_SLIDER_SETTINGS);

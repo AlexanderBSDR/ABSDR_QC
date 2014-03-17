@@ -61,22 +61,6 @@
     self.old_Slider=[[NSNumber alloc] initWithInt:self.ConnectionParameters.engineMin];
     self.old_Stepper=[[NSNumber alloc] initWithInt:self.ConnectionParameters.engineMin];
     
-/*    self.engineOneSlider=[[UISlider alloc]init];
-    self.engineTwoSlider=[[UISlider alloc]init];
-    self.engineThreeSlider=[[UISlider alloc]init];
-    self.engineFourSlider=[[UISlider alloc]init];
-    self.engineAllSlider=[[UISlider alloc]init];
-    
-    self.engineOneStepper=[[UIStepper alloc]init];
-    self.engineTwoStepper=[[UIStepper alloc]init];
-    self.engineThreeStepper=[[UIStepper alloc]init];
-    self.engineFourStepper=[[UIStepper alloc]init];
-    self.engineAllStepper=[[UIStepper alloc]init];
-
-*/
-//    NSUInteger value = self.engineOneStepper.value;
-    
-    
     self.engineOneStepper.maximumValue=self.ConnectionParameters.engineMax;
     self.engineOneSlider.maximumValue=self.ConnectionParameters.engineMax;
     self.engineOneStepper.minimumValue=self.ConnectionParameters.engineMin;

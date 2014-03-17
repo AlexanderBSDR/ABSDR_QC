@@ -122,19 +122,29 @@ extern int errno;
     self.engineThree=(data[7]<<8) | data[6];
     self.engineFour=(data[9]<<8) | data[8];
     
-    //actial_Angles
+    //actual_Angles
     temp=(short)((data[11]<<8) | data[10]);
     if(flag==TRUE)   NSLog(@"acc_X: %ud", temp);
 //    NSLog(@"act_Ang: %f", (float)temp/10);
     [self AddVariableToMutableArray:self.accArrayX var:((float)temp/10)];
+    NSLog(@"Ang_X: %f", (float)temp/10);
+    self.sum_X_measurements+=(float)temp/10;
+    self.counter_X_measurements++;
 
     temp=(data[13]<<8) | data[12];
     if(flag==TRUE)  NSLog(@"acc_Y: %ud", temp);
     [self AddVariableToMutableArray:self.accArrayY var:((float)temp/10)];
+    NSLog(@"Ang_Y: %f", (float)temp/10);
+    self.sum_Y_measurements+=(float)temp/10;
+    self.counter_Y_measurements++;
+    
+    NSLog(@"Vibration: [%f] [%f]", self.sum_X_measurements/self.counter_X_measurements, self.sum_Y_measurements/self.counter_Y_measurements);
+
     
     temp=(data[15]<<8) | data[14];
     if(flag==TRUE)  NSLog(@"acc_Z: %ud", temp);
     [self AddVariableToMutableArray:self.accArrayZ var:((float)temp/10)];
+    
 
     //gyro
     temp=(data[17]<<8) | data[16];
@@ -253,11 +263,11 @@ extern int errno;
     }
     else
     {
-        char *new_msg=malloc(len+1);
-        strncpy(new_msg, msg, len);
-        new_msg[len]='\0';
-        NSLog(@"-> Tx[%ld]: %s\n", a, new_msg);
-        free (new_msg);
+        //char *new_msg=malloc(len+1);
+        //strncpy(new_msg, msg, len);
+        //new_msg[len]='\0';
+        //NSLog(@"-> Tx[%ld]: %s\n", a, new_msg);
+        //free (new_msg);
     }
     return false;
 }
@@ -295,7 +305,7 @@ extern int errno;
     buffer[0]=0xFF;
     buffer[1]=0x02;
     
-    int temp=(int)round(step*10);
+    int temp=(int)round(step);
     
     
     buffer[2]=temp & 0xFF;
@@ -313,7 +323,7 @@ extern int errno;
     buffer[0]=0xFF;
     buffer[1]=0x03;
     
-    int temp=(int)round(step*10);
+    int temp=(int)round(step);
     
     
     buffer[2]=temp & 0xFF;
@@ -332,7 +342,7 @@ extern int errno;
     buffer[0]=0xFF;
     buffer[1]=0x04;
     
-    int temp=(int)round(step*10);
+    int temp=(int)round(step);
     
     buffer[2]=temp & 0xFF;
     buffer[3]=(temp>>8) & 0xFF;
