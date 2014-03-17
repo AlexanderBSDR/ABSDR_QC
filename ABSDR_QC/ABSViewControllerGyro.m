@@ -35,6 +35,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *label_Canvas3_Max;
 @property (weak, nonatomic) IBOutlet UILabel *label_Canvas3_Curr;
 @property (weak, nonatomic) IBOutlet UILabel *label_Canvas3_Min;
+@property (weak, nonatomic) IBOutlet UILabel *label_X_controller;
+@property (weak, nonatomic) IBOutlet UILabel *label_Y_controller;
+@property (weak, nonatomic) IBOutlet UILabel *label_Z_controller;
+@property (weak, nonatomic) IBOutlet UILabel *label_X_set;
+@property (weak, nonatomic) IBOutlet UILabel *label_Y_set;
+@property (weak, nonatomic) IBOutlet UILabel *label_Z_set;
 
 @property float *max1, *min1, *max2, *min2, *max3, *min3;
 
@@ -108,6 +114,14 @@
     self.label_Canvas3_Curr.text=@"0.0";
     self.label_Canvas3_Max.text=@"0.0";
     
+    self.label_X_controller.text=@"0.0";
+    self.label_Y_controller.text=@"0.0";
+    self.label_Z_controller.text=@"0.0";
+    
+    self.label_X_set.text=@"0.0";
+    self.label_Y_set.text=@"0.0";
+    self.label_Z_set.text=@"0.0";
+    
     
 
     //NSLog(@"Server: %d --- %d", self.ConnectionParameters.sock_server, self.ConnectionParameters.sock_client);
@@ -131,6 +145,8 @@
     {
         self.accArrayCG[i].x=i*self.scaleX;
         self.rotArrayCG[i].x=i*self.scaleX;
+        self.controlArrayCG[i].x=i*self.scaleX;
+
     }
 }
 
@@ -145,9 +161,9 @@
 {
     if(self.ConnectionParameters.newData==TRUE)
     {
-        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX control_Angles:self.ConnectionParameters.controlArrayX color1:self.blueColor color2:self.redColor color3:self.greenColor conv1: 90 conv2: 90 conv3: 500 l1:self.label_Canvas1_Max l2:self.label_Canvas1_Curr l3:self.label_Canvas1_Min mmax:self.max1 mmin:self.min1];
-        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY control_Angles:self.ConnectionParameters.controlArrayY color1:self.blueColor color2:self.redColor color3:self.greenColor conv1: 90 conv2: 90 conv3: 500 l1:self.label_Canvas2_Max l2:self.label_Canvas2_Curr l3:self.label_Canvas2_Min mmax:self.max2 mmin:self.min2];
-        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  control_Angles:self.ConnectionParameters.controlArrayZ color1:self.blueColor color2:self.redColor color3:self.greenColor conv1: 90 conv2: 90 conv3: 500 l1:self.label_Canvas3_Max l2:self.label_Canvas3_Curr l3:self.label_Canvas3_Min mmax:self.max3 mmin:self.min3];
+        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX control_Angles:self.ConnectionParameters.controlArrayX color1:self.blueColor color2:self.redColor color3:self.greenColor conv1: -90 conv2: -90 conv3: -90 l1:self.label_Canvas1_Max l2:self.label_Canvas1_Curr l3:self.label_Canvas1_Min l_con:self.label_X_controller l_set:self.label_X_set mmax:self.max1 mmin:self.min1];
+        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY control_Angles:self.ConnectionParameters.controlArrayY color1:self.blueColor color2:self.redColor color3:self.greenColor conv1: -90 conv2: -90 conv3: -90 l1:self.label_Canvas2_Max l2:self.label_Canvas2_Curr l3:self.label_Canvas2_Min l_con:self.label_Y_controller l_set:self.label_Y_set mmax:self.max2 mmin:self.min2];
+        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  control_Angles:self.ConnectionParameters.controlArrayZ color1:self.blueColor color2:self.redColor color3:self.greenColor conv1: -360 conv2: -360 conv3: -90 l1:self.label_Canvas3_Max l2:self.label_Canvas3_Curr l3:self.label_Canvas3_Min l_con:self.label_Z_controller l_set:self.label_Z_set mmax:self.max3 mmin:self.min3];
      //   [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition control_Angles:nil color1:self.greenColor color2:self.yellowColor color3:self.yellowColor conv1:-1 conv2: -1  conv3: 0 l1:nil l2:nil l3:nil mmax:0 mmin:0];
     
         [self reDrawEngines:self.canvasEngines];
@@ -172,15 +188,15 @@
     CGContextSetLineWidth(context, 1.0f);
     
     
-    float box1x=45.0f;
+    float box1x=20.0f;
     float box1y=5.0f;
-    float box2x=20.0f;
-    float box2y=90.0f;
-    float box3x=70.0f;
-    float box3y=90.0f;
-    float box4x=45.0f;
-    float box4y=175.0f;
-    float box_height=80.0f;
+    float box2x=70.0f;
+    float box2y=5.0f;
+    float box3x=20.0f;
+    float box3y=140.0f;
+    float box4x=70.0f;
+    float box4y=140.0f;
+    float box_height=110.0f;
     float box_width=30.0f;
     self.engineOneLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineOne];
     self.engineTwoLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineTwo];
@@ -200,22 +216,22 @@
     CGContextSetFillColorWithColor(context, self.blueColor);
     CGContextFillRect(context, CGRectMake(box1x, box1y+(box_height*(1-(float)(self.ConnectionParameters.engineOne-self.ConnectionParameters.engineMin)/range)), box_width, box_height-(box_height*(1-(float)(self.ConnectionParameters.engineOne-self.ConnectionParameters.engineMin)/range))));
 
-    CGContextSetStrokeColorWithColor(context, self.redColor);
+    CGContextSetStrokeColorWithColor(context, self.blueColor);
     CGContextAddRect(context, CGRectMake(box2x, box2y, box_width, box_height));
     CGContextStrokePath(context);
-    CGContextSetFillColorWithColor(context, self.redColor);
+    CGContextSetFillColorWithColor(context, self.blueColor);
     CGContextFillRect(context, CGRectMake(box2x, box2y+(box_height*(1-(float)(self.ConnectionParameters.engineTwo-self.ConnectionParameters.engineMin)/range)), box_width, box_height-(box_height*(1-(float)(self.ConnectionParameters.engineTwo-self.ConnectionParameters.engineMin)/range))));
     
-    CGContextSetStrokeColorWithColor(context, self.redColor);
+    CGContextSetStrokeColorWithColor(context, self.greenColor);
     CGContextAddRect(context, CGRectMake(box3x, box3y, box_width, box_height));
     CGContextStrokePath(context);
-    CGContextSetFillColorWithColor(context, self.redColor);
+    CGContextSetFillColorWithColor(context, self.greenColor);
     CGContextFillRect(context, CGRectMake(box3x, box3y+(box_height*(1-(float)(self.ConnectionParameters.engineThree-self.ConnectionParameters.engineMin)/range)), box_width, box_height-(box_height*(1-(float)(self.ConnectionParameters.engineThree-self.ConnectionParameters.engineMin)/range))));
     
-    CGContextSetStrokeColorWithColor(context, self.blueColor);
+    CGContextSetStrokeColorWithColor(context, self.greenColor);
     CGContextAddRect(context, CGRectMake(box4x, box4y, box_width, box_height));
     CGContextStrokePath(context);
-    CGContextSetFillColorWithColor(context, self.blueColor);
+    CGContextSetFillColorWithColor(context, self.greenColor);
     CGContextFillRect(context, CGRectMake(box4x, box4y+(box_height*(1-(float)(self.ConnectionParameters.engineFour-self.ConnectionParameters.engineMin)/range)), box_width, box_height-(box_height*(1-(float)(self.ConnectionParameters.engineFour-self.ConnectionParameters.engineMin)/range))));
     
     UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
@@ -223,7 +239,7 @@
     canvas.image=result;
 }
 
-- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray control_Angles:(NSMutableArray *)control_Angles color1:(CGColorRef)color1 color2:(CGColorRef) color2 color3:(CGColorRef) color3 conv1:(float)conversion1 conv2:(float)conversion2 conv3:(float)conversion3 l1:(UILabel *) l_max l2:(UILabel *) l_curr l3:(UILabel *) l_min mmax:(float *) maxx mmin:(float *) minx
+- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray control_Angles:(NSMutableArray *)control_Angles color1:(CGColorRef)color1 color2:(CGColorRef) color2 color3:(CGColorRef) color3 conv1:(float)conversion1 conv2:(float)conversion2 conv3:(float)conversion3 l1:(UILabel *) l_max l2:(UILabel *) l_curr l3:(UILabel *) l_min l_con:(UILabel *) l_controller l_set:(UILabel *) l_set mmax:(float *) maxx mmin:(float *) minx
 {
     for (int i=0; i<accArray.count; i++)
     {
@@ -309,9 +325,11 @@
         float current=[[accArray lastObject] floatValue];
         *maxx=max(current, [[l_max text] floatValue]);
         *minx=min(current, [[l_min text] floatValue]);
-        l_curr.text=[[NSString alloc]initWithFormat:@"%f", current];
-        l_max.text=[[NSString alloc]initWithFormat:@"%f", *maxx];
-        l_min.text=[[NSString alloc]initWithFormat:@"%f", *minx];
+        l_curr.text=[[NSString alloc]initWithFormat:@"%4.2f", current];
+        l_max.text=[[NSString alloc]initWithFormat:@"%4.2f", *maxx];
+        l_min.text=[[NSString alloc]initWithFormat:@"%4.2f", *minx];
+        l_controller.text=[[NSString alloc]initWithFormat:@"%4.2f", [[control_Angles lastObject]floatValue]];
+        l_set.text=[[NSString alloc]initWithFormat:@"%4.2f", [[rotArray lastObject]floatValue]];
     }
 }
 
