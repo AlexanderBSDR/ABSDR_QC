@@ -27,6 +27,11 @@
 @property NSMutableArray *rotArrayZ;
 @property NSMutableArray *rotArrayT;   //////////
 
+@property NSMutableArray *controlArrayX;
+@property NSMutableArray *controlArrayY;
+@property NSMutableArray *controlArrayZ;
+@property NSMutableArray *controlArrayT;   //////////
+
 @property NSMutableArray *batteryStatus;
 @property NSMutableArray *altitudePosition;
 
@@ -35,12 +40,6 @@
 @property double batteryLagTime;
 @property bool newData;
 @property int server_Started;
-
-@property int counter_X_measurements;
-@property int counter_Y_measurements;
-@property double sum_X_measurements;
-@property double sum_Y_measurements;
-
 
 @property unsigned short engineOne;
 @property unsigned short engineTwo;

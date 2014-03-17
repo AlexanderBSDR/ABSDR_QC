@@ -18,6 +18,8 @@
 #define MAX_PITCH_ANGLES MAX_SPEED_ANGLES/2
 #define MAX_ROLL_ANGLES MAX_SPEED_ANGLES/2
 
+#define MAX_TIME_SAMPLING 200/1000
+
 //#define ZERORANGE_SPEED 10
 //#define ZERORANGE_ANGLES (ZERORANGE_SPEED/2)
 
@@ -49,7 +51,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *gains_E3_Roll;
 @property (weak, nonatomic) IBOutlet UITextField *gains_E4_Roll;
 @property double rollLast,pitchLast, speedLast;
-@property double speedCumulative, pitchCumulative, rollCumulative;
+//@property double speedCumulative, pitchCumulative, rollCumulative;
 
 
 @property (weak, nonatomic) IBOutlet UIProgressView *progress_E1;
@@ -109,11 +111,10 @@
     
     self.sliderDirection.minimumValue=-(MAX_PITCH_ANGLES);
     self.sliderDirection.maximumValue=(MAX_PITCH_ANGLES);
-    
     self.sliderDirection.value=0;
-    self.speedCumulative=self.speedLast=0;
-    self.pitchCumulative=self.pitchLast=0;
-    self.rollCumulative=self.rollLast=0;
+    self.speedLast=CACurrentMediaTime();
+    self.pitchLast=CACurrentMediaTime();
+    self.rollLast=CACurrentMediaTime();
     
     self.gains_E1_Speed.text=[[NSString alloc]initWithFormat:@"%1.2f", self.ConnectionParameters.g_E1_S];
     self.gains_E2_Speed.text=[[NSString alloc]initWithFormat:@"%1.2f", self.ConnectionParameters.g_E2_S];
@@ -169,7 +170,7 @@
 
 - (IBAction)sliderAltitudeChanged:(id)sender {
     
-    self.speedCumulative+=roundf(self.sliderAltitude.value-self.speedLast);
+/*    self.speedCumulative+=roundf(self.sliderAltitude.value-self.speedLast);
 
     if(self.speedCumulative>MAX_SPEED_ANGLES){
         
@@ -204,10 +205,18 @@
     
 
     self.speedLast=self.sliderAltitude.value;
+ */
+    if((CACurrentMediaTime()-self.speedLast)>=MAX_TIME_SAMPLING)
+    {
+        [self.ConnectionParameters changeAltitude:self.sliderAltitude.value];
+        //NSLog(@"@Speed: %5.2f", self.sliderAltitude.value);
+    }
+    self.speedLast=CACurrentMediaTime();
+    //NSLog(@"%f", CACurrentMediaTime());
 }
 
 - (IBAction)sliderDirectionChanged:(id)sender {
-    self.pitchCumulative+=roundf(self.sliderDirection.value-self.pitchLast);
+/*    self.pitchCumulative+=roundf(self.sliderDirection.value-self.pitchLast);
     
     if(self.pitchCumulative>MAX_PITCH_ANGLES){
         
@@ -248,10 +257,17 @@
         
     }
     
-    self.pitchLast=self.sliderDirection.value;
+    self.pitchLast=self.sliderDirection.value;*/
+    if((CACurrentMediaTime()-self.pitchLast)>=MAX_TIME_SAMPLING)
+    {
+        [self.ConnectionParameters changeDirection:self.sliderDirection.value];
+        //NSLog(@"@Direction: %5.2f", self.sliderDirection.value);
+    }
+    self.pitchLast=CACurrentMediaTime();
+
 }
 - (IBAction)sliderRotationChanged:(id)sender {
-    self.rollCumulative+=roundf(self.sliderRotation.value-self.rollLast);
+/*    self.rollCumulative+=roundf(self.sliderRotation.value-self.rollLast);
     
     if(self.rollCumulative>MAX_ROLL_ANGLES){
         
@@ -292,7 +308,14 @@
         
     }
     
-    self.rollLast=self.sliderRotation.value;
+    self.rollLast=self.sliderRotation.value;*/
+    if((CACurrentMediaTime()-self.rollLast)>=MAX_TIME_SAMPLING)
+    {
+        [self.ConnectionParameters changeRotation:self.sliderRotation.value];
+        //NSLog(@"@Rotation: %5.2f", self.sliderRotation.value);
+    }
+    
+    self.rollLast=CACurrentMediaTime();
 }
 
 /*- (float) interpolatedFunctionSpeed: (float) ch
@@ -356,20 +379,31 @@
     [sender resignFirstResponder];
 }
 - (IBAction)rollSliderGetBackToZeroEveryWhere:(id)sender {
-    [self.ConnectionParameters changeRotation:-self.sliderRotation.value];
+    [self.ConnectionParameters changeRotation:0];
     self.sliderRotation.value=0;
 }
 - (IBAction)pitchSliderGetBackToZeroEveryWhere:(id)sender {
-    [self.ConnectionParameters changeDirection:+self.sliderDirection.value];
+    [self.ConnectionParameters changeDirection:0];
     self.sliderDirection.value=0;
 }
 - (IBAction)rollSliderGetBackToZero:(id)sender {
-    [self.ConnectionParameters changeRotation:-self.sliderRotation.value];
+    [self.ConnectionParameters changeRotation:0];
     self.sliderRotation.value=0;
 }
 - (IBAction)pitchSliderGetBackToZero:(id)sender {
-    [self.ConnectionParameters changeDirection:+self.sliderDirection.value];
+    [self.ConnectionParameters changeDirection:0];
     self.sliderDirection.value=0;
+}
+- (IBAction)clickedResetSettings:(id)sender {
+    self.ConnectionParameters.engineOne=self.ConnectionParameters.engineMin;
+    self.ConnectionParameters.engineTwo=self.ConnectionParameters.engineMin;
+    self.ConnectionParameters.engineThree=self.ConnectionParameters.engineMin;
+    self.ConnectionParameters.engineFour=self.ConnectionParameters.engineMin;
+    
+    [self.ConnectionParameters  changeRotation:0];
+    [self.ConnectionParameters  changeDirection:0];
+    [self.ConnectionParameters  changeAltitude:0];
+    [self.ConnectionParameters updateEngineParameters];
 }
 
 

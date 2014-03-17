@@ -45,6 +45,11 @@ extern int errno;
     self.rotArrayZ = [[NSMutableArray alloc] init];
     self.rotArrayT = [[NSMutableArray alloc] init];
     
+    self.controlArrayX = [[NSMutableArray alloc] init];
+    self.controlArrayY = [[NSMutableArray alloc] init];
+    self.controlArrayZ = [[NSMutableArray alloc] init];
+    self.controlArrayT = [[NSMutableArray alloc] init];
+    
     self.batteryStatus = [[NSMutableArray alloc] init];
     self.altitudePosition = [[NSMutableArray alloc] init];
     self.timer1s = [[NSDate date] timeIntervalSince1970];
@@ -127,26 +132,16 @@ extern int errno;
     if(flag==TRUE)   NSLog(@"acc_X: %ud", temp);
 //    NSLog(@"act_Ang: %f", (float)temp/10);
     [self AddVariableToMutableArray:self.accArrayX var:((float)temp/10)];
-    NSLog(@"Ang_X: %f", (float)temp/10);
-    self.sum_X_measurements+=(float)temp/10;
-    self.counter_X_measurements++;
 
     temp=(data[13]<<8) | data[12];
     if(flag==TRUE)  NSLog(@"acc_Y: %ud", temp);
     [self AddVariableToMutableArray:self.accArrayY var:((float)temp/10)];
-    NSLog(@"Ang_Y: %f", (float)temp/10);
-    self.sum_Y_measurements+=(float)temp/10;
-    self.counter_Y_measurements++;
-    
-    NSLog(@"Vibration: [%f] [%f]", self.sum_X_measurements/self.counter_X_measurements, self.sum_Y_measurements/self.counter_Y_measurements);
-
     
     temp=(data[15]<<8) | data[14];
     if(flag==TRUE)  NSLog(@"acc_Z: %ud", temp);
     [self AddVariableToMutableArray:self.accArrayZ var:((float)temp/10)];
     
-
-    //gyro
+    //set_Angles
     temp=(data[17]<<8) | data[16];
     if(flag==TRUE)  NSLog(@"rot_X: %ud", temp);
     [self AddVariableToMutableArray:self.rotArrayX var:((float)temp/10)];
@@ -159,18 +154,18 @@ extern int errno;
     if(flag==TRUE)  NSLog(@"rot_Z: %ud", temp);
     [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/10)];
 
-    //compass
+    //control_Angles
     temp=(data[23]<<8) | data[22];
     if(flag==TRUE)  NSLog(@"com_X: %ud", temp);
-//    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
+    [self AddVariableToMutableArray:self.controlArrayX var:((float)temp/10)];
     
     temp=(data[25]<<8) | data[24];
     if(flag==TRUE)  NSLog(@"com_Y: %ud", temp);
-//    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
+    [self AddVariableToMutableArray:self.controlArrayY var:((float)temp/10)];
     
     temp=(data[27]<<8) | data[26];
     if(flag==TRUE)  NSLog(@"com_Z: %ud", temp);
-//    [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/1024*8-4)];
+    [self AddVariableToMutableArray:self.controlArrayZ var:((float)temp/10)];
 
     //battery
     double temp_battery;

@@ -45,6 +45,8 @@
 @property int scaleX;
 @property CGPoint *accArrayCG;
 @property CGPoint *rotArrayCG;
+@property CGPoint *controlArrayCG;
+
 
 @property double batteryTime;
 @property CGColorRef blueColor, redColor, greenColor, yellowColor;
@@ -122,6 +124,8 @@
     
     self.accArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*self.canvasMaxWidth);
     self.rotArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*self.canvasMaxWidth);
+    self.controlArrayCG=(CGPoint *)malloc(sizeof(CGPoint)*self.canvasMaxWidth);
+
     
     for (int i=0; i<self.canvasMaxWidth; i++)
     {
@@ -141,10 +145,10 @@
 {
     if(self.ConnectionParameters.newData==TRUE)
     {
-        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90 l1:self.label_Canvas1_Max l2:self.label_Canvas1_Curr l3:self.label_Canvas1_Min mmax:self.max1 mmin:self.min1];
-        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90 l1:self.label_Canvas2_Max l2:self.label_Canvas2_Curr l3:self.label_Canvas2_Min mmax:self.max2 mmin:self.min2];
-        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  color1:self.blueColor color2:self.redColor conv1: 90 conv2: 90 l1:self.label_Canvas3_Max l2:self.label_Canvas3_Curr l3:self.label_Canvas3_Min mmax:self.max3 mmin:self.min3];
-        [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition  color1:self.greenColor color2:self.yellowColor conv1:-1 conv2: -1 l1:nil l2:nil l3:nil mmax:0 mmin:0];
+        [self reDrawCanvasX:self.canvasX accArray:self.ConnectionParameters.accArrayX rotArray:self.ConnectionParameters.rotArrayX control_Angles:self.ConnectionParameters.controlArrayX color1:self.blueColor color2:self.redColor color3:self.greenColor conv1: 90 conv2: 90 conv3: 90 l1:self.label_Canvas1_Max l2:self.label_Canvas1_Curr l3:self.label_Canvas1_Min mmax:self.max1 mmin:self.min1];
+        [self reDrawCanvasX:self.canvasY accArray:self.ConnectionParameters.accArrayY rotArray:self.ConnectionParameters.rotArrayY control_Angles:self.ConnectionParameters.controlArrayY color1:self.blueColor color2:self.redColor color3:self.greenColor conv1: 90 conv2: 90 conv3: 90 l1:self.label_Canvas2_Max l2:self.label_Canvas2_Curr l3:self.label_Canvas2_Min mmax:self.max2 mmin:self.min2];
+        [self reDrawCanvasX:self.canvasZ accArray:self.ConnectionParameters.accArrayZ rotArray:self.ConnectionParameters.rotArrayZ  control_Angles:self.ConnectionParameters.controlArrayZ color1:self.blueColor color2:self.redColor color3:self.greenColor conv1: 90 conv2: 90 conv3: 90 l1:self.label_Canvas3_Max l2:self.label_Canvas3_Curr l3:self.label_Canvas3_Min mmax:self.max3 mmin:self.min3];
+     //   [self reDrawCanvasX:self.canvasT accArray:self.ConnectionParameters.batteryStatus rotArray:self.ConnectionParameters.altitudePosition control_Angles:nil color1:self.greenColor color2:self.yellowColor color3:self.yellowColor conv1:-1 conv2: -1  conv3: 0 l1:nil l2:nil l3:nil mmax:0 mmin:0];
     
         [self reDrawEngines:self.canvasEngines];
         self.ConnectionParameters.newData=FALSE;
@@ -219,7 +223,7 @@
     canvas.image=result;
 }
 
-- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray color1:(CGColorRef)color1 color2:(CGColorRef) color2 conv1:(float)conversion1 conv2:(float)conversion2 l1:(UILabel *) l_max l2:(UILabel *) l_curr l3:(UILabel *) l_min mmax:(float *) maxx mmin:(float *) minx
+- (void) reDrawCanvasX: (UIImageView *) canvas accArray:(NSMutableArray *)accArray rotArray:(NSMutableArray *)rotArray control_Angles:(NSMutableArray *)control_Angles color1:(CGColorRef)color1 color2:(CGColorRef) color2 color3:(CGColorRef) color3 conv1:(float)conversion1 conv2:(float)conversion2 conv3:(float)conversion3 l1:(UILabel *) l_max l2:(UILabel *) l_curr l3:(UILabel *) l_min mmax:(float *) maxx mmin:(float *) minx
 {
     for (int i=0; i<accArray.count; i++)
     {
@@ -247,6 +251,22 @@
         }
     
     }
+    
+    if(control_Angles!=nil)
+    {
+        for (int i=0; i<control_Angles.count; i++)
+        {
+            @try {
+                self.controlArrayCG[i].y=[self reSizeAcc:[[control_Angles objectAtIndex:i] floatValue] conv:conversion3];
+            }
+            
+            @catch(NSException *exception)
+            {
+                NSLog(@"Exception @objectAtIndex.controlArray!\n");
+            }
+            
+        }
+    }
 
     CGSize size = CGSizeMake(canvas.frame.size.width, canvas.frame.size.height);
     
@@ -264,6 +284,13 @@
     CGContextAddLines(context, self.accArrayCG, accArray.count);
     CGContextStrokePath(context);
     
+    if(control_Angles!=nil)
+    {
+        CGContextSetStrokeColorWithColor(context, color3);
+        CGContextAddLines(context, self.controlArrayCG, control_Angles.count);
+        CGContextStrokePath(context);
+    }
+    
     CGContextSetStrokeColorWithColor(context, color2);
     CGContextAddLines(context, self.rotArrayCG, rotArray.count);
     CGContextStrokePath(context);
@@ -276,9 +303,7 @@
     UIImage *result=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     canvas.image=result;
-    
-//    free(rotArrayCG);
-//    free(accArrayCG);
+
     if(l_curr!=nil)
     {
         float current=[[accArray lastObject] floatValue];
