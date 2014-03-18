@@ -59,6 +59,10 @@ extern int errno;
     self.g_E1_P=self.g_E2_P=self.g_E3_P=self.g_E4_P=1;
     self.g_E1_R=self.g_E2_R=self.g_E3_R=self.g_E4_R=1;
     
+    self.pidPitch_P=self.pidRoll_P=0.5;
+    self.pidPitch_I=self.pidRoll_I=0;
+    self.pidPitch_D=self.pidRoll_D=0;
+    
     self.engineMin=1000;       ///////////////////////////////
     self.engineMax=2000;      ///////////////////////////////
     
@@ -404,6 +408,48 @@ extern int errno;
     buffer[9]=(g4_t>>8) & 0xFF;
     
     [self sendClient:buffer length:10];
+    self.PackagesSent+=1;
+    
+    free(buffer);
+}
+
+-(void) updatePIDSettings
+{
+    char *buffer=malloc(sizeof(char)*14);
+    
+    buffer[0]=0xFF;
+    buffer[1]=0x08;
+    
+    short p1_p=(short)self.pidPitch_P*100;
+    short p1_i=(short)self.pidPitch_I*100;
+    short p1_d=(short)self.pidPitch_D*100;
+    
+    short p2_p=(short)self.pidRoll_P*100;
+    short p2_i=(short)self.pidRoll_I*100;
+    short p2_d=(short)self.pidRoll_D*100;
+    
+    //NSLog(@"%d--%d--%d--%d", g1_t, g2_t, g3_t, g4_t);
+    
+    
+    buffer[2]=p1_p & 0xFF;
+    buffer[3]=(p1_p>>8) & 0xFF;
+    
+    buffer[4]=p1_i & 0xFF;
+    buffer[5]=(p1_i>>8) & 0xFF;
+    
+    buffer[6]=p1_d & 0xFF;
+    buffer[7]=(p1_d>>8) & 0xFF;
+    
+    buffer[8]=p2_p & 0xFF;
+    buffer[9]=(p2_p>>8) & 0xFF;
+    
+    buffer[10]=p2_i & 0xFF;
+    buffer[11]=(p2_i>>8) & 0xFF;
+    
+    buffer[12]=p2_d & 0xFF;
+    buffer[13]=(p2_d>>8) & 0xFF;
+    
+    [self sendClient:buffer length:14];
     self.PackagesSent+=1;
     
     free(buffer);

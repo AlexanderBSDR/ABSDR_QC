@@ -35,6 +35,14 @@
 @property NSMutableArray *batteryStatus;
 @property NSMutableArray *altitudePosition;
 
+@property double pidPitch_P;
+@property double pidPitch_I;
+@property double pidPitch_D;
+
+@property double pidRoll_P;
+@property double pidRoll_I;
+@property double pidRoll_D;
+
 
 @property double timer1s;
 @property double batteryLagTime;
@@ -60,6 +68,9 @@
 -(void) changeRotation:(float) step;
 -(void) changeResolutionInterval:(unsigned short) val;
 -(void) changeMixerGains:(unsigned short) val gain_1: (double) g1 gain_2: (double) g2 gain_3: (double) g3 gain_4:(double) g4;
+
+-(void) updatePIDSettings;
+
 
 
 

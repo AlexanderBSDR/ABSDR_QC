@@ -42,6 +42,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *label_Y_set;
 @property (weak, nonatomic) IBOutlet UILabel *label_Z_set;
 
+@property (weak, nonatomic) IBOutlet UITextField *pidFieldPitch_P;
+@property (weak, nonatomic) IBOutlet UITextField *pidFieldPitch_I;
+@property (weak, nonatomic) IBOutlet UITextField *pidFieldPitch_D;
+
+@property (weak, nonatomic) IBOutlet UITextField *pidFieldRoll_P;
+@property (weak, nonatomic) IBOutlet UITextField *pidFieldRoll_I;
+@property (weak, nonatomic) IBOutlet UITextField *pidFieldRoll_D;
+
 @property float *max1, *min1, *max2, *min2, *max3, *min3;
 
 
@@ -117,10 +125,18 @@
     self.label_X_controller.text=@"0.0";
     self.label_Y_controller.text=@"0.0";
     self.label_Z_controller.text=@"0.0";
-    
+
     self.label_X_set.text=@"0.0";
     self.label_Y_set.text=@"0.0";
     self.label_Z_set.text=@"0.0";
+    
+    self.pidFieldPitch_P.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidPitch_P];
+    self.pidFieldPitch_I.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidPitch_I];
+    self.pidFieldPitch_D.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidPitch_D];
+    
+    self.pidFieldRoll_P.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidRoll_P];
+    self.pidFieldRoll_I.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidRoll_I];
+    self.pidFieldRoll_D.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidRoll_D];
     
     
 
@@ -193,10 +209,10 @@
     float box2x=70.0f;
     float box2y=5.0f;
     float box3x=20.0f;
-    float box3y=140.0f;
+    float box3y=90.0f;
     float box4x=70.0f;
-    float box4y=140.0f;
-    float box_height=110.0f;
+    float box4y=90.0f;
+    float box_height=80.0f;
     float box_width=30.0f;
     self.engineOneLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineOne];
     self.engineTwoLabel.text=[NSString stringWithFormat:@"%d", self.ConnectionParameters.engineTwo];
@@ -366,6 +382,18 @@ float max(float a, float b) {
 - (IBAction)clickedSetResolution:(id)sender {
     
     [self.ConnectionParameters changeResolutionInterval:(unsigned short)self.resolutionField.text.intValue];
+}
+- (IBAction)updatePIDSettings:(id)sender {
+    
+    self.ConnectionParameters.pidPitch_P=[self.pidFieldPitch_P.text floatValue];
+    self.ConnectionParameters.pidPitch_I=[self.pidFieldPitch_I.text floatValue];
+    self.ConnectionParameters.pidPitch_D=[self.pidFieldPitch_D.text floatValue];
+    
+    self.ConnectionParameters.pidRoll_P=[self.pidFieldRoll_P.text floatValue];
+    self.ConnectionParameters.pidRoll_I=[self.pidFieldRoll_I.text floatValue];
+    self.ConnectionParameters.pidRoll_D=[self.pidFieldRoll_D.text floatValue];
+    
+    [self.ConnectionParameters updatePIDSettings];
 }
 
 -(IBAction)textFieldReturn:(id)sender
