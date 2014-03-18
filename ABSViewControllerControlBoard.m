@@ -32,8 +32,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *engineAllLabel;
 @property (weak, nonatomic) IBOutlet UISlider *engineAllSlider;
 
-@property NSNumber  *old_Slider;
-@property NSNumber  *old_Stepper;
+@property double  old_Slider;
+@property double  old_Stepper;
 
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonClicked;
@@ -58,8 +58,8 @@
     [super viewDidLoad];
 
     
-    self.old_Slider=[[NSNumber alloc] initWithInt:self.ConnectionParameters.engineMin];
-    self.old_Stepper=[[NSNumber alloc] initWithInt:self.ConnectionParameters.engineMin];
+    self.old_Slider=self.ConnectionParameters.engineMin;
+    self.old_Stepper=self.ConnectionParameters.engineMin;
     
     self.engineOneStepper.maximumValue=self.ConnectionParameters.engineMax;
     self.engineOneSlider.maximumValue=self.ConnectionParameters.engineMax;
@@ -189,7 +189,7 @@
 - (IBAction)engineAllStepperChanged:(id)sender {
 
     int delta;
-    delta=(int)self.engineAllStepper.value-self.old_Stepper.intValue;
+    delta=(int)self.engineAllStepper.value-self.old_Stepper;
     
     NSString *temp1=@"Engine #1: ";
     //self.objParameters.EngineSpeedOne=[NSNumber numberWithInt:(int)(self.objParameters.EngineSpeedOne.intValue+delta)];
@@ -269,7 +269,7 @@
     
     self.engineAllSlider.value=self.engineAllStepper.value;
     
-    self.old_Stepper=[NSNumber numberWithInt:(int)self.engineAllStepper.value];
+    self.old_Stepper=round(self.engineAllStepper.value);
     
     //sending updated parameters
     [self updateEngineParameters];
@@ -277,8 +277,8 @@
 - (IBAction)engineAllSliderChanged:(id)sender {
     
     int delta;
-    delta=(int)self.engineAllSlider.value-self.old_Slider.intValue;
-//    NSLog(@"Delta: %d", delta);
+    delta=(int)round(self.engineAllSlider.value)-self.old_Slider;
+    NSLog(@"Delta: %d", delta);
 //    NSLog(@"E1D: %d",self.objParameters.EngineSpeedOne.intValue+delta);
     
     NSString *temp1=@"Engine #1: ";
@@ -351,7 +351,7 @@
     
     self.engineAllStepper.value=self.engineAllSlider.value;
     
-    self.old_Slider=[NSNumber numberWithInt:(int)self.engineAllSlider.value];
+    self.old_Slider=round(self.engineAllSlider.value);
     
     //sending updated parameters
     [self updateEngineParameters];

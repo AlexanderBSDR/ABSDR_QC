@@ -99,7 +99,7 @@ extern int errno;
         
         
 //        inet_ntoa(sa.sin_addr);
- //       NSLog(@"<- Rx[%zu] from (%s): ",recsize,inet_ntoa(sa.sin_addr));
+        //NSLog(@"<- Rx[%zu] from (%s): ",recsize,inet_ntoa(sa.sin_addr));
         
        // printf("--------parsing--------\n");
 
@@ -113,7 +113,7 @@ extern int errno;
             char temp[MAXSIZEPACKET+1];
             strncpy(temp, (const char *)buffer, MAXSIZEPACKET);
             temp[MAXSIZEPACKET]='\0';
-            NSLog(@"%s ---- %zu\n",temp, recsize);
+            NSLog(@"%s",temp);
         }
 //        printf("---------end----------\n");
     }
@@ -160,7 +160,7 @@ extern int errno;
 
     //control_Angles
     temp=(data[23]<<8) | data[22];
-    if(flag==TRUE)  NSLog(@"com_X: %ud", temp);
+    if(flag==TRUE) NSLog(@"com_X: %ud", temp);
     [self AddVariableToMutableArray:self.controlArrayX var:((float)temp)];
     
     temp=(data[25]<<8) | data[24];
@@ -262,11 +262,15 @@ extern int errno;
     }
     else
     {
-        //char *new_msg=malloc(len+1);
-        //strncpy(new_msg, msg, len);
-        //new_msg[len]='\0';
-        //NSLog(@"-> Tx[%ld]: %s\n", a, new_msg);
-        //free (new_msg);
+        /*if(msg[0]=='V')
+        {
+            char *new_msg=malloc(len+1);
+            strncpy(new_msg, msg, len);
+            new_msg[len]='\0';
+            NSLog(@"-> Tx[%ld]: %s\n", a, new_msg);
+            free (new_msg);
+            NSLog("@%s", new_msg);
+        }*/
     }
     return false;
 }
@@ -420,15 +424,15 @@ extern int errno;
     buffer[0]=0xFF;
     buffer[1]=0x08;
     
-    short p1_p=(short)self.pidPitch_P*100;
-    short p1_i=(short)self.pidPitch_I*100;
-    short p1_d=(short)self.pidPitch_D*100;
+    short p1_p=(short)(self.pidPitch_P*100);
+    short p1_i=(short)(self.pidPitch_I*100);
+    short p1_d=(short)(self.pidPitch_D*100);
     
-    short p2_p=(short)self.pidRoll_P*100;
-    short p2_i=(short)self.pidRoll_I*100;
-    short p2_d=(short)self.pidRoll_D*100;
+    short p2_p=(short)(self.pidRoll_P*100);
+    short p2_i=(short)(self.pidRoll_I*100);
+    short p2_d=(short)(self.pidRoll_D*100);
     
-    //NSLog(@"%d--%d--%d--%d", g1_t, g2_t, g3_t, g4_t);
+    //NSLog(@"%d--%d--%d--%d--%d--%d", p1_p, p1_i, p1_d, p2_p, p2_i, p2_d);
     
     
     buffer[2]=p1_p & 0xFF;

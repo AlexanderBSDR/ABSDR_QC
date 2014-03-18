@@ -399,6 +399,7 @@
     self.ConnectionParameters.engineTwo=self.ConnectionParameters.engineMin;
     self.ConnectionParameters.engineThree=self.ConnectionParameters.engineMin;
     self.ConnectionParameters.engineFour=self.ConnectionParameters.engineMin;
+    self.sliderAltitude.value=0;
     
     [self.ConnectionParameters  changeRotation:0];
     [self.ConnectionParameters  changeDirection:0];
