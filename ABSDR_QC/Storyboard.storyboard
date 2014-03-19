@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="LCC-MZ-fu8">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="LCC-MZ-fu8">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--View Controller Login-->
@@ -294,18 +294,33 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Roll Control" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7nw-kM-eFx">
-                                <rect key="frame" x="86" y="171" width="91" height="21"/>
+                                <rect key="frame" x="86" y="165" width="91" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yaw Control" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4xB-gv-i7t">
+                                <rect key="frame" x="86" y="228" width="93" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-255" maxValue="255" id="h01-Ix-hit">
-                                <rect key="frame" x="16" y="211" width="230" height="34"/>
+                                <rect key="frame" x="16" y="189" width="230" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="rollSliderGetBackToZero:" destination="MQg-rv-wk4" eventType="touchUpInside" id="VKz-uN-1lw"/>
                                     <action selector="rollSliderGetBackToZeroEveryWhere:" destination="MQg-rv-wk4" eventType="touchUpOutside" id="LwK-9r-qwJ"/>
                                     <action selector="sliderRotationChanged:" destination="MQg-rv-wk4" eventType="valueChanged" id="XLs-ax-vqE"/>
+                                </connections>
+                            </slider>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-255" maxValue="255" id="qfs-SF-MwB">
+                                <rect key="frame" x="16" y="249" width="230" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="sliderYawChanged:" destination="MQg-rv-wk4" eventType="valueChanged" id="2VF-mL-U8k"/>
+                                    <action selector="yawSliderGetBackToZero:" destination="MQg-rv-wk4" eventType="touchUpInside" id="hBC-rk-2xO"/>
+                                    <action selector="yawSliderGetBackToZeroEveryWhere:" destination="MQg-rv-wk4" eventType="touchUpOutside" id="0Dr-oG-UCD"/>
                                 </connections>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-255" maxValue="255" id="T2j-Po-gvP">
@@ -335,7 +350,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="Dsu-o0-U2t">
-                                <rect key="frame" x="46" y="44" width="35" height="30"/>
+                                <rect key="frame" x="44" y="30" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -344,7 +359,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="hdw-tW-5zs">
-                                <rect key="frame" x="120" y="44" width="35" height="30"/>
+                                <rect key="frame" x="118" y="30" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -353,7 +368,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="6ho-Je-hto">
-                                <rect key="frame" x="157" y="44" width="35" height="30"/>
+                                <rect key="frame" x="155" y="30" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -362,7 +377,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="6GL-bY-MNG">
-                                <rect key="frame" x="83" y="44" width="35" height="30"/>
+                                <rect key="frame" x="81" y="30" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -371,13 +386,13 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Speed:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2fi-2g-jwt">
-                                <rect key="frame" x="11" y="48" width="37" height="21"/>
+                                <rect key="frame" x="10" y="34" width="37" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="ilh-yo-1Td">
-                                <rect key="frame" x="46" y="76" width="35" height="30"/>
+                                <rect key="frame" x="44" y="60" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -386,7 +401,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="1Rv-nG-cfy">
-                                <rect key="frame" x="120" y="76" width="35" height="30"/>
+                                <rect key="frame" x="118" y="60" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -395,7 +410,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="yVx-bO-XMb">
-                                <rect key="frame" x="157" y="76" width="35" height="30"/>
+                                <rect key="frame" x="155" y="60" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -404,7 +419,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="Yxi-Bd-yav">
-                                <rect key="frame" x="83" y="76" width="35" height="30"/>
+                                <rect key="frame" x="81" y="60" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -413,13 +428,13 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pitch:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1Jm-xK-4Xx">
-                                <rect key="frame" x="11" y="80" width="37" height="20"/>
+                                <rect key="frame" x="10" y="64" width="37" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="WHY-cN-a2z">
-                                <rect key="frame" x="46" y="108" width="35" height="30"/>
+                                <rect key="frame" x="44" y="90" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -428,7 +443,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="AMC-ab-XzC">
-                                <rect key="frame" x="120" y="108" width="35" height="30"/>
+                                <rect key="frame" x="118" y="90" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -437,7 +452,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="rLi-b5-Hlc">
-                                <rect key="frame" x="157" y="108" width="35" height="30"/>
+                                <rect key="frame" x="155" y="90" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -446,7 +461,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="QOn-0Q-ZL8">
-                                <rect key="frame" x="83" y="108" width="35" height="30"/>
+                                <rect key="frame" x="81" y="90" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -455,37 +470,37 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Roll:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="d19-1L-c3U">
-                                <rect key="frame" x="10" y="112" width="38" height="21"/>
+                                <rect key="frame" x="10" y="94" width="38" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="E1:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Kg4-0i-6a7">
-                                <rect key="frame" x="42" y="20" width="42" height="21"/>
+                                <rect key="frame" x="40" y="13" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="E2:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gL2-aG-2AO">
-                                <rect key="frame" x="79" y="20" width="42" height="21"/>
+                                <rect key="frame" x="77" y="13" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="E3:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CvM-DW-DkV">
-                                <rect key="frame" x="116" y="20" width="42" height="21"/>
+                                <rect key="frame" x="114" y="13" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="E4:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JXq-oR-Xo1">
-                                <rect key="frame" x="153" y="20" width="42" height="21"/>
+                                <rect key="frame" x="151" y="13" width="42" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Czr-Bs-sMA">
-                                <rect key="frame" x="193" y="46" width="31" height="26"/>
+                                <rect key="frame" x="189" y="32" width="31" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <state key="normal" title="Upd">
@@ -496,7 +511,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="suX-rQ-W7w">
-                                <rect key="frame" x="193" y="78" width="31" height="26"/>
+                                <rect key="frame" x="189" y="62" width="31" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <state key="normal" title="Upd">
@@ -507,7 +522,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="9I4-om-aCD">
-                                <rect key="frame" x="193" y="110" width="31" height="26"/>
+                                <rect key="frame" x="189" y="92" width="31" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <state key="normal" title="Upd">
@@ -515,6 +530,60 @@
                                 </state>
                                 <connections>
                                     <action selector="buttonUpdateMixerSettings3:" destination="MQg-rv-wk4" eventType="touchUpInside" id="QdP-lf-btc"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="MXM-Tw-w5U">
+                                <rect key="frame" x="44" y="120" width="35" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textFieldReturn:" destination="MQg-rv-wk4" eventType="editingDidEndOnExit" id="dgh-nk-owh"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="jlQ-Fo-QDB">
+                                <rect key="frame" x="118" y="120" width="35" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textFieldReturn:" destination="MQg-rv-wk4" eventType="editingDidEndOnExit" id="6o5-zo-NGk"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="lSC-rc-60b">
+                                <rect key="frame" x="155" y="120" width="35" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textFieldReturn:" destination="MQg-rv-wk4" eventType="editingDidEndOnExit" id="YAb-Ea-Wn8"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="1.0" borderStyle="roundedRect" minimumFontSize="17" id="cCS-rW-uTu">
+                                <rect key="frame" x="81" y="120" width="35" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textFieldReturn:" destination="MQg-rv-wk4" eventType="editingDidEndOnExit" id="4QQ-fA-dBb"/>
+                                </connections>
+                            </textField>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yaw" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HvP-mp-H63">
+                                <rect key="frame" x="10" y="124" width="38" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="13q-mX-68W">
+                                <rect key="frame" x="189" y="122" width="31" height="26"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <state key="normal" title="Upd">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="buttonUpdateMixerSettings3:" destination="MQg-rv-wk4" eventType="touchUpInside" id="ghj-gh-trr"/>
+                                    <action selector="buttonUpdateMixerSettings4:" destination="MQg-rv-wk4" eventType="touchUpInside" id="PHG-qj-Exx"/>
                                 </connections>
                             </button>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" id="FmO-I5-JFf">
@@ -571,7 +640,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BvW-5I-lhp">
-                                <rect key="frame" x="11" y="141" width="77" height="30"/>
+                                <rect key="frame" x="11" y="143" width="77" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Reset setts">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -590,15 +659,19 @@
                         <outlet property="gains_E1_Pitch" destination="ilh-yo-1Td" id="JEu-XU-Ldk"/>
                         <outlet property="gains_E1_Roll" destination="WHY-cN-a2z" id="wMb-Mo-PmD"/>
                         <outlet property="gains_E1_Speed" destination="Dsu-o0-U2t" id="k3x-Qs-gQc"/>
+                        <outlet property="gains_E1_Yaw" destination="MXM-Tw-w5U" id="MN6-v8-uMS"/>
                         <outlet property="gains_E2_Pitch" destination="Yxi-Bd-yav" id="tTv-7t-sy8"/>
                         <outlet property="gains_E2_Roll" destination="QOn-0Q-ZL8" id="NeU-dk-2Aq"/>
                         <outlet property="gains_E2_Speed" destination="6GL-bY-MNG" id="caS-uu-CQa"/>
+                        <outlet property="gains_E2_Yaw" destination="cCS-rW-uTu" id="hmT-hc-73S"/>
                         <outlet property="gains_E3_Pitch" destination="1Rv-nG-cfy" id="f3l-YL-pDM"/>
                         <outlet property="gains_E3_Roll" destination="AMC-ab-XzC" id="prZ-bv-TRQ"/>
                         <outlet property="gains_E3_Speed" destination="hdw-tW-5zs" id="Qet-Rb-nBx"/>
+                        <outlet property="gains_E3_Yaw" destination="jlQ-Fo-QDB" id="lHX-eX-j0z"/>
                         <outlet property="gains_E4_Pitch" destination="yVx-bO-XMb" id="nYA-8X-GPH"/>
                         <outlet property="gains_E4_Roll" destination="rLi-b5-Hlc" id="Jch-po-7A1"/>
                         <outlet property="gains_E4_Speed" destination="6ho-Je-hto" id="wV4-OY-lSo"/>
+                        <outlet property="gains_E4_Yaw" destination="lSC-rc-60b" id="KdX-d5-hdJ"/>
                         <outlet property="label_E1" destination="emD-i4-Ta5" id="cUc-rj-clJ"/>
                         <outlet property="label_E2" destination="RxC-Z9-g31" id="jBk-EK-59X"/>
                         <outlet property="label_E3" destination="wdf-5D-ZXY" id="5Vh-z0-hCi"/>
@@ -610,6 +683,7 @@
                         <outlet property="sliderAltitude" destination="Neg-PK-UXF" id="gTG-e3-CCZ"/>
                         <outlet property="sliderDirection" destination="T2j-Po-gvP" id="zDD-0a-lk9"/>
                         <outlet property="sliderRotation" destination="h01-Ix-hit" id="ZMQ-wa-C7U"/>
+                        <outlet property="sliderYaw" destination="qfs-SF-MwB" id="KcS-hW-hS8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tdx-6V-qrm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -846,82 +920,109 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="Oqu-bh-tgP">
-                                <rect key="frame" x="464" y="203" width="37" height="30"/>
+                                <rect key="frame" x="449" y="203" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="textFieldReturn:" destination="HOi-HF-CjF" eventType="editingDidEndOnExit" id="aDh-wK-6kx"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="JaK-ey-PDR">
-                                <rect key="frame" x="464" y="234" width="37" height="30"/>
+                                <rect key="frame" x="449" y="234" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="textFieldReturn:" destination="HOi-HF-CjF" eventType="editingDidEndOnExit" id="0qD-ja-Atw"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="KNI-vB-Rbr">
-                                <rect key="frame" x="464" y="265" width="37" height="30"/>
+                                <rect key="frame" x="449" y="265" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="textFieldReturn:" destination="HOi-HF-CjF" eventType="editingDidEndOnExit" id="FcO-8y-OU1"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="Ll9-uW-xve">
-                                <rect key="frame" x="503" y="203" width="37" height="30"/>
+                                <rect key="frame" x="484" y="203" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="textFieldReturn:" destination="HOi-HF-CjF" eventType="editingDidEndOnExit" id="qwZ-9F-SyQ"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="d7B-Dn-OJ2">
-                                <rect key="frame" x="503" y="234" width="37" height="30"/>
+                                <rect key="frame" x="484" y="234" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="textFieldReturn:" destination="HOi-HF-CjF" eventType="editingDidEndOnExit" id="Pen-0Y-fJf"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="GOV-G4-Gfc">
-                                <rect key="frame" x="503" y="265" width="37" height="30"/>
+                                <rect key="frame" x="484" y="265" width="35" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <action selector="textFieldReturn:" destination="HOi-HF-CjF" eventType="editingDidEndOnExit" id="JWq-me-UOy"/>
                                 </connections>
                             </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="Knc-cr-3wR">
+                                <rect key="frame" x="519" y="203" width="35" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textFieldReturn:" destination="HOi-HF-CjF" eventType="editingDidEndOnExit" id="MD9-6k-5Bk"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="0LV-pZ-JBf">
+                                <rect key="frame" x="519" y="234" width="35" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textFieldReturn:" destination="HOi-HF-CjF" eventType="editingDidEndOnExit" id="Qre-Be-fQp"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" id="Rq0-d6-7ps">
+                                <rect key="frame" x="519" y="265" width="35" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="textFieldReturn:" destination="HOi-HF-CjF" eventType="editingDidEndOnExit" id="YXh-el-aJ9"/>
+                                </connections>
+                            </textField>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jdH-mu-Q1h">
-                                <rect key="frame" x="440" y="207" width="16" height="21"/>
+                                <rect key="frame" x="436" y="207" width="16" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ki" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Bws-6m-m2D">
-                                <rect key="frame" x="442" y="238" width="16" height="21"/>
+                                <rect key="frame" x="436" y="238" width="16" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kd" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ml2-gp-N0g">
-                                <rect key="frame" x="442" y="269" width="16" height="21"/>
+                                <rect key="frame" x="436" y="269" width="16" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="rAW-o3-IBc">
-                                <rect key="frame" x="477" y="288" width="46" height="30"/>
+                                <rect key="frame" x="472" y="288" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <state key="normal" title="Update">
@@ -932,13 +1033,19 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pitch" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BmU-D7-Q5f">
-                                <rect key="frame" x="462" y="186" width="40" height="21"/>
+                                <rect key="frame" x="447" y="186" width="40" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Roll" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oAS-EZ-jXi">
-                                <rect key="frame" x="506" y="186" width="30" height="21"/>
+                                <rect key="frame" x="486" y="186" width="30" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yaw" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5xb-Dm-2hu">
+                                <rect key="frame" x="521" y="187" width="30" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="highlightedColor"/>
@@ -980,6 +1087,9 @@
                         <outlet property="pidFieldRoll_D" destination="GOV-G4-Gfc" id="Abu-GY-Iuq"/>
                         <outlet property="pidFieldRoll_I" destination="d7B-Dn-OJ2" id="24B-Tn-NQh"/>
                         <outlet property="pidFieldRoll_P" destination="Ll9-uW-xve" id="jMT-5e-TAg"/>
+                        <outlet property="pidFieldYaw_D" destination="Rq0-d6-7ps" id="6n4-YF-aPV"/>
+                        <outlet property="pidFieldYaw_I" destination="0LV-pZ-JBf" id="mpk-gA-Ykp"/>
+                        <outlet property="pidFieldYaw_P" destination="Knc-cr-3wR" id="Otg-Dj-cRO"/>
                         <outlet property="resolutionField" destination="d4o-AU-Gs8" id="ZDd-qe-Die"/>
                     </connections>
                 </viewController>

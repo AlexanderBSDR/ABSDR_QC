@@ -58,10 +58,14 @@ extern int errno;
     self.g_E1_S=self.g_E2_S=self.g_E3_S=self.g_E4_S=1;
     self.g_E1_P=self.g_E2_P=self.g_E3_P=self.g_E4_P=1;
     self.g_E1_R=self.g_E2_R=self.g_E3_R=self.g_E4_R=1;
+    self.g_E1_Y=self.g_E2_Y=self.g_E3_Y=self.g_E4_Y=1;
     
     self.pidPitch_P=self.pidRoll_P=0.5;
     self.pidPitch_I=self.pidRoll_I=0;
     self.pidPitch_D=self.pidRoll_D=0;
+    
+    self.pidYaw_P=self.pidYaw_I=self.pidYaw_D=0;
+
     
     self.engineMin=1000;       ///////////////////////////////
     self.engineMax=2000;      ///////////////////////////////
@@ -356,6 +360,26 @@ extern int errno;
     free(buffer);
 }
 
+-(void) changeYaw:(float) step
+{
+    char *buffer=malloc(sizeof(char)*4);
+    
+    buffer[0]=0xFF;
+    buffer[1]=0x31;
+    
+    int temp=(int)round(step);
+    
+    
+    buffer[2]=temp & 0xFF;
+    buffer[3]=(temp>>8) & 0xFF;
+    
+    [self sendClient:buffer length:4];
+    self.PackagesSent+=1;
+    
+    free(buffer);
+    
+}
+
 -(void) changeResolutionInterval:(unsigned short) val
 {
     char *buffer=malloc(sizeof(char)*4);
@@ -388,6 +412,9 @@ extern int errno;
         case 3:
             buffer[1]=0x07;
             break;
+        case 4:
+            buffer[1]=0x30;
+            break;
             
     }
     
@@ -419,7 +446,7 @@ extern int errno;
 
 -(void) updatePIDSettings
 {
-    char *buffer=malloc(sizeof(char)*14);
+    char *buffer=malloc(sizeof(char)*20);
     
     buffer[0]=0xFF;
     buffer[1]=0x08;
@@ -432,8 +459,9 @@ extern int errno;
     short p2_i=(short)(self.pidRoll_I*100);
     short p2_d=(short)(self.pidRoll_D*100);
     
-    //NSLog(@"%d--%d--%d--%d--%d--%d", p1_p, p1_i, p1_d, p2_p, p2_i, p2_d);
-    
+    short p3_p=(short)(self.pidYaw_P*100);
+    short p3_i=(short)(self.pidYaw_I*100);
+    short p3_d=(short)(self.pidYaw_D*100);
     
     buffer[2]=p1_p & 0xFF;
     buffer[3]=(p1_p>>8) & 0xFF;
@@ -453,7 +481,16 @@ extern int errno;
     buffer[12]=p2_d & 0xFF;
     buffer[13]=(p2_d>>8) & 0xFF;
     
-    [self sendClient:buffer length:14];
+    buffer[14]=p3_p & 0xFF;
+    buffer[15]=(p3_p>>8) & 0xFF;
+    
+    buffer[16]=p3_i & 0xFF;
+    buffer[17]=(p3_i>>8) & 0xFF;
+    
+    buffer[18]=p3_d & 0xFF;
+    buffer[19]=(p3_d>>8) & 0xFF;
+    
+    [self sendClient:buffer length:20];
     self.PackagesSent+=1;
     
     free(buffer);

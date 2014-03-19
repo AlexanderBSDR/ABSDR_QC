@@ -50,6 +50,11 @@
 @property (weak, nonatomic) IBOutlet UITextField *pidFieldRoll_I;
 @property (weak, nonatomic) IBOutlet UITextField *pidFieldRoll_D;
 
+@property (weak, nonatomic) IBOutlet UITextField *pidFieldYaw_P;
+@property (weak, nonatomic) IBOutlet UITextField *pidFieldYaw_I;
+@property (weak, nonatomic) IBOutlet UITextField *pidFieldYaw_D;
+
+
 @property float *max1, *min1, *max2, *min2, *max3, *min3;
 
 
@@ -138,7 +143,9 @@
     self.pidFieldRoll_I.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidRoll_I];
     self.pidFieldRoll_D.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidRoll_D];
     
-    
+    self.pidFieldYaw_P.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidYaw_P];
+    self.pidFieldYaw_I.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidYaw_I];
+    self.pidFieldYaw_D.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidYaw_D];
 
     //NSLog(@"Server: %d --- %d", self.ConnectionParameters.sock_server, self.ConnectionParameters.sock_client);
 }
@@ -392,6 +399,10 @@ float max(float a, float b) {
     self.ConnectionParameters.pidRoll_P=[self.pidFieldRoll_P.text floatValue];
     self.ConnectionParameters.pidRoll_I=[self.pidFieldRoll_I.text floatValue];
     self.ConnectionParameters.pidRoll_D=[self.pidFieldRoll_D.text floatValue];
+    
+    self.ConnectionParameters.pidYaw_P=[self.pidFieldYaw_P.text floatValue];
+    self.ConnectionParameters.pidYaw_I=[self.pidFieldYaw_I.text floatValue];
+    self.ConnectionParameters.pidYaw_D=[self.pidFieldYaw_D.text floatValue];
     
     [self.ConnectionParameters updatePIDSettings];
 }

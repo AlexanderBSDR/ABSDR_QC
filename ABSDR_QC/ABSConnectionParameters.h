@@ -43,6 +43,9 @@
 @property double pidRoll_I;
 @property double pidRoll_D;
 
+@property double pidYaw_P;
+@property double pidYaw_I;
+@property double pidYaw_D;
 
 @property double timer1s;
 @property double batteryLagTime;
@@ -56,7 +59,7 @@
 
 @property unsigned short engineMax;
 @property unsigned short engineMin;
-@property double g_E1_S, g_E2_S, g_E3_S, g_E4_S,g_E1_P, g_E2_P, g_E3_P, g_E4_P,g_E1_R, g_E2_R, g_E3_R, g_E4_R;
+@property double g_E1_S, g_E2_S, g_E3_S, g_E4_S,g_E1_P, g_E2_P, g_E3_P, g_E4_P,g_E1_R, g_E2_R, g_E3_R, g_E4_R, g_E1_Y, g_E2_Y, g_E3_Y, g_E4_Y;
 
 - (void) startServer;
 - (bool) sendClient:(char *) msg length: (unsigned int) len;
@@ -66,6 +69,7 @@
 -(void) changeAltitude:(float) step;
 -(void) changeDirection:(float) step;
 -(void) changeRotation:(float) step;
+-(void) changeYaw:(float) step;
 -(void) changeResolutionInterval:(unsigned short) val;
 -(void) changeMixerGains:(unsigned short) val gain_1: (double) g1 gain_2: (double) g2 gain_3: (double) g3 gain_4:(double) g4;
 
