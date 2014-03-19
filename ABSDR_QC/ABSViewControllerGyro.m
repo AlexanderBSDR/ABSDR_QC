@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *resolutionField;
 
 
+
 @property (weak, nonatomic) IBOutlet UILabel *label_Canvas1_Max;
 @property (weak, nonatomic) IBOutlet UILabel *label_Canvas1_Curr;
 @property (weak, nonatomic) IBOutlet UILabel *label_Canvas1_Min;
