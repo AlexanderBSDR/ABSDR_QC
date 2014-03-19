@@ -284,28 +284,28 @@
     [sender resignFirstResponder];
 }
 - (IBAction)rollSliderGetBackToZeroEveryWhere:(id)sender {
-    [self.ConnectionParameters changeRotation:0];
+    [self.ConnectionParameters changeRotation:-self.sliderRotation.value];
     self.sliderRotation.value=0;
 }
 - (IBAction)pitchSliderGetBackToZeroEveryWhere:(id)sender {
-    [self.ConnectionParameters changeDirection:0];
+    [self.ConnectionParameters changeDirection:-self.sliderDirection.value];
     self.sliderDirection.value=0;
 }
 - (IBAction)rollSliderGetBackToZero:(id)sender {
-    [self.ConnectionParameters changeRotation:0];
+    [self.ConnectionParameters changeRotation:-self.sliderRotation.value];
     self.sliderRotation.value=0;
 }
 - (IBAction)pitchSliderGetBackToZero:(id)sender {
-    [self.ConnectionParameters changeDirection:0];
+    [self.ConnectionParameters changeDirection:-self.sliderDirection.value];
     self.sliderDirection.value=0;
 }
 - (IBAction)yawSliderGetBackToZero:(id)sender {
-    [self.ConnectionParameters changeYaw:0];
+    [self.ConnectionParameters changeYaw:-self.sliderYaw.value];
     self.sliderYaw.value=0;
 }
 
 - (IBAction)yawSliderGetBackToZeroEveryWhere:(id)sender {
-    [self.ConnectionParameters changeYaw:0];
+    [self.ConnectionParameters changeYaw:-self.sliderYaw.value];
     self.sliderYaw.value=0;
 }
 
