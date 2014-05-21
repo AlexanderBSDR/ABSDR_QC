@@ -60,11 +60,11 @@ extern int errno;
     self.g_E1_R=self.g_E2_R=self.g_E3_R=self.g_E4_R=1;
     self.g_E1_Y=self.g_E2_Y=self.g_E3_Y=self.g_E4_Y=1;
     
-    self.pidPitch_P=self.pidRoll_P=2;
-    self.pidPitch_I=self.pidRoll_I=0;
-    self.pidPitch_D=self.pidRoll_D=0;
+    self.pidPitch_P=self.pidRoll_P=self.pidYaw_P=2;
+    self.pidPitch_I=self.pidRoll_I=self.pidYaw_I=0;
+    self.pidPitch_D=self.pidRoll_D=self.pidYaw_D=0;
     
-    self.pidYaw_P=self.pidYaw_I=self.pidYaw_D=0;
+    //self.pidYaw_P=self.pidYaw_I=self.pidYaw_D=0;
 
     
     self.engineMin=950;       ///////////////////////////////

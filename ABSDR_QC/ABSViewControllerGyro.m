@@ -147,6 +147,7 @@
     self.pidFieldYaw_P.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidYaw_P];
     self.pidFieldYaw_I.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidYaw_I];
     self.pidFieldYaw_D.text=[[NSString alloc] initWithFormat:@"%2.2f", self.ConnectionParameters.pidYaw_D];
+    //NSLog(@"%f", self.ConnectionParameters.pidYaw_P);
 
     //NSLog(@"Server: %d --- %d", self.ConnectionParameters.sock_server, self.ConnectionParameters.sock_client);
 }
