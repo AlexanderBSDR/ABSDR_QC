@@ -127,7 +127,7 @@ extern int errno;
 - (void) parseSensorsData: (unsigned char *) data
 {
     short temp;
-    bool flag=FALSE;
+    bool flag=TRUE;
 
     //engines
     self.engineOne=(data[3]<<8) | data[2];
@@ -137,43 +137,43 @@ extern int errno;
     
     //actual_Angles
     temp=(short)((data[11]<<8) | data[10]);
-    if(flag==TRUE)   NSLog(@"acc_X: %ud", temp);
+    if(flag==TRUE)   NSLog(@"estAngles_X: %f", (float)temp/10);
 //    NSLog(@"act_Ang: %f", (float)temp/10);
     [self AddVariableToMutableArray:self.accArrayX var:((float)temp/10)];
 
     temp=(data[13]<<8) | data[12];
-    if(flag==TRUE)  NSLog(@"acc_Y: %ud", temp);
+    if(flag==TRUE)  NSLog(@"estAngles_Y: %f", (float)temp/10);
     [self AddVariableToMutableArray:self.accArrayY var:((float)temp/10)];
     
     temp=(data[15]<<8) | data[14];
-    if(flag==TRUE)  NSLog(@"acc_Z: %ud", temp);
+    if(flag==TRUE)  NSLog(@"estAngles_Z: %f", (float)temp/10);
     [self AddVariableToMutableArray:self.accArrayZ var:((float)temp/10)];
     
     //set_Angles
     temp=(data[17]<<8) | data[16];
-    if(flag==TRUE)  NSLog(@"rot_X: %ud", temp);
+    //if(flag==TRUE)  NSLog(@"setAngles_X: %f", (float)temp/10);
     [self AddVariableToMutableArray:self.rotArrayX var:((float)temp/10)];
 
     temp=(data[19]<<8) | data[18];
-    if(flag==TRUE)  NSLog(@"rot_Y: %ud", temp);
+    //if(flag==TRUE)  NSLog(@"setAngles_Y: %f", (float)temp/10);
     [self AddVariableToMutableArray:self.rotArrayY var:((float)temp/10)];
     
     temp=(data[21]<<8) | data[20];
-    if(flag==TRUE)  NSLog(@"rot_Z: %ud", temp);
+    //if(flag==TRUE)  NSLog(@"setAngles_Z: %f", (float)temp/10);
     [self AddVariableToMutableArray:self.rotArrayZ var:((float)temp/10)];
 
     //control_Angles
     temp=(data[23]<<8) | data[22];
-    if(flag==TRUE) NSLog(@"com_X: %ud", temp);
-    [self AddVariableToMutableArray:self.controlArrayX var:((float)temp)];
+    if(flag==TRUE) NSLog(@"controlAngles_X: %f", (float)temp/10);
+    [self AddVariableToMutableArray:self.controlArrayX var:((float)temp)/10];
     
     temp=(data[25]<<8) | data[24];
-    if(flag==TRUE)  NSLog(@"com_Y: %ud", temp);
-    [self AddVariableToMutableArray:self.controlArrayY var:((float)temp)];
+    if(flag==TRUE)  NSLog(@"controlAngles_Y: %f", (float)temp/10);
+    [self AddVariableToMutableArray:self.controlArrayY var:((float)temp)/10];
     
     temp=(data[27]<<8) | data[26];
-    if(flag==TRUE)  NSLog(@"com_Z: %ud", temp);
-    [self AddVariableToMutableArray:self.controlArrayZ var:((float)temp)];
+    if(flag==TRUE)  NSLog(@"controlAngles_Z: %f", (float)temp/10);
+    [self AddVariableToMutableArray:self.controlArrayZ var:((float)temp)/10];
 
     //battery
     double temp_battery;
@@ -188,11 +188,11 @@ extern int errno;
         self.timer1s = [[NSDate date] timeIntervalSince1970];
     }
 
-    if(flag==TRUE)  NSLog(@"Power: %f", (float)temp);
+    //if(flag==TRUE)  NSLog(@"Power: %f", (float)temp);
 
     //altitude
     temp=((data[31]<<8) | data[30]);
-    if(flag==TRUE)  NSLog(@"Altitude: %f", (float)temp/10000);
+    //if(flag==TRUE)  NSLog(@"Altitude: %f", (float)temp/10000);
     [self AddVariableToMutableArray:self.altitudePosition var:(float)temp/10000];
 
 }
