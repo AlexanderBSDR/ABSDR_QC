@@ -192,7 +192,7 @@ extern int errno;
 
     //altitude
     temp=((data[31]<<8) | data[30]);
-    if(flag==TRUE)  NSLog(@"Altitude: %d", temp);
+    if(flag==TRUE)  NSLog(@"Altitude: %f", (double)temp/1000000);
     [self AddVariableToMutableArray:self.altitudePosition var:temp];
 }
 
